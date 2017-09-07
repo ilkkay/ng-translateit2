@@ -1,21 +1,29 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpModule } from '@angular/http';
 
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectSearchComponent } from './project-search/project-search.component';
 import { ProjectsmainComponent } from './projectsmain/projectsmain.component';
 import { ProjectListComponent } from './project-list/project-list.component';
-
 import { ProjectsRoutingModule } from './projects-routing.module';
+
+import { ProjectService } from './shared/project.service';
+// import { AppconfigService } from '../shared/appconfig.service';
 
 @NgModule({
   imports: [
     BrowserModule,
-    FormsModule,
+    ReactiveFormsModule, FormsModule,
+    HttpModule,
     CommonModule,
     ProjectsRoutingModule
+  ],
+  providers: [
+    ProjectService,
+    // AppconfigService
   ],
   declarations: [
     ProjectDetailComponent,
