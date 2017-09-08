@@ -1,38 +1,27 @@
 /*
 https://stackoverflow.com/questions/36527605/how-to-style-child-components-from-parent-components-css-file
 
-:host ::ng-deep parent {
-       color:blue;
-     }
-     :host ::ng-deep child{
-       color:orange;
-     }
-     :host ::ng-deep child.class1 {
-       color:yellow;
-     }
-     :host ::ng-deep child.class2{
-       color:pink;
-     }
 */
-body, #mainWrapper {
+
+:host ::ng-deep app-projects body, #mainWrapper {
 	height: 100%;
 	background-color:rgb(245, 245, 245);
 }
 
-body, .form-control{
+:host ::ng-deep app-projects body, .form-control{
 	font-size:12px!important;
 }
 
-.floatRight{
+:host ::ng-deep app-projects .floatRight{
 	float:right;
 	margin-right: 18px;
 }
 
-.has-error{
+:host ::ng-deep app-projects .has-error{
 	color:red;
 }
 
-.generic-container {
+:host ::ng-deep app-projects .generic-container {
   width:80%;
   margin-left: 20px;
   margin-top: 20px;
@@ -44,7 +33,6 @@ body, .form-control{
   box-shadow: 0 0 30px black;
 }
 
-.custom-width {
+:host ::ng-deep app-projects .custom-width {
     width: 80px !important;
 }
-

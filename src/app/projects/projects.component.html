@@ -1,3 +1,29 @@
 <p>
-  projects works!
+  Container projects works!
 </p>
+<!--
+<ng-content></ng-content>
+-->
+<hr>
+<app-project-search> </app-project-search>
+<hr>
+<div class="generic-container">
+<!-- Default panel contents -->
+  <div class="panel panel-default">
+    <div class="panel-heading"><span class="lead">Project </span></div>
+    <div class="panel-body">
+      <app-project-detail> </app-project-detail>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><span class="lead">Current projects </span></div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <app-project-list> </app-project-list>
+      </div>
+    </div>
+  </div>
+</div>
+
