@@ -1,3 +1,34 @@
+<!--
 <p>
   project-list works!
 </p>
+-->
+<button (click)="changeTitle()">Click</button>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th>FORMAT</th>
+      <th>CHARSET</th>
+      <th>LNG</th>
+      <th>CNT</th>
+      <th width="100"></th>
+      <th width="100"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let prj of projects">
+      <td>{{prj.name}}</td>
+      <td>{{prj.format}}</td>
+      <td>{{prj.type}}</td>
+      <td>{{prj.sourceLocale}}</td>
+      <td>0</td>
+      <div class="form-actions floatRight">
+        <td><button [routerLink]="['/projects', prj.id]">Edit</button></td>
+        <td><button [routerLink]="['/projects', prj.id]">Next</button></td>
+      </div>
+    </tr>
+  </tbody>
+</table>
