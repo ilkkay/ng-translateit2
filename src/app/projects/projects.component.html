@@ -1,33 +1,46 @@
+<!--
 <p>
   Container projects works!
 </p>
-<!--
 <ng-content></ng-content>
--->
 <hr>
+-->
 <app-project-search> </app-project-search>
 <hr>
+
 <div class="generic-container">
-<!-- Default panel contents -->
+
+  <app-error-message> </app-error-message>
+
   <div class="panel panel-default">
-    <div class="panel-heading"><span class="lead">{{detailTitle}} </span></div>
-
-	  <div class="alert alert-success" role="alert" *ngIf="successMessage">{{successMessage}}</div>
-	  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
-
-    <div class="panel-body">
-      <app-project-detail (onTitleChanged)="onDetailTitleChanged($event)"> </app-project-detail>
+    <div class="panel-heading" *ngIf="!isDetailHidden ">
+      <span class="lead">{{detailTitle}} </span>
+    </div>
+    <div class="panel-body" *ngIf="!isDetailHidden ">
+      <app-project-detail
+          (onTitleChanged)="onDetailTitleChanged($event)"
+          (onError) = "OnErrorMessage($event)"
+          (onSuccess) = "OnSuccessMessage($event)"
+          (onProjectChanged) = "OnProjectChanged($event)">
+      </app-project-detail>
     </div>
   </div>
 
   <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading"><span class="lead">{{listTitle}} </span></div>
+    <div class="panel-heading">
+      <span class="lead">{{listTitle}} </span>
+    </div>
     <div class="panel-body">
       <div class="table-responsive">
-        <app-project-list (onTitleChanged)="onListTitleChanged($event)"> </app-project-list>
+        <app-project-list
+          (onTitleChanged)="onListTitleChanged($event)"
+          (onEditClicked) = "OnEditClicked($event)"
+          (onError) = "OnErrorMessage($event)"
+          (onSuccess) = "OnSuccessMessage($event)">
+        </app-project-list>
       </div>
     </div>
   </div>
+
 </div>
 

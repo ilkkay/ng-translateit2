@@ -3,7 +3,7 @@
   project-list works!
 </p>
 -->
-<button (click)="changeTitle()">Click</button>
+<button (click)="changeTitle('My new list title')">Click</button>
 
 <table class="table table-hover">
   <thead>
@@ -26,8 +26,8 @@
       <td>{{prj.sourceLocale}}</td>
       <td>0</td>
       <div class="form-actions floatRight">
-        <td><button [routerLink]="['/projects', prj.id]">Edit</button></td>
-        <td><button [routerLink]="['/projects', prj.id]">Next</button></td>
+        <td><button (click) = "updateBrowserPath(prj)">Edit</button></td>
+        <td><button >Next</button></td>
       </div>
     </tr>
   </tbody>
