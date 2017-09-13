@@ -12,7 +12,7 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsRoutingModule } from './projects-routing.module';
 
 import { ProjectService } from './shared/project.service';
-// import { AppconfigService } from '../shared/appconfig.service';
+import { AppconfigService } from '../shared/appconfig.service';
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { ProjectService } from './shared/project.service';
     ProjectListComponent],
   providers: [
     ProjectService,
-    // AppconfigService
+    AppconfigService
   ],
   declarations: [
     ProjectDetailComponent,

@@ -7,6 +7,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { Project } from '../shared/project';
 import { ProjectService } from '../shared/project.service';
+import { AppconfigService } from '../../shared/appconfig.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -16,37 +17,37 @@ import { ProjectService } from '../shared/project.service';
 export class ProjectDetailComponent implements OnInit {
 
   @Output() onTitleChanged = new EventEmitter<string>();
+  @Output() onError = new EventEmitter<string>();
+  @Output() onSuccess = new EventEmitter<string>();
+  @Output() onProjectChanged = new EventEmitter<any>();
 
   personId: number;
   project: Project = new Project();
-  successMessage = '';
-  errorMessage = '';
+  types = [];
+  formats = [];
+  detailUrl: string;
 
   // http://www.concretepage.com/angular-2/angular-2-formgroup-example
   projectForm: FormGroup;
   nameControl = new FormControl();
 
-  // https://stackoverflow.com/questions/40979640/setting-selected-option-of-select-control-in-an-angular-2-model-driven-form
-  types = [
-    'ISO8859_1', 'UTF_8'
-  ];
-
-  formats = [
-    'PROPERTIES', 'XLIFF'
-  ];
-
   constructor(
-    private projectsService: ProjectService, // TODO:
+    private projectService: ProjectService,
+    private appConfig: AppconfigService,
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
     this.personId = 1;
     this.registerFormControls();
+    this.detailUrl = this.appConfig.getDetailUrl();
   }
 
   ngOnInit(): void {
-    console.log('Entering ProjectsComponent.ngOnInit(): ');
+    this.loggingMsg('Entering ProjectsComponent.ngOnInit(): ');
+
+    this.types = this.appConfig.getTypes();
+    this.formats = this.appConfig.getFormats();
 
     this.getProjectByRouteId();
   }
@@ -62,12 +63,9 @@ export class ProjectDetailComponent implements OnInit {
       type: [''],
     });
 
+    // TODO: remove this
     this.nameControl.valueChanges.subscribe(value => {
       if (value.trim().length === 0) {
-        this.errorMessage = 'Name is missing';
-        this.nameControl.setErrors({
-          name: this.errorMessage
-        });
       }
     });
   }
@@ -75,25 +73,22 @@ export class ProjectDetailComponent implements OnInit {
   getProjectByRouteId(): any {
     this.route.params.subscribe(params => {
       const routeId = +params['id'];
+      const viewState = params['state'];
       if (!isNaN(routeId) && (routeId !== 0)) {
-        return this.projectsService.getProject(routeId)
+        return this.projectService.getProject(routeId)
           .then(project => {
-            console.log('Entering getProjectByRouteId() with: ' + routeId);
-            console.log('Got a project:' + JSON.stringify(project));
+            this.loggingMsg('Entering getProjectByRouteId() with: ' + routeId);
+            this.loggingMsg('Got a project:' + JSON.stringify(project));
 
             this.project = project;
-            this.refreshView();
+            this.updateDetailView();
           })
           .catch(error => {
-            this.errorMessage = this.getErrorMessages(error);
+            this.setErrorMessage(error);
             this.setDefaultProject();
-            this.refreshView();
-            // this.getProjects(); TODO:
           });
       } else {
         this.setDefaultProject();
-        this.refreshView();
-        // this.getProjects(); TODO:
       };
     })
   }
@@ -108,20 +103,22 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   delete(): void {
-    this.projectsService
+    this.projectService
       .delete(this.project.id)
       .then(() => {
         this.loggingMsg('Deleted project: ' + this.project.name);
         this.setDefaultProject();
-        this.refreshView();
+        this.updateDetailView();
+        this.updateProjectList(this.project, true);
+
       }).catch(error => {
-        this.errorMessage = this.getErrorMessages(error);
+        this.setErrorMessage(error);
       });
   }
 
   save(): void {
     this.project = <Project>this.projectForm.value;
-    console.log('Saving project: ' + JSON.stringify(this.project));
+    this.loggingMsg('Saving project: ' + JSON.stringify(this.project));
 
     if (this.project.id === 0) {
       this.create();
@@ -131,67 +128,64 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   update(): void {
-    this.projectsService.update(this.project)
+    this.projectService.update(this.project)
       .then(project => {
         this.loggingMsg('Updated project: ' + project.name);
         this.project = project;
-        this.refreshView();
+        this.updateDetailView();
+        this.updateProjectList(this.project, false);
       }).catch(error => {
-        this.errorMessage = this.getErrorMessages(error);
+        this.setErrorMessage(error);
       });
   }
 
   create(): void {
-    // prestine????
-
-    this.projectsService.create(this.project)
+    this.projectService.create(this.project)
       .then(project => {
         this.loggingMsg('Created project: ' + JSON.stringify(project.name));
         this.project = project;
-        this.refreshView();
+        this.updateDetailView();
+        this.updateProjectList(this.project, false);
       }).catch(error => {
-        this.errorMessage = this.getErrorMessages(error);
+        this.setErrorMessage(error);
       });
   }
 
-  refreshView(): void {
+  private updateDetailView(): void {
     this.projectForm.setValue(this.project);
-    // this.getProjects(); TODO:
     this.updateBrowserPath(this.project);
-    this.errorMessage = '';
+    this.onError.emit('');
+    this.onSuccess.emit('');
   }
 
-  updateBrowserPath(project: Project): void {
-    const link = ['/projects', project.id];
-    // const link = ['/projects'];
+  private updateBrowserPath(project: Project): void {
+    let link: any;
+    if (project.id !== 0) {
+      link = [this.detailUrl, { state: 'edit', id: project.id} ];
+    } else {
+      link = [this.detailUrl, { state: 'list' } ];
+    }
     this.router.navigate(link);
   }
-
-  edit(project: Project): void {
-    this.project = Object.assign({}, (project));
-  }
-
-  editProject(): void { }
 
   private loggingMsg(msg: string): void {
     console.log(msg);
   };
 
-  private getErrorMessages(error: any): string {
-    const obj = JSON.parse(error.text());
-    const errorCode = obj['errorCode'];
-    const errorMessage = obj['errorMessage'];
-    const localizedErrorMessage = obj['localizedErrorMessage'];
+  private changeTitle(event: any): void {
+    this.onTitleChanged.emit(event);
+  }
 
-    let msg = 'Error Code:' + errorCode + ' ';
-    msg = msg + 'Message: ' + errorMessage[0] + ' ';
-    msg = msg + 'Localized Message:' + localizedErrorMessage + ' ';
+  private updateProjectList(project: Project, hideDetails: boolean): void {
+    this.onProjectChanged.emit({ id: project.id, isDetailHidden: hideDetails} );
+  }
 
-    return msg;
-  };
+  private setSuccessMessage(msg: string, project: Project): void {
+    this.onSuccess.emit(msg);
+  }
 
-  changeTitle(): void {
-    this.onTitleChanged.emit('New title'); }
+  private setErrorMessage(error: any): void {
+    this.onError.emit(error);
+  }
+
 }
-
-

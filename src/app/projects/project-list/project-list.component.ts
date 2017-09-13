@@ -7,6 +7,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { Project } from '../shared/project';
 import { ProjectService } from '../shared/project.service';
+import { AppconfigService } from '../../shared/appconfig.service';
 
 @Component({
   selector: 'app-project-list',
@@ -16,17 +17,20 @@ import { ProjectService } from '../shared/project.service';
 export class ProjectListComponent implements OnInit {
 
   @Output() onTitleChanged = new EventEmitter<string>();
+  @Output() onEditClicked = new EventEmitter<string>();
+  @Output() onError = new EventEmitter<string>();
+  @Output() onSuccess = new EventEmitter<string>();
 
   projects: Project[] = [];
-  successMessage = '';
-  errorMessage = '';
+  detailUrl: string;
 
   constructor(
-    private projectsService: ProjectService, // TODO:
-    private route: ActivatedRoute,
+    private projectService: ProjectService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private appConfig: AppconfigService,
   ) {
+    this.detailUrl = this.appConfig.getDetailUrl();
   }
 
   ngOnInit() {
@@ -35,32 +39,43 @@ export class ProjectListComponent implements OnInit {
 
   getProjects(): Promise<any> {
     console.log('Entering getProjects(): ');
-    return this.projectsService.getProjects().then(
+    return this.projectService.getProjects().then(
       projects => {
         console.log('Project count: ' + projects.length);
 
+        if (projects.length === 0) { this.getDetailPage(); }
         this.projects = projects;
-        this.errorMessage = '';
+        this.setErrorMessage('');
       }).catch(error => {
-        this.errorMessage = this.getErrorMessages(error);
+        this.setErrorMessage(error);
       });
   }
 
-  private getErrorMessages(error: any): string {
-    const obj = JSON.parse(error.text());
-    const errorCode = obj['errorCode'];
-    const errorMessage = obj['errorMessage'];
-    const localizedErrorMessage = obj['localizedErrorMessage'];
+  private updateBrowserPath(project: Project): void {
+    this.getDetailPage();
 
-    let msg = 'Error Code:' + errorCode + ' ';
-    msg = msg + 'Message: ' + errorMessage[0] + ' ';
-    msg = msg + 'Localized Message:' + localizedErrorMessage + ' ';
-
-    return msg;
-  };
-
-  changeTitle(): void {
-    this.onTitleChanged.emit('New title');
+    let link: any;
+    if (project.id !== 0) {
+      link = [this.detailUrl, { state: 'edit', id: project.id } ];
+    } else {
+      link = [this.detailUrl, { state: 'list' } ];
+    }
+    this.router.navigate(link);
   }
 
+  private getDetailPage(): void {
+    this.onEditClicked.emit('');
+  }
+
+  private changeTitle(event: any): void {
+    this.onTitleChanged.emit(event);
+  }
+
+  private setSuccessMessage(msg: string): void {
+    this.onSuccess.emit(msg);
+  }
+
+  private setErrorMessage(error: any): void {
+    this.onError.emit(error);
+  }
 }

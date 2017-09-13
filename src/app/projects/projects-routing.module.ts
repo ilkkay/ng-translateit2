@@ -10,12 +10,14 @@ import { ProjectsComponent } from './projects.component';
 
 const routes: Routes = [
   { path: 'projectdetail',   component: ProjectDetailComponent },
+  { path: 'projectdetail/:id',   component: ProjectDetailComponent },
   { path: 'projectsearch',   component: ProjectSearchComponent },
   { path: 'projectlist',   component: ProjectListComponent },
   { path: 'projectsmain',   component: ProjectsmainComponent },
   { path: 'projectsmain/:id', component: ProjectsmainComponent },
   { path: 'projects',   component: ProjectsComponent },
   { path: 'projects/:id', component: ProjectsComponent },
+  { path: 'search', component: ProjectsComponent },
 ];
 
 @NgModule({

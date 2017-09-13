@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 
 import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { ErrorMessageComponent } from '../shared/error-message/error-message.component';
 
 // https://stackoverflow.com/questions/36527605/how-to-style-child-components-from-parent-components-css-file
 @Component({
@@ -12,11 +14,12 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
 
   @ViewChild(ProjectListComponent)
   private projectListComponent: ProjectListComponent;
+  @ViewChild(ErrorMessageComponent)
+  private errorMessageComponent: ErrorMessageComponent;
 
-  listTitle: string;
-  detailTitle: String;
-  successMessage = '';
-  errorMessage = '';
+  private isDetailHidden = true;
+  private listTitle: string;
+  private detailTitle: string;
 
   constructor() { }
 
@@ -31,13 +34,26 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
 
   onDetailTitleChanged(event): void {
     this.detailTitle = event;
-    this.errorMessage = event;
-    this.projectListComponent.getProjects();
   }
 
   onListTitleChanged(event): void {
     this.listTitle = event;
-    this.successMessage = event;
+  }
+
+  OnEditClicked(event): void {
+    this.isDetailHidden = false;
+  }
+
+  OnErrorMessage(event): void {
+    this.errorMessageComponent.setErrorMessage(event);
+  }
+
+  OnSuccessMessage(event): void {
+    this.errorMessageComponent.setSuccessMessage(event);
+  }
+
+  OnProjectChanged(event: any): void {
+    this.isDetailHidden = event.isDetailHidden;
     this.projectListComponent.getProjects();
   }
 }
