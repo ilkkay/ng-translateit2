@@ -12,35 +12,42 @@
 
   <app-error-message> </app-error-message>
 
-  <div class="panel panel-default">
+  <div class="panel panel-default" [ngSwitch]="currentView">
     <div class="panel-heading" *ngIf="!isDetailHidden ">
       <span class="lead">{{detailTitle}} </span>
     </div>
     <div class="panel-body" *ngIf="!isDetailHidden ">
-      <app-project-detail
+
+      <div *ngSwitchCase="'Project'">
+        <app-project-detail
           (onTitleChanged)="onDetailTitleChanged($event)"
-          (onError) = "OnErrorMessage($event)"
-          (onSuccess) = "OnSuccessMessage($event)"
-          (onProjectChanged) = "OnProjectChanged($event)">
-      </app-project-detail>
+          (onProjectChanged)="OnProjectChanged($event)"
+          (onError)="OnErrorMessage($event)"
+          (onSuccess)="OnSuccessMessage($event)">
+        </app-project-detail>
+      </div>
+
     </div>
   </div>
 
-  <div class="panel panel-default">
+  <div class="panel panel-default" [ngSwitch]="currentView">
     <div class="panel-heading">
       <span class="lead">{{listTitle}} </span>
     </div>
     <div class="panel-body">
       <div class="table-responsive">
-        <app-project-list
-          (onTitleChanged)="onListTitleChanged($event)"
-          (onEditClicked) = "OnEditClicked($event)"
-          (onError) = "OnErrorMessage($event)"
-          (onSuccess) = "OnSuccessMessage($event)">
-        </app-project-list>
+
+        <div *ngSwitchCase="'Project'">
+          <app-project-list
+            (onTitleChanged)="onListTitleChanged($event)"
+            (onEditClicked)="OnEditClicked($event)"
+            (onError)="OnErrorMessage($event)"
+            (onSuccess)="OnSuccessMessage($event)">
+          </app-project-list>
+        </div>
+
       </div>
     </div>
   </div>
 
 </div>
-
