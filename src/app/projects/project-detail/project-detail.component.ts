@@ -3,6 +3,11 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { ViewContainerRef } from '@angular/core';
+import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
+
+import { ConfirmDeleteComponent } from '../../material/mymaterial.module';
+
 import 'rxjs/add/operator/switchMap';
 
 import { Project } from '../shared/project';
@@ -27,6 +32,12 @@ export class ProjectDetailComponent implements OnInit {
   formats = [];
   detailUrl: string;
 
+  dialogsMap = {
+    'delete': ConfirmDeleteComponent
+  }
+
+  dialogRef: MdDialogRef<any>;
+
   // http://www.concretepage.com/angular-2/angular-2-formgroup-example
   projectForm: FormGroup;
   nameControl = new FormControl();
@@ -36,7 +47,8 @@ export class ProjectDetailComponent implements OnInit {
     private appConfig: AppconfigService,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public dialog: MdDialog
   ) {
     this.personId = 1;
     this.registerFormControls();
@@ -102,7 +114,18 @@ export class ProjectDetailComponent implements OnInit {
     this.projectForm.reset(this.project);
   }
 
-  delete(): void {
+  confirmDelete(project: Project): void {
+    this.dialogRef = this.dialog.open(this.dialogsMap['delete']);
+    this.dialogRef.componentInstance.title = 'Delete project';
+    this.dialogRef.componentInstance.content = 'Please confirm. Deletion cannot be undone.';
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.delete(); }
+      this.dialogRef = null;
+    });
+  }
+
+  private delete(): void {
     this.projectService
       .delete(this.project.id)
       .then(() => {

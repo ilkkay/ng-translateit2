@@ -1,27 +1,14 @@
-
-
 <ul>
-<li> <a routerLink="/projectsmain">All</a>
+<li> <a routerLink="/projectsmain">Whole Project</a>
 <li> <a routerLink="/projectdetail">Detail</a>
-<li> <a routerLink="/projectsearch">Search</a>
-<li> <a routerLink="/projectlist">List</a>
-<li> <a [routerLink]="['/projects', { state: 'edit', id: 1 }]">Bookmark</a>
-<li> <a routerLink="/projects">Container</a>
+<a routerLink="/projectsearch">Search</a>
+<a routerLink="/projectlist">List</a>
+<a [routerLink]="['/projects', { state: 'edit', id: 1 }]">Bookmark</a>
+<a routerLink="/projects">Container</a>
+<li> <a routerLink="/dialog">Dialog</a>
 </ul>
 
 <router-outlet> </router-outlet>
-
-<!--
-<app-projects>
-    <hr>
-    <app-project-detail> </app-project-detail>
-    <hr>
-    <app-project-search> </app-project-search>
-    <hr>
-    <app-project-list> </app-project-list>
-</app-projects>
--->
-
 
 
 <!--The content below is only a placeholder and can be replaced.-->

@@ -35,11 +35,22 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.detailTitle = 'Detail title';
     this.listTitle = 'List title';
-    this.currentView = this.viewsMap[this.location.path()];
+    this.setCurrentView(this.location);
   }
 
   ngAfterViewInit() {
     setTimeout(0);
+  }
+
+  setCurrentView(location: Location): void {
+    let path: any;
+    const pathParts = this.location.path().split(';');
+    if (pathParts.length > 1) {
+      path = pathParts[0];
+    } else {
+      path = this.location.path();
+    }
+    this.currentView = this.viewsMap[path];
   }
 
   onDetailTitleChanged(event): void {

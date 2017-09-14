@@ -8,6 +8,8 @@ import { ProjectsmainComponent } from './projectsmain/projectsmain.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsComponent } from './projects.component';
 
+import { MyTestDialogComponent } from '../material/my-test-dialog.component';
+
 const routes: Routes = [
   { path: 'projectdetail',   component: ProjectDetailComponent },
   { path: 'projectdetail/:id',   component: ProjectDetailComponent },
@@ -18,6 +20,7 @@ const routes: Routes = [
   { path: 'projects',   component: ProjectsComponent },
   // { path: 'projects/:id', component: ProjectsComponent },
   { path: 'search', component: ProjectsComponent },
+  { path: 'dialog', component: MyTestDialogComponent },
 ];
 
 @NgModule({
