@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
@@ -12,6 +14,12 @@ import { ErrorMessageComponent } from '../shared/error-message/error-message.com
 })
 export class ProjectsComponent implements OnInit, AfterViewInit {
 
+  viewsMap = {
+    '/projects': 'Project',
+    '/works': 'Work',
+    '/units': 'Unit'
+  }
+
   @ViewChild(ProjectListComponent)
   private projectListComponent: ProjectListComponent;
   @ViewChild(ErrorMessageComponent)
@@ -21,11 +29,14 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
   private listTitle: string;
   private detailTitle: string;
 
-  constructor() { }
+  private currentView: any;
+
+  constructor(private route: ActivatedRoute, private location: Location) { }
 
   ngOnInit() {
     this.detailTitle = 'Detail title';
     this.listTitle = 'List title';
+    this.currentView = this.viewsMap[this.location.path()];
   }
 
   ngAfterViewInit() {
