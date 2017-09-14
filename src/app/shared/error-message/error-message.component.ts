@@ -35,9 +35,13 @@ export class ErrorMessageComponent implements OnInit {
     const errorMessage = obj['errorMessage'];
     const localizedErrorMessage = obj['localizedErrorMessage'];
 
-    let msg = 'Error Code:' + errorCode + ' ';
-    msg = msg + 'Message: ' + errorMessage[0] + ' ';
-    msg = msg + 'Localized Message:' + localizedErrorMessage + ' ';
+    let msg: string;
+    if ((!(isUndefined(errorCode))) &&
+      (!(isUndefined(errorMessage))) && (!(isUndefined(localizedErrorMessage)))) {
+      msg = 'Error Code:' + errorCode + ' ';
+      msg = msg + 'Message: ' + errorMessage[0] + ' ';
+      msg = msg + 'Localized Message:' + localizedErrorMessage + ' ';
+    } else { msg = 'Undefined error' }
 
     return (msg);
   };

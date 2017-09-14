@@ -27,6 +27,7 @@ export class ProjectListComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private router: Router,
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private appConfig: AppconfigService,
   ) {
@@ -35,6 +36,9 @@ export class ProjectListComponent implements OnInit {
 
   ngOnInit() {
     this.getProjects();
+
+    // is this a direct link to an entity
+    this.getDetailViewByRouteId();
   }
 
   getProjects(): Promise<any> {
@@ -43,29 +47,41 @@ export class ProjectListComponent implements OnInit {
       projects => {
         console.log('Project count: ' + projects.length);
 
-        if (projects.length === 0) { this.getDetailPage(); }
-        this.projects = projects;
+        if (projects.length === 0) {
+          this.onEditClicked.emit('');
+        } else {
+          this.projects = projects; }
         this.setErrorMessage('');
       }).catch(error => {
         this.setErrorMessage(error);
       });
   }
 
-  private updateBrowserPath(project: Project): void {
-    this.getDetailPage();
+  getDetailViewByRouteId(): void {
+    this.route.params.subscribe(params => {
+      const viewState = params['state'];
+      const routeId = +params['id'];
+      if (!isNaN(routeId) && (routeId !== 0)) {
+        this.editProject(routeId);
+      }
+    })
+  }
+
+  private editProject(projectId: number): void {
+    this.onEditClicked.emit('');
 
     let link: any;
-    if (project.id !== 0) {
-      link = [this.detailUrl, { state: 'edit', id: project.id } ];
+    if (projectId !== 0) {
+      link = [this.detailUrl, { state: 'edit', id: projectId }];
     } else {
-      link = [this.detailUrl, { state: 'list' } ];
+      link = [this.detailUrl, { state: 'list' }];
     }
     this.router.navigate(link);
   }
 
-  private getDetailPage(): void {
-    this.onEditClicked.emit('');
-  }
+  // private getDetailPage(): void {
+  //  this.onEditClicked.emit('');
+  // }
 
   private changeTitle(event: any): void {
     this.onTitleChanged.emit(event);
