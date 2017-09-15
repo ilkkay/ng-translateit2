@@ -14,7 +14,7 @@ import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectService } from './shared/project.service';
 import { AppconfigService } from '../shared/appconfig.service';
 
-import { MyTestDialogComponent } from '../material/my-test-dialog.component';
+// import { MyTestDialogComponent } from '../material/my-test-dialog.component';
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { MyTestDialogComponent } from '../material/my-test-dialog.component';
     ProjectDetailComponent,
     ProjectSearchComponent,
     ProjectListComponent,
-    MyTestDialogComponent],
+    ],
   providers: [
     ProjectService,
     AppconfigService
@@ -38,6 +38,6 @@ import { MyTestDialogComponent } from '../material/my-test-dialog.component';
     ProjectSearchComponent,
     ProjectsmainComponent,
     ProjectListComponent,
-    MyTestDialogComponent]
+    ]
 })
 export class ProjectsModule { }

@@ -1,11 +1,19 @@
 <ul>
-<li> <a routerLink="/projectsmain">Whole Project</a>
-<li> <a routerLink="/projectdetail">Detail</a>
+<li> <a routerLink="/projectsmain">Project</a>
+<a routerLink="/projectdetail">Detail</a>
 <a routerLink="/projectsearch">Search</a>
 <a routerLink="/projectlist">List</a>
 <a [routerLink]="['/projects', { state: 'edit', id: 1 }]">Bookmark</a>
 <a routerLink="/projects">Container</a>
-<li> <a routerLink="/dialog">Dialog</a>
+
+<li> <a routerLink="/workscomponent">Works</a>
+<a routerLink="/worksdetail">Detail</a>
+<a routerLink="/workslist">List</a>
+<a [routerLink]="['/works', { state: 'edit', id: 1 }]">Bookmark</a>
+<a routerLink="/works">Container</a>
+
+<li> <a routerLink="/test-dialog">Dialog</a>
+
 </ul>
 
 <router-outlet> </router-outlet>

@@ -33,9 +33,13 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
   constructor(private location: Location) { }
 
   ngOnInit() {
+
+    this.setCurrentView(this.location);
     this.detailTitle = 'Detail title';
     this.listTitle = 'List title';
-    this.setCurrentView(this.location);
+
+    if (this.currentView === 'Work') {
+      this.isDetailHidden = false; }
   }
 
   ngAfterViewInit() {

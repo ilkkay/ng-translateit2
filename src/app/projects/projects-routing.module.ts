@@ -18,9 +18,7 @@ const routes: Routes = [
   { path: 'projectsmain',   component: ProjectsmainComponent },
   { path: 'projectsmain/:id', component: ProjectsmainComponent },
   { path: 'projects',   component: ProjectsComponent },
-  // { path: 'projects/:id', component: ProjectsComponent },
   { path: 'search', component: ProjectsComponent },
-  { path: 'dialog', component: MyTestDialogComponent },
 ];
 
 @NgModule({

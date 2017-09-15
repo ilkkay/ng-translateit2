@@ -6,7 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdDialogModule, MdButtonModule } from '@angular/material';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
-// import { MyTestDialogComponent } from './my-test-dialog.component';
+import { MyTestDialogComponent } from './my-test-dialog.component';
+import { MyMaterialRoutingModule } from './my-material-routing.module';
+
 
 @Component({
   selector: 'app-confirm-delete',
@@ -28,14 +30,15 @@ export class ConfirmDeleteComponent {
 
 @NgModule({
   imports: [
+    CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
-    MdDialogModule, MdButtonModule
+    MdDialogModule, MdButtonModule,
+    MyMaterialRoutingModule
   ],
-  exports: [MdDialogModule, MdButtonModule, ConfirmDeleteComponent,
-    /* MyTestDialogComponent */],
-  declarations: [ConfirmDeleteComponent,
-    /* MyTestDialogComponent */],
+  exports: [MdDialogModule, MdButtonModule,
+    ConfirmDeleteComponent, MyTestDialogComponent ],
+  declarations: [ConfirmDeleteComponent, MyTestDialogComponent ],
   entryComponents: [ConfirmDeleteComponent],
 })
 export class MyMaterialModule { }

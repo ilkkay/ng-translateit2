@@ -27,6 +27,14 @@
         </app-project-detail>
       </div>
 
+      <div *ngSwitchCase="'Work'">
+        <app-work-detail
+          (onTitleChanged)="onDetailTitleChanged($event)"
+          (onError)="OnErrorMessage($event)"
+          (onSuccess)="OnSuccessMessage($event)">
+        </app-work-detail>
+      </div>
+
     </div>
   </div>
 
@@ -44,6 +52,14 @@
             (onError)="OnErrorMessage($event)"
             (onSuccess)="OnSuccessMessage($event)">
           </app-project-list>
+        </div>
+
+        <div *ngSwitchCase="'Work'">
+          <app-work-list
+            (onTitleChanged)="onListTitleChanged($event)"
+            (onError)="OnErrorMessage($event)"
+            (onSuccess)="OnSuccessMessage($event)">
+          </app-work-list>
         </div>
 
       </div>
