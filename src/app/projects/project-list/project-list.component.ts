@@ -26,10 +26,10 @@ export class ProjectListComponent implements OnInit {
 
   constructor(
     private projectService: ProjectService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
     private appConfig: AppconfigService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private formBuilder: FormBuilder,
   ) {
     this.detailUrl = this.appConfig.getDetailUrl();
   }

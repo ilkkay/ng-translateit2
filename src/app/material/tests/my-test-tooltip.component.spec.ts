@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MyTestTooltipComponent } from './my-test-tooltip.component';
 
-describe('MyTestTooltipComponent', () => {
+fdescribe('MyTestTooltipComponent', () => {
   let component: MyTestTooltipComponent;
   let fixture: ComponentFixture<MyTestTooltipComponent>;
 
