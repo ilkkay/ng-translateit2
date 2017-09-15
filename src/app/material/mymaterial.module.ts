@@ -6,9 +6,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdDialogModule, MdButtonModule, MdTooltipModule } from '@angular/material';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
-import { MyTestDialogComponent } from './my-test-dialog.component';
 import { MyMaterialRoutingModule } from './my-material-routing.module';
 
+import { MyTestDialogComponent } from './tests/my-test-dialog.component';
+import { MyTestTooltipComponent} from './tests/my-test-tooltip.component';
 
 @Component({
   selector: 'app-confirm-delete',
@@ -21,32 +22,27 @@ import { MyMaterialRoutingModule } from './my-material-routing.module';
 </md-dialog-actions>
   `
 })
-
 export class ConfirmDeleteComponent {
   title: string;
   content: string;
   constructor(public dialogRef: MdDialogRef<any>) { }
 }
 
-@Component({
-  selector: 'app-project-tooltip',
-  template: `
-<span mdTooltip="Tooltip!">I have a tooltip</span>
-  `
-})
-export class MyTestTooltipComponent {}
-
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
-    MdDialogModule, MdButtonModule,
+    MdDialogModule, MdButtonModule, MdTooltipModule,
     MyMaterialRoutingModule
   ],
-  exports: [MdDialogModule, MdButtonModule,
-    ConfirmDeleteComponent, MyTestDialogComponent ],
-  declarations: [ConfirmDeleteComponent, MyTestDialogComponent ],
+  exports: [MdDialogModule, MdButtonModule, MdTooltipModule,
+    ConfirmDeleteComponent,
+    MyTestDialogComponent,  MyTestTooltipComponent  ],
+
+  declarations: [ConfirmDeleteComponent,
+    MyTestDialogComponent,  MyTestTooltipComponent  ],
+
   entryComponents: [ConfirmDeleteComponent],
 })
 export class MyMaterialModule { }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
-import { ConfirmDeleteComponent } from './mymaterial.module';
+import { ConfirmDeleteComponent } from '../mymaterial.module';
 
 // https://plnkr.co/edit/n185tQbEHg1xGlNCAdxQ?p=preview
 // https://embed.plnkr.co/a9RBS1/
