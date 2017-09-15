@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdDialogModule, MdButtonModule } from '@angular/material';
+import { MdDialogModule, MdButtonModule, MdTooltipModule } from '@angular/material';
 import { MdDialog, MdDialogConfig, MdDialogRef } from '@angular/material';
 
 // import { MyTestDialogComponent } from './my-test-dialog.component';
@@ -26,13 +26,22 @@ export class ConfirmDeleteComponent {
   constructor(public dialogRef: MdDialogRef<any>) { }
 }
 
+@Component({
+  selector: 'app-project-tooltip',
+  template: `
+<span mdTooltip="Tooltip!">I have a tooltip</span>
+  `
+})
+export class MyTestTooltipComponent {}
+
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MdDialogModule, MdButtonModule
+    MdDialogModule, MdButtonModule, MdTooltipModule,
   ],
-  exports: [MdDialogModule, MdButtonModule, ConfirmDeleteComponent,
+  exports: [MdDialogModule, MdButtonModule, MdTooltipModule,
+    ConfirmDeleteComponent,
     /* MyTestDialogComponent */],
   declarations: [ConfirmDeleteComponent,
     /* MyTestDialogComponent */],

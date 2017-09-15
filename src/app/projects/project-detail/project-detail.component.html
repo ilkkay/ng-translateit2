@@ -11,14 +11,20 @@
     <form [formGroup]="projectForm"  class="form-horizontal">
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="uname">Application name</label>
+          <label class="col-md-2 control-lable" for="uname">
+<span mdTooltip="Tooltip!">
+            Application name
+</span>
+          </label>
         <div class="col-md-7">
           <input type="text" formControlName="name" placeholder="Enter project name">
+<!--
           <p *ngIf="(projectForm.controls.name.hasError('minlength')
                               || projectForm.controls.name.hasError('maxlength'))
                               && !projectForm.controls.name.hasError('required')">
             Name should contain between 6 to 20 characters
           </p>
+-->
         </div>
       </div>
     </div>
