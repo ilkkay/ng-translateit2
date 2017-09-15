@@ -79,9 +79,10 @@ export class ProjectListComponent implements OnInit {
     this.router.navigate(link);
   }
 
-  // private getDetailPage(): void {
-  //  this.onEditClicked.emit('');
-  // }
+  private goToWorks(projectId: number): void {
+    const link = ['/works', { state: 'edit', id: projectId }];
+    this.router.navigate(link);
+  }
 
   private changeTitle(event: any): void {
     this.onTitleChanged.emit(event);

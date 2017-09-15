@@ -12,9 +12,8 @@
     <div class="row">
       <div class="form-group col-md-12">
           <label class="col-md-2 control-lable" for="uname">
-<span mdTooltip="Tooltip!">
-            Application name
-</span>
+          <span mdTooltip="Application name has between 6 to 20 characters">
+            Application name </span>
           </label>
         <div class="col-md-7">
           <input type="text" formControlName="name" placeholder="Enter project name">
@@ -31,13 +30,18 @@
 
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="sourcelocale">Source language</label>
+        <label class="col-md-2 control-lable" for="sourcelocale">
+          <span mdTooltip="Language has 5 characters like en_EN">
+            Source language</span>
+        </label>
         <div class="col-md-7">
           <input type="text" formControlName="sourceLocale" placeholder="en_EN, fi_FI etc.">
+<!--
           <p *ngIf="projectForm.controls.sourceLocale.hasError('pattern')
                               && !projectForm.controls.sourceLocale.hasError('required')">
             Language code should have 5 characters like en_EN
           </p>
+-->
         </div>
       </div>
     </div>

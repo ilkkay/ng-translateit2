@@ -8,7 +8,7 @@ import { ProjectsmainComponent } from './projectsmain/projectsmain.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsComponent } from './projects.component';
 
-import { MyTestDialogComponent } from '../material/my-test-dialog.component';
+// import { MyTestDialogComponent } from '../material/my-test-dialog.component';
 
 const routes: Routes = [
   { path: 'projectdetail',   component: ProjectDetailComponent },

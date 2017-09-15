@@ -14,14 +14,15 @@ import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectService } from './shared/project.service';
 import { AppconfigService } from '../shared/appconfig.service';
 
-// import { MyTestDialogComponent } from '../material/my-test-dialog.component';
+import { MyMaterialModule } from '../material/mymaterial.module';
 
 @NgModule({
   imports: [
+    CommonModule,
     BrowserModule,
     ReactiveFormsModule, FormsModule,
     HttpModule,
-    CommonModule,
+    MyMaterialModule,
     ProjectsRoutingModule
   ],
   exports: [
