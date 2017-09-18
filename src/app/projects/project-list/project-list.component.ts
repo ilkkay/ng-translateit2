@@ -16,8 +16,8 @@ import { AppconfigService } from '../../shared/appconfig.service';
 })
 export class ProjectListComponent implements OnInit {
 
-  @Output() onTitleChanged = new EventEmitter<string>();
-  @Output() onEditClicked = new EventEmitter<string>();
+  @Output() onTitleChange = new EventEmitter<string>();
+  @Output() onEditClick = new EventEmitter<string>();
   @Output() onError = new EventEmitter<string>();
   @Output() onSuccess = new EventEmitter<string>();
 
@@ -48,7 +48,7 @@ export class ProjectListComponent implements OnInit {
         console.log('Project count: ' + projects.length);
 
         if (projects.length === 0) {
-          this.onEditClicked.emit('');
+          this.onEditClick.emit('');
         } else {
           this.projects = projects; }
         this.setErrorMessage('');
@@ -68,7 +68,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   private editProject(projectId: number): void {
-    this.onEditClicked.emit('');
+    this.onEditClick.emit('');
 
     let link: any;
     if (projectId !== 0) {
@@ -85,7 +85,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   private changeTitle(event: any): void {
-    this.onTitleChanged.emit(event);
+    this.onTitleChange.emit(event);
   }
 
   private setSuccessMessage(msg: string): void {

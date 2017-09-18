@@ -21,10 +21,10 @@ import { AppconfigService } from '../../shared/appconfig.service';
 })
 export class ProjectDetailComponent implements OnInit {
 
-  @Output() onTitleChanged = new EventEmitter<string>();
+  @Output() onTitleChange = new EventEmitter<string>();
   @Output() onError = new EventEmitter<string>();
   @Output() onSuccess = new EventEmitter<string>();
-  @Output() onProjectChanged = new EventEmitter<any>();
+  @Output() onProjectChange = new EventEmitter<any>();
 
   personId: number;
   project: Project = new Project();
@@ -196,11 +196,11 @@ export class ProjectDetailComponent implements OnInit {
   };
 
   private changeTitle(event: any): void {
-    this.onTitleChanged.emit(event);
+    this.onTitleChange.emit(event);
   }
 
   private updateProjectList(project: Project, hideDetails: boolean): void {
-    this.onProjectChanged.emit({ id: project.id, isDetailHidden: hideDetails} );
+    this.onProjectChange.emit({ id: project.id, isDetailHidden: hideDetails} );
   }
 
   private setSuccessMessage(msg: string, project: Project): void {
