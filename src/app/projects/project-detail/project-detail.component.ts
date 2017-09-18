@@ -13,6 +13,7 @@ import 'rxjs/add/operator/switchMap';
 import { Project } from '../shared/project';
 import { ProjectService } from '../shared/project.service';
 import { AppconfigService } from '../../shared/appconfig.service';
+import { ErrorMessageService } from '../../shared/error-message.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -21,9 +22,9 @@ import { AppconfigService } from '../../shared/appconfig.service';
 })
 export class ProjectDetailComponent implements OnInit {
 
-  @Output() onTitleChange = new EventEmitter<string>();
-  @Output() onError = new EventEmitter<string>();
-  @Output() onSuccess = new EventEmitter<string>();
+  // @Output() onTitleChange = new EventEmitter<string>();
+  // @Output() onError = new EventEmitter<string>();
+  // @Output() onSuccess = new EventEmitter<string>();
   @Output() onProjectChange = new EventEmitter<any>();
 
   personId: number;
@@ -48,7 +49,8 @@ export class ProjectDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    public dialog: MdDialog
+    public dialog: MdDialog,
+    private messageService: ErrorMessageService
   ) {
     this.personId = 1;
     this.registerFormControls();
@@ -177,8 +179,9 @@ export class ProjectDetailComponent implements OnInit {
   private updateDetailView(): void {
     this.projectForm.setValue(this.project);
     this.updateBrowserPath(this.project);
-    this.onError.emit('');
-    this.onSuccess.emit('');
+    // this.onError.emit('');
+    // this.onSuccess.emit('');
+    // this.clearMessages();
   }
 
   private updateBrowserPath(project: Project): void {
@@ -195,8 +198,10 @@ export class ProjectDetailComponent implements OnInit {
     console.log(msg);
   };
 
+
   private changeTitle(event: any): void {
-    this.onTitleChange.emit(event);
+    // this.onTitleChange.emit(event);
+    this.messageService.sendMessage(event);
   }
 
   private updateProjectList(project: Project, hideDetails: boolean): void {
@@ -204,11 +209,13 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   private setSuccessMessage(msg: string, project: Project): void {
-    this.onSuccess.emit(msg);
+    // this.onSuccess.emit(msg);
+    this.messageService.sendSuccessMessage(msg);
   }
 
   private setErrorMessage(error: any): void {
-    this.onError.emit(error);
+    // this.onError.emit(error);
+    this.messageService.sendErrorMessage(error);
   }
 
 }

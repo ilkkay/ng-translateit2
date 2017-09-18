@@ -1,17 +1,21 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { isUndefined } from 'util';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs/Subscription';
 
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ErrorMessageComponent } from '../shared/error-message/error-message.component';
+import { ErrorMessageService } from '../shared/error-message.service';
 
 // https://stackoverflow.com/questions/36527605/how-to-style-child-components-from-parent-components-css-file
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.css']
+  styleUrls: ['./projects.component.css'],
+  providers: [],
 })
-export class ProjectsComponent implements OnInit, AfterViewInit {
+export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   viewsMap = {
     '/projects': 'Project',
@@ -30,7 +34,46 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
 
   private currentView: any;
 
-  constructor(private location: Location) { }
+    // message: any;
+    subscription: Subscription;
+
+  constructor(
+    private location: Location,
+    private messageService: ErrorMessageService ) {
+
+        this.subscription = this.messageService.getMessage().subscribe(message => {
+          // this.message = message;
+          if (isUndefined(message.text)) {
+            console.log('ErrorMessageService: message.text undefined');
+          } else {
+            this.detailTitle = message.text;
+            console.log('ErrorMessageService: ' + JSON.stringify(message.text));
+          }
+
+          if (isUndefined(message.error)) {
+            console.log('ErrorMessageService: message.error undefined');
+          } else {
+            this.errorMessageComponent.setErrorMessage(message.error);
+            console.log('ErrorMessageService: ' + JSON.stringify(message.error));
+          }
+
+          if (isUndefined(message.success)) {
+            console.log('ErrorMessageService: message.success undefined');
+          } else {
+            this.errorMessageComponent.setSuccessMessage(message.success);
+            console.log('ErrorMessageService: ' + JSON.stringify(message.success));
+          }
+      }
+    )};
+      /*
+        this.messageService.messageSource.subscribe((message: string) => {
+            this.detailTitle = message;
+        }
+        this.messageService.message.subscribe((error: any) => {
+          this.errorMessageComponent.setErrorMessage(error);
+        }
+        )};
+        */
 
   ngOnInit() {
 
@@ -40,6 +83,11 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
 
     if (this.currentView === 'Work') {
       this.isDetailHidden = false; }
+  }
+
+  ngOnDestroy() {
+      // unsubscribe to ensure no memory leaks
+      this.subscription.unsubscribe();
   }
 
   ngAfterViewInit() {

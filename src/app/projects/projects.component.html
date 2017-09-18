@@ -21,10 +21,7 @@
 
       <div *ngSwitchCase="'Project'">
         <app-project-detail
-          (onTitleChange)="onDetailTitleChanged($event)"
-          (onProjectChange)="OnProjectChanged($event)"
-          (onError)="OnErrorMessage($event)"
-          (onSuccess)="OnSuccessMessage($event)">
+          (onProjectChange)="OnProjectChanged($event)">
         </app-project-detail>
       </div>
 
