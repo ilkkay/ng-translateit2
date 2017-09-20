@@ -14,23 +14,16 @@
   <app-error-message> </app-error-message>
 
   <div class="panel panel-default" [ngSwitch]="currentView">
-    <div class="panel-heading" *ngIf="!isDetailHidden ">
+    <div class="panel-heading" *ngIf="!isDetailHidden || isProjectListEmpty">
       <span class="lead">{{detailTitle}} </span>
     </div>
-    <div class="panel-body" *ngIf="!isDetailHidden ">
+    <div class="panel-body" *ngIf="!isDetailHidden || isProjectListEmpty ">
 
       <div *ngSwitchCase="'Project'">
-        <app-project-detail
-          (onProjectChange)="OnProjectChanged($event)">
-        </app-project-detail>
+        <app-project-detail></app-project-detail>
       </div>
-
       <div *ngSwitchCase="'Work'">
-        <app-work-detail
-          (onTitleChange)="onDetailTitleChanged($event)"
-          (onError)="OnErrorMessage($event)"
-          (onSuccess)="OnSuccessMessage($event)">
-        </app-work-detail>
+        <app-work-detail></app-work-detail>
       </div>
 
     </div>
@@ -44,20 +37,11 @@
       <div class="table-responsive">
 
         <div *ngSwitchCase="'Project'">
-          <app-project-list
-            (onTitleChange)="onListTitleChanged($event)"
-            (onEditClick)="OnEditClicked($event)"
-            (onError)="OnErrorMessage($event)"
-            (onSuccess)="OnSuccessMessage($event)">
-          </app-project-list>
+          <app-project-list></app-project-list>
         </div>
 
         <div *ngSwitchCase="'Work'">
-          <app-work-list
-            (onTitleChange)="onListTitleChanged($event)"
-            (onError)="OnErrorMessage($event)"
-            (onSuccess)="OnSuccessMessage($event)">
-          </app-work-list>
+          <app-work-list></app-work-list>
         </div>
 
       </div>

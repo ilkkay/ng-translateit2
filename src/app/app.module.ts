@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ErrorMessageComponent } from './shared/error-message/error-message.component';
 import { ErrorMessageService } from './shared/error-message.service';
+import { ContainerStateService } from './shared/container-state.service';
 
 import { ProjectsModule } from './projects/projects.module';
 import { ProjectsRoutingModule } from './projects/projects-routing.module';
@@ -25,7 +26,7 @@ import { MyMaterialModule } from './material/mymaterial.module';
     ProjectsRoutingModule,
     WorksModule
   ],
-  providers: [ErrorMessageService],
+  providers: [ErrorMessageService, ContainerStateService],
   bootstrap: [AppComponent]
 })
 

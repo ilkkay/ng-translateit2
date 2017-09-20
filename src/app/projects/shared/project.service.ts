@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Subject, BehaviorSubject, Observable } from 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/if';
@@ -7,7 +7,6 @@ import 'rxjs/add/operator/toPromise';
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions } from '@angular/http';
 import { AppconfigService } from '../../shared/appconfig.service';
-
 
 import { Project } from './Project';
 // import { PROJECTS } from '../../shared/mock-projects';
@@ -27,9 +26,71 @@ export class ProjectService {
   And edit the package.json file's start script to be
   "start": "ng serve --proxy-config proxy.conf.json
   */
-  results: Project[];
+  // results: Project[];
 
-  constructor(private http: Http ) { }
+  private projectData: Subject<Project[]> = new BehaviorSubject<Project[]>([]);
+  private projectWorkMapData: Subject<any> = new BehaviorSubject<any>({});
+  private projectsObservable = this.projectData.asObservable();
+  private projectWorkMapObservable = this.projectWorkMapData.asObservable();
+
+  private observableProjects = this.getProjectsWithObservable();
+
+  private _isProjectListEmpty: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public get isProjectListEmpty() { return this._isProjectListEmpty; }
+  projectListIsEmpty() { this._isProjectListEmpty.next(true); }
+  projectListIsNotEmpty() { this._isProjectListEmpty.next(false); }
+
+  constructor(private http: Http) { }
+
+  __getObservableProjects() { return this.observableProjects; }
+
+  _getProjectsObservable() { return this.projectsObservable; }
+  _getProjectWorkMapObservable() { return this.projectWorkMapObservable; }
+
+  _getProjects(): void {
+    this.http
+      .get(this.projectsUrl)
+      .map((res: any) => res.json() )
+      // .takeWhile(() => !this.projectData) // unsubscribe automatically
+      .subscribe( (viewProjects: any) => {
+        this.projectWorkMapData.next(viewProjects.projectWorkMap);
+        this.projectData.next(viewProjects.projects);
+
+        if (((viewProjects.projects as Project[])).length === 0) {
+          this.projectListIsEmpty();
+        } else {
+          this.projectListIsNotEmpty();
+        }
+      },
+      (err: any) => console.error('_getProjects(): ERROR'),
+      () => console.log('_getProjects(): always')
+      )
+  }
+
+  _refreshData() {
+    this._getProjects();
+    // this.getProjectsWithPromise();
+    // this.getViewProjectsWithPromise();
+    // this.observableProjects = this.getProjectsWithObservable();
+  }
+
+    // Returns Promise<Project[]>
+    getProjectsWithPromise(): Promise<Project[]> {
+        return this.http.get(this.projectsUrl).
+        toPromise().
+        then(res => res.json().projects);
+    }
+
+    // Returns Observable<Project[]>
+    getProjectsWithObservable(): Observable<Project[]> {
+        return this.http.get(this.projectsUrl).map((res: any) => res.json().projects);
+    }
+
+    getViewProjectsWithPromise(): Promise<any[]> {
+        return this.http.get(this.projectsUrl).
+        toPromise().
+        then(res => res.json());
+    }
 
   getProjects(): Promise<Project[]> {
     return this.http.get(this.projectsUrl)
@@ -109,8 +170,8 @@ export class ProjectService {
   }
 
   private handleError(error: any): Promise<any> {
-      console.error('An error occurred: ', error.text());
-      return Promise.reject(error);
+    console.error('An error occurred: ', error.text());
+    return Promise.reject(error);
   }
 }
 

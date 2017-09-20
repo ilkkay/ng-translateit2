@@ -14,6 +14,7 @@ import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectService } from './shared/project.service';
 import { AppconfigService } from '../shared/appconfig.service';
 import { ErrorMessageService } from '../shared/error-message.service';
+import { ContainerStateService  } from '../shared/container-state.service';
 
 import { MyMaterialModule } from '../material/mymaterial.module';
 
@@ -34,6 +35,7 @@ import { MyMaterialModule } from '../material/mymaterial.module';
   providers: [
     ProjectService,
     AppconfigService,
+    // ContainerStateService,
     // ErrorMessageService
   ],
   declarations: [

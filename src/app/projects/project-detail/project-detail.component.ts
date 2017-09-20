@@ -14,6 +14,7 @@ import { Project } from '../shared/project';
 import { ProjectService } from '../shared/project.service';
 import { AppconfigService } from '../../shared/appconfig.service';
 import { ErrorMessageService } from '../../shared/error-message.service';
+import { ContainerStateService } from '../../shared/container-state.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -25,7 +26,7 @@ export class ProjectDetailComponent implements OnInit {
   // @Output() onTitleChange = new EventEmitter<string>();
   // @Output() onError = new EventEmitter<string>();
   // @Output() onSuccess = new EventEmitter<string>();
-  @Output() onProjectChange = new EventEmitter<any>();
+  // @Output() onProjectChange = new EventEmitter<any>();
 
   personId: number;
   project: Project = new Project();
@@ -50,7 +51,8 @@ export class ProjectDetailComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     public dialog: MdDialog,
-    private messageService: ErrorMessageService
+    private messageService: ErrorMessageService,
+    private containerStateService: ContainerStateService,
   ) {
     this.personId = 1;
     this.registerFormControls();
@@ -95,7 +97,9 @@ export class ProjectDetailComponent implements OnInit {
             this.loggingMsg('Got a project:' + JSON.stringify(project));
 
             this.project = project;
-            this.updateDetailView();
+            this.projectForm.setValue(this.project);
+            // this.containerStateService.showDetail();
+            // this.updateDetailView(true);
           })
           .catch(error => {
             this.setErrorMessage(error);
@@ -133,8 +137,8 @@ export class ProjectDetailComponent implements OnInit {
       .then(() => {
         this.loggingMsg('Deleted project: ' + this.project.name);
         this.setDefaultProject();
-        this.updateDetailView();
-        this.updateProjectList(this.project, true);
+        this.updateDetailView(true);
+        // this.updateProjectList(this.project, true);
 
       }).catch(error => {
         this.setErrorMessage(error);
@@ -157,8 +161,8 @@ export class ProjectDetailComponent implements OnInit {
       .then(project => {
         this.loggingMsg('Updated project: ' + project.name);
         this.project = project;
-        this.updateDetailView();
-        this.updateProjectList(this.project, false);
+        this.updateDetailView(false);
+        // this.updateProjectList(this.project, false);
       }).catch(error => {
         this.setErrorMessage(error);
       });
@@ -169,19 +173,22 @@ export class ProjectDetailComponent implements OnInit {
       .then(project => {
         this.loggingMsg('Created project: ' + JSON.stringify(project.name));
         this.project = project;
-        this.updateDetailView();
-        this.updateProjectList(this.project, false);
+        this.updateDetailView(false);
+        // this.updateProjectList(this.project, false);
       }).catch(error => {
         this.setErrorMessage(error);
       });
   }
 
-  private updateDetailView(): void {
+  private updateDetailView(hideDetailView: boolean): void {
     this.projectForm.setValue(this.project);
     this.updateBrowserPath(this.project);
-    // this.onError.emit('');
-    // this.onSuccess.emit('');
-    // this.clearMessages();
+    this.projectService._refreshData();
+
+    if (hideDetailView) { this.containerStateService.hideDetail();
+    } else { this.containerStateService.showDetail(); }
+
+    this.clearMessages();
   }
 
   private updateBrowserPath(project: Project): void {
@@ -198,19 +205,17 @@ export class ProjectDetailComponent implements OnInit {
     console.log(msg);
   };
 
-
   private changeTitle(event: any): void {
     // this.onTitleChange.emit(event);
     this.messageService.sendMessage(event);
   }
 
-  private updateProjectList(project: Project, hideDetails: boolean): void {
-    this.onProjectChange.emit({ id: project.id, isDetailHidden: hideDetails} );
-  }
+  // private updateProjectList(project: Project, hideDetails: boolean): void {
+    // this.onProjectChange.emit({ id: project.id, isDetailHidden: hideDetails} );
+  // }
 
   private setSuccessMessage(msg: string, project: Project): void {
     // this.onSuccess.emit(msg);
-    this.messageService.sendSuccessMessage(msg);
   }
 
   private setErrorMessage(error: any): void {
@@ -218,4 +223,9 @@ export class ProjectDetailComponent implements OnInit {
     this.messageService.sendErrorMessage(error);
   }
 
+  private clearMessages(): void {
+    this.messageService.sendSuccessMessage('');
+    this.messageService.sendErrorMessage('');
+    // this.messageService.clearMessage();
+  }
 }
