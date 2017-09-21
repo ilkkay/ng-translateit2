@@ -11,6 +11,7 @@ import {
   RequestMethod
 } from '@angular/http';
 
+// https://github.com/antonybudianto/angular-starter/blob/master/src/app/app.component.spec.ts
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute /*, ParamMap */} from '@angular/router';
 import { FormBuilder /*, FormGroup, FormControl, Validators */ } from '@angular/forms';

@@ -1,11 +1,19 @@
 import { browser, by, element } from 'protractor';
 
 export class TranslateIT2Page {
-  navigateTo() {
-    return browser.get('/');
+  navigateTo(path: string) {
+    return browser.get(path);
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getParagraphText(directive: string) {
+    return element(by.css(directive)).getText();
+  }
+
+  getFirstParagraphText(directive: string) {
+    return element.all(by.css(directive)).first().getText();
+  }
+
+  getLastParagraphText(directive: string) {
+    return element.all(by.css(directive)).last().getText();
   }
 }
