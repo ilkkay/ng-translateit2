@@ -24,9 +24,6 @@ import { ContainerStateService } from '../../shared/container-state.service';
 export class ProjectDetailComponent implements OnInit {
 
   // @Output() onTitleChange = new EventEmitter<string>();
-  // @Output() onError = new EventEmitter<string>();
-  // @Output() onSuccess = new EventEmitter<string>();
-  // @Output() onProjectChange = new EventEmitter<any>();
 
   personId: number;
   project: Project = new Project();
@@ -34,15 +31,10 @@ export class ProjectDetailComponent implements OnInit {
   formats = [];
   detailUrl: string;
 
-  dialogsMap = {
-    'delete': ConfirmDeleteComponent
-  }
-
-  dialogRef: MdDialogRef<any>;
-
   // http://www.concretepage.com/angular-2/angular-2-formgroup-example
   projectForm: FormGroup;
   nameControl = new FormControl();
+  dialogRef: MdDialogRef<any>;
 
   constructor(
     private projectService: ProjectService,
@@ -98,8 +90,6 @@ export class ProjectDetailComponent implements OnInit {
 
             this.project = project;
             this.projectForm.setValue(this.project);
-            // this.containerStateService.showDetail();
-            // this.updateDetailView(true);
           })
           .catch(error => {
             this.setErrorMessage(error);
@@ -121,6 +111,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   confirmDelete(project: Project): void {
+/*
     this.dialogRef = this.dialog.open(this.dialogsMap['delete']);
     this.dialogRef.componentInstance.title = 'Delete project';
     this.dialogRef.componentInstance.content = 'Please confirm. Deletion cannot be undone.';
@@ -129,6 +120,8 @@ export class ProjectDetailComponent implements OnInit {
         this.delete(); }
       this.dialogRef = null;
     });
+*/
+  this.delete();
   }
 
   private delete(): void {
@@ -138,8 +131,6 @@ export class ProjectDetailComponent implements OnInit {
         this.loggingMsg('Deleted project: ' + this.project.name);
         this.setDefaultProject();
         this.updateDetailView(true);
-        // this.updateProjectList(this.project, true);
-
       }).catch(error => {
         this.setErrorMessage(error);
       });
@@ -162,7 +153,6 @@ export class ProjectDetailComponent implements OnInit {
         this.loggingMsg('Updated project: ' + project.name);
         this.project = project;
         this.updateDetailView(false);
-        // this.updateProjectList(this.project, false);
       }).catch(error => {
         this.setErrorMessage(error);
       });
@@ -174,7 +164,6 @@ export class ProjectDetailComponent implements OnInit {
         this.loggingMsg('Created project: ' + JSON.stringify(project.name));
         this.project = project;
         this.updateDetailView(false);
-        // this.updateProjectList(this.project, false);
       }).catch(error => {
         this.setErrorMessage(error);
       });
@@ -206,26 +195,16 @@ export class ProjectDetailComponent implements OnInit {
   };
 
   private changeTitle(event: any): void {
-    // this.onTitleChange.emit(event);
     this.messageService.sendMessage(event);
   }
 
-  // private updateProjectList(project: Project, hideDetails: boolean): void {
-    // this.onProjectChange.emit({ id: project.id, isDetailHidden: hideDetails} );
-  // }
-
-  private setSuccessMessage(msg: string, project: Project): void {
-    // this.onSuccess.emit(msg);
-  }
-
   private setErrorMessage(error: any): void {
-    // this.onError.emit(error);
     this.messageService.sendErrorMessage(error);
   }
 
   private clearMessages(): void {
-    this.messageService.sendSuccessMessage('');
-    this.messageService.sendErrorMessage('');
-    // this.messageService.clearMessage();
+    // this.messageService.sendSuccessMessage('');
+    // this.messageService.sendErrorMessage('');
+    this.messageService.clearMessage();
   }
 }

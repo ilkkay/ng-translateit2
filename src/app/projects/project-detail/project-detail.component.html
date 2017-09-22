@@ -17,7 +17,7 @@
           </label>
         <div class="col-md-7">
           <input type="text" formControlName="name"
-            id="appname" name="appname" placeholder="Enter project name">
+            id="appname" placeholder="Enter project name">
 <!--
           <p *ngIf="(projectForm.controls.name.hasError('minlength')
                               || projectForm.controls.name.hasError('maxlength'))
@@ -36,7 +36,8 @@
             Source language</span>
         </label>
         <div class="col-md-7">
-          <input type="text" formControlName="sourceLocale" placeholder="en_EN, fi_FI etc.">
+          <input type="text" formControlName="sourceLocale"
+              id="sourceLocale" placeholder="en_EN, fi_FI etc.">
 <!--
           <p *ngIf="projectForm.controls.sourceLocale.hasError('pattern')
                               && !projectForm.controls.sourceLocale.hasError('required')">

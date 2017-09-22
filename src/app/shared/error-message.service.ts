@@ -37,7 +37,8 @@ export class ErrorMessageService {
   }
 
   clearMessage() {
-    this.subject.next();
+    this.subject.next({ error: '' });
+    this.subject.next({ success: '' });
   }
 
   getMessage(): Observable<any> {

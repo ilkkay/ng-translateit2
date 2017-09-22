@@ -1,5 +1,7 @@
 import { browser, by, element } from 'protractor';
 
+// https://code.tutsplus.com/tutorials/getting-started-with-end-to-end-testing-in-angular-using-protractor--cms-29318
+
 export class TranslateIT2Page {
   navigateTo(path: string) {
     return browser.get(path);

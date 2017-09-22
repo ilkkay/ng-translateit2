@@ -33,7 +33,7 @@ class MockActivatedRoute extends ActivatedRoute {
   public params = Observable.of({id: 123});
 }
 
-fdescribe('ProjectDetailComponent', () => {
+describe('ProjectDetailComponent', () => {
   // let component: ProjectDetailComponent;
   let fixture: ComponentFixture<ProjectDetailComponent>;
   let projectDetailComponent: ProjectDetailComponent;
@@ -85,8 +85,8 @@ fdescribe('ProjectDetailComponent', () => {
         _formBuilder = __formBuilder;
         _dialog = __dialog;
 
-        projectDetailComponent = new ProjectDetailComponent(_projectService,
-          _appConfig, _route, _router, _formBuilder, _dialog );
+        // projectDetailComponent = new ProjectDetailComponent(_projectService,
+        //   _appConfig, _route, _router, _formBuilder, _dialog );
         }
     ));
 
