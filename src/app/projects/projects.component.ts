@@ -137,20 +137,4 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.listTitle = event;
   }
 
-  OnEditClicked(event): void {
-    // this.isDetailHidden = false;
-  }
-
-  OnErrorMessage(event): void {
-    // this.errorMessageComponent.setErrorMessage(event);
-  }
-
-  OnSuccessMessage(event): void {
-    // this.errorMessageComponent.setSuccessMessage(event);
-  }
-
-  OnProjectChanged(event: any): void {
-    // this.isDetailHidden = event.isDetailHidden;
-    // this.projectListComponent.getProjects();
-  }
 }
