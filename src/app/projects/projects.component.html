@@ -14,10 +14,10 @@
   <app-error-message> </app-error-message>
 
   <div class="panel panel-default" [ngSwitch]="currentView">
-    <div class="panel-heading" *ngIf="!isDetailHidden || isProjectListEmpty">
+    <div class="panel-heading" *ngIf="!isDetailHidden">
       <span class="lead">{{detailTitle}} </span>
     </div>
-    <div class="panel-body" *ngIf="!isDetailHidden || isProjectListEmpty ">
+    <div class="panel-body" *ngIf="!isDetailHidden">
 
       <div *ngSwitchCase="'Project'">
         <app-project-detail></app-project-detail>

@@ -24,7 +24,7 @@ describe('translate-it2 App', () => {
     expect(await page.getLastParagraphText('app-root li a')).toEqual('Angular blog');
   });
 
-  fit('should navigate to project list when Container link clicked', async () => {
+  it('should navigate to project list when Container link clicked', async () => {
     page.navigateTo('/');
     await element(by.id('projects')).click();
 
@@ -35,7 +35,7 @@ describe('translate-it2 App', () => {
     expect(elementText).toEqual('NAME');
   });
 
-  fit('should navigate to work list when Next clicked', async () => {
+  it('should navigate to work list when Next clicked', async () => {
     page.navigateTo('/projects;state=edit;id=1');
     expect(await browser.getCurrentUrl()).toMatch('/projects');
 
@@ -43,7 +43,7 @@ describe('translate-it2 App', () => {
     expect(await browser.getCurrentUrl()).toMatch('/works');
   });
 
-  fit('should show Translate IT 2 entity in project list', async () => {
+  it('should show Translate IT 2 entity in project list', async () => {
     page.navigateTo('/projects;state=edit;id=1');
     const elementText = await page.getFirstParagraphText(
       'app-project-list table tbody tr td');
@@ -51,7 +51,7 @@ describe('translate-it2 App', () => {
   });
 
   // https://gist.github.com/javierarques/0c4c817d6c77b0877fda
-  fit('should show Translate IT 2 detail when Edit clicked', async () => {
+  it('should show Translate IT 2 detail when Edit clicked', async () => {
     page.navigateTo('/projects');
     // page.navigateTo('/projects;state=edit;id=1');
     await element.all(by.buttonText('Edit')).first().click();
@@ -66,7 +66,7 @@ describe('translate-it2 App', () => {
     expect(elementText).toEqual('en_EN');
   });
 
-  fit('should rename and save Translate IT 2 entity', async () => {
+  it('should rename and save Translate IT 2 entity', async () => {
     page.navigateTo('/projects;state=edit;id=1');
     await element.all(by.buttonText('Edit')).first().click();
 
@@ -104,9 +104,9 @@ describe('translate-it2 App', () => {
 
     await browser.wait(element(by.buttonText('Save')).isEnabled, 3000);
     await element(by.buttonText('Save')).click();
-    const elementText = await element.all(
+    let rowCount = await element.all(
       by.css('app-project-list table tbody tr')).count();
-    expect(elementText).toBe(2);
+    expect(rowCount).toBe(2);
 
     await element(by.buttonText('Delete')).click()
     /*
@@ -116,7 +116,7 @@ describe('translate-it2 App', () => {
           await element(by.buttonText('Yes')).click();
     */
     await browser.wait(element(by.css('app-project-list')).isDisplayed(), 5000);
-    const rowCount = await element.all(
+    rowCount = await element.all(
       by.css('app-project-list table tbody tr')).count();
     expect(rowCount).toBe(1);
 
@@ -124,7 +124,7 @@ describe('translate-it2 App', () => {
     expect(browser.isElementPresent(detail)).toBe(false);
   });
 
-  fit('should show detail when empty Project list', async () => {
+  it('should show detail when empty Project list', async () => {
     page.navigateTo('/projects');
     // await page.navigateTo('/projects;state=edit;id=1');
 
@@ -153,7 +153,7 @@ describe('translate-it2 App', () => {
     expect(rowCount).toBe(1);
   });
 
-  fit('should show error message when invalid project id', async () => {
+  it('should show error message when invalid project id', async () => {
     await page.navigateTo('/projects;state=edit;id=666');
 
     const errorMessage = await element(by.css('app-error-message'));
@@ -169,7 +169,7 @@ describe('translate-it2 App', () => {
     expect(browser.isElementPresent(errorMessage)).toBe(true);
   });
 
-  fit('should show error message when save project with existing name', async () => {
+  it('should show error message when save project with existing name', async () => {
     await page.navigateTo('/projects;state=edit;id=1');
 
     await browser.wait(element(by.buttonText('New')).isEnabled, 3000);

@@ -39,9 +39,9 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.projectService._refreshData();
-    this.observableProjects = this.projectService._getProjectsObservable();
-    this.observableProjectWorkMap = this.projectService._getProjectWorkMapObservable();
+    this.projectService.refreshData();
+    this.observableProjects = this.projectService.getProjectsObservable();
+    this.observableProjectWorkMap = this.projectService.getProjectWorkMapObservable();
 
     // If this is a direct link to an entity, thew we'll show it
     this.getDetailViewByRouteId();
@@ -49,15 +49,15 @@ export class ProjectListComponent implements OnInit {
 
   getDetailViewByRouteId(): void {
     this.route.params.subscribe(params => {
-      const viewState = params['state'];
+      this.containerStateService.state(params['state']);
       const routeId = +params['id'];
       if (!isNaN(routeId) && (routeId !== 0)) {
-        this.editProject(routeId);
+        this.goToProjectDetail(routeId);
       }
     })
   }
 
-  private editProject(projectId: number): void {
+  private goToProjectDetail(projectId: number): void {
     this.containerStateService.showDetail();
 
     let link: any;
@@ -76,6 +76,6 @@ export class ProjectListComponent implements OnInit {
 
   // Just for testing
   private changeTitle(event: any): void {
-    this.messageService.sendMessage(event);
+    this.messageService.sendTextMessage(event);
   }
 }
