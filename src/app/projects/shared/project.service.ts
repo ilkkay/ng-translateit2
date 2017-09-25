@@ -26,14 +26,9 @@ export class ProjectService {
   And edit the package.json file's start script to be
   "start": "ng serve --proxy-config proxy.conf.json
   */
-  // results: Project[];
 
   private projectData: Subject<Project[]> = new BehaviorSubject<Project[]>([]);
   private projectWorkMapData: Subject<any> = new BehaviorSubject<any>({});
-  private projectsObservable = this.projectData.asObservable();
-  private projectWorkMapObservable = this.projectWorkMapData.asObservable();
-
-  private observableProjects = this.getProjectsWithObservable();
 
   private _isProjectListEmpty: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public get isProjectListEmpty() { return this._isProjectListEmpty; }
@@ -42,10 +37,8 @@ export class ProjectService {
 
   constructor(private http: Http) { }
 
-  __getObservableProjects() { return this.observableProjects; }
-
-  _getProjectsObservable() { return this.projectsObservable; }
-  _getProjectWorkMapObservable() { return this.projectWorkMapObservable; }
+  _getProjectsObservable() { return this.projectData.asObservable(); }
+  _getProjectWorkMapObservable() { return this.projectWorkMapData.asObservable(); }
 
   _getProjects(): void {
     this.http
@@ -69,28 +62,7 @@ export class ProjectService {
 
   _refreshData() {
     this._getProjects();
-    // this.getProjectsWithPromise();
-    // this.getViewProjectsWithPromise();
-    // this.observableProjects = this.getProjectsWithObservable();
   }
-
-    // Returns Promise<Project[]>
-    getProjectsWithPromise(): Promise<Project[]> {
-        return this.http.get(this.projectsUrl).
-        toPromise().
-        then(res => res.json().projects);
-    }
-
-    // Returns Observable<Project[]>
-    getProjectsWithObservable(): Observable<Project[]> {
-        return this.http.get(this.projectsUrl).map((res: any) => res.json().projects);
-    }
-
-    getViewProjectsWithPromise(): Promise<any[]> {
-        return this.http.get(this.projectsUrl).
-        toPromise().
-        then(res => res.json());
-    }
 
   getProjects(): Promise<Project[]> {
     return this.http.get(this.projectsUrl)

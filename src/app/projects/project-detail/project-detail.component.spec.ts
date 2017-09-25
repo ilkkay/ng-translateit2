@@ -28,13 +28,14 @@ import { AppconfigService } from '../../shared/appconfig.service';
 import { ProjectDetailComponent } from './project-detail.component';
 import { ProjectService } from '../shared/project.service';
 import { Project } from '../shared/project';
+import { ErrorMessageService } from '../../shared/error-message.service';
+import { ContainerStateService } from '../../shared/container-state.service';
 
 class MockActivatedRoute extends ActivatedRoute {
   public params = Observable.of({id: 123});
 }
 
 describe('ProjectDetailComponent', () => {
-  // let component: ProjectDetailComponent;
   let fixture: ComponentFixture<ProjectDetailComponent>;
   let projectDetailComponent: ProjectDetailComponent;
 
@@ -44,13 +45,15 @@ describe('ProjectDetailComponent', () => {
   let _router: Router;
   let _formBuilder: FormBuilder;
   let _dialog: MdDialog;
+  let _messageService: ErrorMessageService;
+  let _containerStateService: ContainerStateService;
+  let _mockBackend: MockBackend;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ ProjectService, AppconfigService,
+      providers: [ ProjectService, AppconfigService, ErrorMessageService, ContainerStateService,
         { provide: ActivatedRoute, useValue: new MockActivatedRoute() },
-        MockBackend,
-        BaseRequestOptions,
+        MockBackend, BaseRequestOptions,
         {
           provide: Http,
           useFactory: (backend: MockBackend, options: BaseRequestOptions) =>
@@ -59,24 +62,23 @@ describe('ProjectDetailComponent', () => {
       declarations: [ ProjectDetailComponent],
       imports: [
         ReactiveFormsModule,
-        // FormsModule,
         MdDialogModule,
-        // MdButtonModule,
-        // MdTooltipModule,
         RouterTestingModule
       ]
     });
     fixture = TestBed.createComponent(ProjectDetailComponent);
-    // component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  beforeEach(inject([
-    ProjectService, AppconfigService, ActivatedRoute, Router, FormBuilder, MdDialog ],
+  beforeEach(inject([ ProjectService, AppconfigService, ActivatedRoute, Router,
+  FormBuilder, MdDialog, ErrorMessageService, ContainerStateService, MockBackend ],
     (
       __projectService: ProjectService, __appConfig: AppconfigService,
       __route: ActivatedRoute, __router: Router,
-      __formBuilder: FormBuilder, __dialog: MdDialog
+      __formBuilder: FormBuilder, __dialog: MdDialog,
+      __messageService: ErrorMessageService,
+      __containerStateService: ContainerStateService,
+      __mockBackend: MockBackend
     ) => {
         _projectService = __projectService;
         _appConfig = __appConfig;
@@ -84,13 +86,16 @@ describe('ProjectDetailComponent', () => {
         _router = __router;
         _formBuilder = __formBuilder;
         _dialog = __dialog;
+        _messageService = __messageService;
+        _containerStateService = __containerStateService;
+        _mockBackend = __mockBackend;
 
-        // projectDetailComponent = new ProjectDetailComponent(_projectService,
-        //   _appConfig, _route, _router, _formBuilder, _dialog );
+        projectDetailComponent = new ProjectDetailComponent(_projectService,
+           _appConfig, _route, _router, _formBuilder, _dialog, _messageService, _containerStateService  );
         }
     ));
 
-  it('should be created', () => {
+  fit('should be created', () => {
     // expect(component).toBeTruthy();
     expect(projectDetailComponent).toBeTruthy();
   });
