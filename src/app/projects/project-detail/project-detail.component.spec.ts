@@ -95,7 +95,7 @@ describe('ProjectDetailComponent', () => {
         }
     ));
 
-  fit('should be created', () => {
+  it('should be created', () => {
     // expect(component).toBeTruthy();
     expect(projectDetailComponent).toBeTruthy();
   });
