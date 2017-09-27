@@ -4,3 +4,6 @@
 [0921/133838.415:ERROR:process_reader_win.cc(123)] NtOpenThread: {Käyttö estetty} Prosessi pyysi objektin käyttöä, mutta käyttöoikeuksia ei ole myönnetty.  (0xc0000022)
 [0921/133838.416:ERROR:exception_snapshot_win.cc(87)] thread ID 8036 not found in process
 [0921/133838.416:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed
+[0927/122836.238:ERROR:process_reader_win.cc(123)] NtOpenThread: {Käyttö estetty} Prosessi pyysi objektin käyttöä, mutta käyttöoikeuksia ei ole myönnetty.  (0xc0000022)
+[0927/122836.360:ERROR:exception_snapshot_win.cc(87)] thread ID 14396 not found in process
+[0927/122836.360:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed

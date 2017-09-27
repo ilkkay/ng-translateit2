@@ -8,7 +8,7 @@ import { ProjectService } from '../projects/shared/project.service'
 export class ErrorMessageService implements MessageInterface {
   private subject: Subject<any> = new BehaviorSubject<any>({});
 
-  constructor(private _projectService: ProjectService) {
+  constructor(_projectService: ProjectService) {
       _projectService.registerMessageService(this);
   }
 
