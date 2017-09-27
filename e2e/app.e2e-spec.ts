@@ -91,7 +91,7 @@ describe('translate-it2 App', () => {
 
   });
 
-  fit('should delete a new, created entity when New, Save and Delete clicked', async () => {
+  it('should delete a new, created entity when New, Save and Delete clicked', async () => {
     // await page.navigateTo('/projects');
     await page.navigateTo('/projects;state=edit;id=1');
 
