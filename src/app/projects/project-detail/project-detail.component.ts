@@ -80,7 +80,7 @@ export class ProjectDetailComponent implements OnInit {
 
   getProjectByRouteId(): any {
     this.route.params.subscribe(params => {
-      this.containerStateService.state(params['state']);
+      // this.containerStateService.state(params['state']);
       const routeId = +params['id'];
       this.loggingMsg('Entering getProjectByRouteId() with: ' + routeId);
 

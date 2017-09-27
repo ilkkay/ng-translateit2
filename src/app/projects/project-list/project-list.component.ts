@@ -49,7 +49,7 @@ export class ProjectListComponent implements OnInit {
 
   getDetailViewByRouteId(): void {
     this.route.params.subscribe(params => {
-      this.containerStateService.state(params['state']);
+      // this.containerStateService.state(params['state']);
       const routeId = +params['id'];
       if (!isNaN(routeId) && (routeId !== 0)) {
         this.goToProjectDetail(routeId);

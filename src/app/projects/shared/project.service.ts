@@ -16,6 +16,7 @@ import { StateInterface } from '../../shared/state-interface'
 export class ProjectService {
 
   private projectsUrl = 'http://localhost:8080/api/projects/'; // api/projects/';
+  // 'assets/mock-posts.json';
   // TODO:create proxy.conf.json and add http://localhost:8080/
   /*
   {
@@ -44,6 +45,9 @@ export class ProjectService {
     this._uiStateService = stateService;
   }
 
+  setProjectsSubject(projects: Project[]) { this._projectData.next(projects); }
+  setProjectWorkMapSubject(map: any) { this._projectWorkMapData.next(map); }
+
   getProjectsObservable() { return this._projectData.asObservable(); }
   getProjectWorkMapObservable() { return this._projectWorkMapData.asObservable(); }
 
@@ -52,7 +56,8 @@ export class ProjectService {
   }
 
   getProjects(): Promise<Project[]> {
-    return this._http.get(this.projectsUrl)
+      console.log('Entering ProjectsService.getProjects()');
+      return this._http.get(this.projectsUrl)
       .toPromise()
       .then(response => {
         console.log('Response data: ' + response.text());
@@ -62,17 +67,17 @@ export class ProjectService {
   }
 
   getProject(id: number): Promise<Project> {
-    console.log('Entering ProjectsService.getProject() with id ' + id);
-
     const url = `${this.projectsUrl}${id}`;
     return this._http.get(url)
       .toPromise()
       .then(response => {
         console.log('Response data: ' + response.text());
-        this._messageService.sendErrorMessage('');
+        this._messageService.clearMessages();
         return response.json() as Project[];
       })
-      .catch(error => this._messageService.sendErrorMessage(error));
+      .catch(error => {
+        console.log('Error from getProject: ');
+        return this._messageService.sendErrorMessage(error); } );
   }
 
   update(project: Project): Promise<Project> {
@@ -86,7 +91,7 @@ export class ProjectService {
       .toPromise()
       .then(response => {
         console.log('Response from update: ' + response.text());
-        this._messageService.sendErrorMessage('');
+        this._messageService.clearMessages();
         return response.json() as Project[];
       })
       .catch(error => this._messageService.sendErrorMessage(error));
@@ -98,7 +103,7 @@ export class ProjectService {
 
     return this._http.delete(url, { headers: headers })
       .toPromise()
-      .then(() => this._messageService.sendErrorMessage(''))
+      .then(() => this._messageService.clearMessages())
       .catch(error => this._messageService.sendErrorMessage(error));
   }
 
@@ -113,22 +118,30 @@ export class ProjectService {
       .toPromise()
       .then(response => {
         console.log('Response from create: ' + response.text());
-        this._messageService.sendErrorMessage('')
+        this._messageService.clearMessages();
         return response.json() as Project[];
       })
-      .catch(error => this._messageService.sendErrorMessage(error));
+      .catch(error => {
+        console.log('Error from create: ');
+        return this._messageService.sendErrorMessage(error); } );
   }
 
-  private _getProjects(): void {
+  _getProjects(): void {
+    console.log('Entering ProjectsService.getProjects()');
+
     this._http
       .get(this.projectsUrl)
       .map((res: any) => res.json())
       // .takeWhile(() => !this.projectData) // unsubscribe automatically
       .subscribe((viewProjects: any) => {
-        this._projectWorkMapData.next(viewProjects.projectWorkMap);
-        this._projectData.next(viewProjects.projects);
+        console.log('_getProjects().subscribe(viewProjects)');
+        console.log(JSON.stringify(viewProjects));
 
-        if (((viewProjects.projects as Project[])).length === 0) {
+        this.setProjectWorkMapSubject(viewProjects.projectWorkMap);
+        this.setProjectsSubject(viewProjects.projects);
+
+        if ((isNaN((viewProjects.projects as Project[]).length)) ||
+            ((viewProjects.projects as Project[])).length === 0)  {
           this._uiStateService.showDetail();
         }
       },
@@ -143,4 +156,3 @@ export class ProjectService {
   }
 
 }
-
