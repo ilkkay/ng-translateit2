@@ -1,30 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs/Rx';
 
+import { MessageInterface } from './message-interface'
+import { ProjectService } from '../projects/shared/project.service'
+
 @Injectable()
-export class ErrorMessageService {
-  private subject = new Subject<any>();
+export class ErrorMessageService implements MessageInterface {
+  private subject: Subject<any> = new BehaviorSubject<any>({});
 
-/*
-  private behaviorSubject =  new BehaviorSubject<any>({});
-  _sendMessage(message: string) {
-    this.behaviorSubject.next({ text: message });
+  constructor(private _projectService: ProjectService) {
+      _projectService.registerMessageService(this);
   }
-  _sendErrorMessage(error: any) {
-    this.behaviorSubject.next({ error: error });
-  }
-  _sendSuccessMessage(success: any) {
-    this.behaviorSubject.next({ success: success });
-  }
-  _getMessage(): Observable<any> {
-    return this.behaviorSubject.asObservable();
-  }
-  _clearMessage() {
-    this.behaviorSubject.next({});
-  }
-*/
 
-  sendMessage(message: string) {
+  sendTextMessage(message: string) {
     this.subject.next({ text: message });
   }
 
@@ -36,7 +24,7 @@ export class ErrorMessageService {
     this.subject.next({ success: success });
   }
 
-  clearMessage() {
+  clearMessages() {
     this.subject.next({ error: '' });
     this.subject.next({ success: '' });
   }

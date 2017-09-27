@@ -80,19 +80,18 @@ export class ProjectDetailComponent implements OnInit {
 
   getProjectByRouteId(): any {
     this.route.params.subscribe(params => {
+      // this.containerStateService.state(params['state']);
       const routeId = +params['id'];
-      const viewState = params['state'];
+      this.loggingMsg('Entering getProjectByRouteId() with: ' + routeId);
+
       if (!isNaN(routeId) && (routeId !== 0)) {
         return this.projectService.getProject(routeId)
           .then(project => {
-            this.loggingMsg('Entering getProjectByRouteId() with: ' + routeId);
-            this.loggingMsg('Got a project:' + JSON.stringify(project));
-
+            this.loggingMsg('and got a project:' + JSON.stringify(project));
             this.project = project;
             this.projectForm.setValue(this.project);
           })
           .catch(error => {
-            this.setErrorMessage(error);
             this.setDefaultProject();
           });
       } else {
@@ -130,9 +129,7 @@ export class ProjectDetailComponent implements OnInit {
       .then(() => {
         this.loggingMsg('Deleted project: ' + this.project.name);
         this.setDefaultProject();
-        this.updateDetailView(true);
-      }).catch(error => {
-        this.setErrorMessage(error);
+        this.updateView(true);
       });
   }
 
@@ -152,9 +149,7 @@ export class ProjectDetailComponent implements OnInit {
       .then(project => {
         this.loggingMsg('Updated project: ' + project.name);
         this.project = project;
-        this.updateDetailView(false);
-      }).catch(error => {
-        this.setErrorMessage(error);
+        this.updateView(false);
       });
   }
 
@@ -163,21 +158,18 @@ export class ProjectDetailComponent implements OnInit {
       .then(project => {
         this.loggingMsg('Created project: ' + JSON.stringify(project.name));
         this.project = project;
-        this.updateDetailView(false);
-      }).catch(error => {
-        this.setErrorMessage(error);
+        this.updateView(false);
       });
   }
 
-  private updateDetailView(hideDetailView: boolean): void {
+  private updateView(hideDetailView: boolean): void {
     this.projectForm.setValue(this.project);
     this.updateBrowserPath(this.project);
-    this.projectService._refreshData();
 
     if (hideDetailView) { this.containerStateService.hideDetail();
     } else { this.containerStateService.showDetail(); }
 
-    this.clearMessages();
+    this.projectService.refreshData();
   }
 
   private updateBrowserPath(project: Project): void {
@@ -194,17 +186,9 @@ export class ProjectDetailComponent implements OnInit {
     console.log(msg);
   };
 
+  // just for testing
   private changeTitle(event: any): void {
-    this.messageService.sendMessage(event);
+    this.messageService.sendTextMessage(event);
   }
 
-  private setErrorMessage(error: any): void {
-    this.messageService.sendErrorMessage(error);
-  }
-
-  private clearMessages(): void {
-    // this.messageService.sendSuccessMessage('');
-    // this.messageService.sendErrorMessage('');
-    this.messageService.clearMessage();
-  }
 }

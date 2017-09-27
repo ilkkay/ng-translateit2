@@ -3,13 +3,9 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ProjectListComponent } from './project-list/project-list.component';
-import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ErrorMessageComponent } from '../shared/error-message/error-message.component';
 import { ErrorMessageService } from '../shared/error-message.service';
 import { ContainerStateService  } from '../shared/container-state.service';
-import { ProjectService  } from './shared/project.service';
-
 
 // https://stackoverflow.com/questions/36527605/how-to-style-child-components-from-parent-components-css-file
 @Component({
@@ -26,13 +22,10 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     '/units': 'Unit'
   }
 
-  @ViewChild(ProjectListComponent)
-  private projectListComponent: ProjectListComponent;
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
 
   private isDetailHidden: boolean;
-  private isProjectListEmpty: boolean;
   private listTitle: string;
   private detailTitle: string;
 
@@ -43,7 +36,6 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     private location: Location,
     private messageService: ErrorMessageService,
     private containerState: ContainerStateService,
-    private projectService: ProjectService,
     ) { };
 
   ngOnInit() {
@@ -53,7 +45,6 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscribeMessages();
     this.subscribeContainerState()
-    this.subscribeProjectListState();
     this.containerState.hideDetail();
 
     if (this.currentView === 'Work') {
@@ -79,36 +70,21 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.push(subscription);
   }
 
-  subscribeProjectListState(): void {
-    let subscription: Subscription;
-
-    subscription = this.projectService.isProjectListEmpty.subscribe(
-      isProjectListEmpty => { this.isProjectListEmpty = isProjectListEmpty; } );
-
-    this.subscriptions.push(subscription);
-  }
-
   subscribeMessages(): void {
     let subscription: Subscription;
 
     subscription = this.messageService.getMessage().subscribe(message => {
-      if (isUndefined(message.text)) {
-        console.log('ErrorMessageService: message.text undefined');
-      } else {
+      if (!(isUndefined(message.text))) {
         this.detailTitle = message.text;
         console.log('ErrorMessageService: ' + JSON.stringify(message.text));
       }
 
-      if (isUndefined(message.error)) {
-        console.log('ErrorMessageService: message.error undefined');
-      } else {
+      if (!(isUndefined(message.error))) {
         this.errorMessageComponent.setErrorMessage(message.error);
         console.log('ErrorMessageService: ' + JSON.stringify(message.error));
       }
 
-      if (isUndefined(message.success)) {
-        console.log('ErrorMessageService: message.success undefined');
-      } else {
+      if (!(isUndefined(message.success))) {
         this.errorMessageComponent.setSuccessMessage(message.success);
         console.log('ErrorMessageService: ' + JSON.stringify(message.success));
       }

@@ -9,7 +9,8 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 import { AppconfigService } from '../../shared/appconfig.service';
 
 import { Project } from './Project';
-// import { PROJECTS } from '../../shared/mock-projects';
+import { MessageInterface } from '../../shared/message-interface'
+import { StateInterface } from '../../shared/state-interface'
 
 @Injectable()
 export class ProjectService {
@@ -27,45 +28,31 @@ export class ProjectService {
   "start": "ng serve --proxy-config proxy.conf.json
   */
 
-  private projectData: Subject<Project[]> = new BehaviorSubject<Project[]>([]);
-  private projectWorkMapData: Subject<any> = new BehaviorSubject<any>({});
+  private _projectData: Subject<Project[]> = new BehaviorSubject<Project[]>([]);
+  private _projectWorkMapData: Subject<any> = new BehaviorSubject<any>({});
 
-  private _isProjectListEmpty: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  public get isProjectListEmpty() { return this._isProjectListEmpty; }
-  projectListIsEmpty() { this._isProjectListEmpty.next(true); }
-  projectListIsNotEmpty() { this._isProjectListEmpty.next(false); }
+  private _messageService: MessageInterface;
+  private _uiStateService: StateInterface;
 
-  constructor(private http: Http) { }
+  constructor(private _http: Http, ) { }
 
-  _getProjectsObservable() { return this.projectData.asObservable(); }
-  _getProjectWorkMapObservable() { return this.projectWorkMapData.asObservable(); }
-
-  _getProjects(): void {
-    this.http
-      .get(this.projectsUrl)
-      .map((res: any) => res.json() )
-      // .takeWhile(() => !this.projectData) // unsubscribe automatically
-      .subscribe( (viewProjects: any) => {
-        this.projectWorkMapData.next(viewProjects.projectWorkMap);
-        this.projectData.next(viewProjects.projects);
-
-        if (((viewProjects.projects as Project[])).length === 0) {
-          this.projectListIsEmpty();
-        } else {
-          this.projectListIsNotEmpty();
-        }
-      },
-      (err: any) => console.error('_getProjects(): ERROR'),
-      () => console.log('_getProjects(): always')
-      )
+  registerMessageService(messageService: MessageInterface) {
+    this._messageService = messageService;
   }
 
-  _refreshData() {
+  registerStateService(stateService: StateInterface) {
+    this._uiStateService = stateService;
+  }
+
+  getProjectsObservable() { return this._projectData.asObservable(); }
+  getProjectWorkMapObservable() { return this._projectWorkMapData.asObservable(); }
+
+  refreshData() {
     this._getProjects();
   }
 
   getProjects(): Promise<Project[]> {
-    return this.http.get(this.projectsUrl)
+    return this._http.get(this.projectsUrl)
       .toPromise()
       .then(response => {
         console.log('Response data: ' + response.text());
@@ -78,72 +65,81 @@ export class ProjectService {
     console.log('Entering ProjectsService.getProject() with id ' + id);
 
     const url = `${this.projectsUrl}${id}`;
-    return this.http.get(url)
+    return this._http.get(url)
       .toPromise()
       .then(response => {
         console.log('Response data: ' + response.text());
+        this._messageService.sendErrorMessage('');
         return response.json() as Project[];
       })
-      .catch(this.handleError)
+      .catch(error => this._messageService.sendErrorMessage(error));
   }
 
   update(project: Project): Promise<Project> {
     const url = `${this.projectsUrl}${project.id}`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
-    return this.http
+    return this._http
       .put(url,
-      project
-      // JSON.stringify(project)
-      /*JSON.stringify({
-         format: project.format,
-         id: project.id,
-         name: project.name,
-         personId: project.personId,
-         type: project.type,
-         sourceLocale: project.sourceLocale
-       })*/
-      ,
+      project,
       { headers: headers })
       .toPromise()
       .then(response => {
         console.log('Response from update: ' + response.text());
+        this._messageService.sendErrorMessage('');
         return response.json() as Project[];
       })
-      .catch(this.handleError);
+      .catch(error => this._messageService.sendErrorMessage(error));
   }
 
   delete(id: number): Promise<void> {
     const url = `${this.projectsUrl}${id}`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
-    return this.http.delete(url, { headers: headers })
+    return this._http.delete(url, { headers: headers })
       .toPromise()
-      .then(() => null)
-      .catch(this.handleError);
+      .then(() => this._messageService.sendErrorMessage(''))
+      .catch(error => this._messageService.sendErrorMessage(error));
   }
 
   // http://www.concretepage.com/angular-2/angular-2-http-post-example#post
   create(project: Project): Promise<Project> {
-    // const url = `${this.projectsUrl}/0`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
-    return this.http
+    return this._http
       .post(this.projectsUrl,
-      // JSON.stringify(project),
       project,
       { headers: headers })
       .toPromise()
       .then(response => {
         console.log('Response from create: ' + response.text());
+        this._messageService.sendErrorMessage('')
         return response.json() as Project[];
       })
-      .catch(this.handleError);
+      .catch(error => this._messageService.sendErrorMessage(error));
+  }
+
+  private _getProjects(): void {
+    this._http
+      .get(this.projectsUrl)
+      .map((res: any) => res.json())
+      // .takeWhile(() => !this.projectData) // unsubscribe automatically
+      .subscribe((viewProjects: any) => {
+        this._projectWorkMapData.next(viewProjects.projectWorkMap);
+        this._projectData.next(viewProjects.projects);
+
+        if (((viewProjects.projects as Project[])).length === 0) {
+          this._uiStateService.showDetail();
+        }
+      },
+      (err: any) => this._messageService.sendErrorMessage(err),
+      () => console.log('_getProjects(): always')
+      )
   }
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred: ', error.text());
     return Promise.reject(error);
   }
-}
 
+}

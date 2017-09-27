@@ -19,7 +19,6 @@
   </thead>
 
   <tbody>
-    <!-- <tr *ngFor="let prj of _projects"> -->
     <!-- <tr *ngFor="let prj of promiseProjects | async"> -->
     <!-- <tr *ngFor="let prj of (promiseViewProjects | async)?.projects"> -->
     <tr *ngFor="let prj of observableProjects | async">
@@ -27,15 +26,13 @@
       <td>{{prj.format}}</td>
       <td>{{prj.type}}</td>
       <td>{{prj.sourceLocale}}</td>
-      <!-- <td>{{_workCountMap[prj.id]}}</td> -->
-      <!-- <td *ngIf="observableProjectWorkMap | async as workCountMap">-->
       <td *ngIf="observableProjectWorkMap | async; let workCountMap; else emptycell">
         {{workCountMap[prj.id]}}
       </td>
       <ng-template #emptycell> <td> 0 </td></ng-template>
 
       <div class="form-actions floatRight">
-        <td><button (click) = "editProject(prj.id)">Edit</button></td>
+        <td><button (click) = "goToProjectDetail(prj.id)">Edit</button></td>
         <td><button (click) = "goToWorks(prj.id)" id ="Next">Next</button></td>
       </div>
     </tr>
