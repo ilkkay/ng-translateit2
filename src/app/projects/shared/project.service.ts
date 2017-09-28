@@ -32,18 +32,10 @@ export class ProjectService {
   private _projectData: Subject<Project[]> = new BehaviorSubject<Project[]>([]);
   private _projectWorkMapData: Subject<any> = new BehaviorSubject<any>({});
 
-  private _messageService: MessageInterface;
-  private _uiStateService: StateInterface;
-
-  constructor(private _http: Http, ) { }
-
-  registerMessageService(messageService: MessageInterface) {
-    this._messageService = messageService;
-  }
-
-  registerStateService(stateService: StateInterface) {
-    this._uiStateService = stateService;
-  }
+  constructor(private _http: Http,
+    private _messageService: MessageInterface,
+    private _uiStateService: StateInterface,
+  ) { }
 
   setProjectsSubject(projects: Project[]) { this._projectData.next(projects); }
   setProjectWorkMapSubject(map: any) { this._projectWorkMapData.next(map); }
@@ -56,8 +48,8 @@ export class ProjectService {
   }
 
   getProjects(): Promise<Project[]> {
-      console.log('Entering ProjectsService.getProjects()');
-      return this._http.get(this.projectsUrl)
+    console.log('Entering ProjectsService.getProjects()');
+    return this._http.get(this.projectsUrl)
       .toPromise()
       .then(response => {
         console.log('Response data: ' + response.text());
@@ -77,7 +69,8 @@ export class ProjectService {
       })
       .catch(error => {
         console.log('Error from getProject: ');
-        return this._messageService.sendErrorMessage(error); } );
+        return this._messageService.sendErrorMessage(error);
+      });
   }
 
   update(project: Project): Promise<Project> {
@@ -123,7 +116,8 @@ export class ProjectService {
       })
       .catch(error => {
         console.log('Error from create: ');
-        return this._messageService.sendErrorMessage(error); } );
+        return this._messageService.sendErrorMessage(error);
+      });
   }
 
   _getProjects(): void {
@@ -141,7 +135,7 @@ export class ProjectService {
         this.setProjectsSubject(viewProjects.projects);
 
         if ((isNaN((viewProjects.projects as Project[]).length)) ||
-            ((viewProjects.projects as Project[])).length === 0)  {
+          ((viewProjects.projects as Project[])).length === 0) {
           this._uiStateService.showDetail();
         }
       },

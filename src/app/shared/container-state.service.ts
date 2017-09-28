@@ -8,9 +8,7 @@ export class ContainerStateService implements StateInterface {
   private _isDetailHidden: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private _state: BehaviorSubject<string> = new BehaviorSubject<string>('list');
 
-  constructor(private _projectService: ProjectService) {
-      _projectService.registerStateService(this);
-  }
+  constructor() { }
 
   public get state() { return this._state.getValue(); }
   public set state(newState: any) { this._state.next(newState); }
