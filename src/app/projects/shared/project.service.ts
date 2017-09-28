@@ -13,6 +13,7 @@ import { MessageInterface } from '../../shared/message-interface'
 import { StateInterface } from '../../shared/state-interface'
 
 import { ErrorMessageService } from '../../shared/error-message.service'
+import { ContainerStateService } from '../../shared/container-state.service'
 
 @Injectable()
 export class ProjectService {
@@ -34,17 +35,19 @@ export class ProjectService {
   private _projectData: Subject<Project[]> = new BehaviorSubject<Project[]>([]);
   private _projectWorkMapData: Subject<any> = new BehaviorSubject<any>({});
 
-  private _messageService: MessageInterface;
-  private _uiStateService: StateInterface;
+  // private _messageService: MessageInterface;
+  // private _uiStateService: StateInterface;
 
-  constructor(private _http: Http) { }
+  constructor(private _http: Http,
+  private _messageService: ErrorMessageService,
+  private _uiStateService: ContainerStateService) { }
 
   registerMessageService(messageService: MessageInterface) {
-    this._messageService = messageService;
+    // this._messageService = messageService;
   }
 
   registerStateService(stateService: StateInterface) {
-    this._uiStateService = stateService;
+    // this._uiStateService = stateService;
   }
 
   setProjectsSubject(projects: Project[]) { this._projectData.next(projects); }
@@ -75,7 +78,7 @@ export class ProjectService {
       .then(response => {
         console.log('Response data: ' + response.text());
         this._messageService.clearMessages();
-        return response.json() as Project[];
+        return response.json() as Project;
       })
       .catch(error => {
         console.log('Error from getProject: ');
@@ -94,7 +97,7 @@ export class ProjectService {
       .then(response => {
         console.log('Response from update: ' + response.text());
         this._messageService.clearMessages();
-        return response.json() as Project[];
+        return response.json() as Project;
       })
       .catch(error => this._messageService.sendErrorMessage(error));
   }
@@ -121,7 +124,7 @@ export class ProjectService {
       .then(response => {
         console.log('Response from create: ' + response.text());
         this._messageService.clearMessages();
-        return response.json() as Project[];
+        return response.json() as Project;
       })
       .catch(error => {
         console.log('Error from create: ');

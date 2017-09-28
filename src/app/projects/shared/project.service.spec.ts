@@ -52,7 +52,9 @@ fdescribe('ProjectService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
+      providers: [ ProjectService,
+{ provide: ErrorMessageService, useValue: new MockMessageService() },
+{ provide: ContainerStateService, useValue: new MockContainerStateService() },
         MockBackend, BaseRequestOptions,
         {
           provide: Http,
@@ -62,13 +64,16 @@ fdescribe('ProjectService', () => {
     });
   });
 
-  beforeEach(inject([Http,  MockBackend],
-    (http: Http,  mb: MockBackend) => {
+  beforeEach(inject([Http,  MockBackend, ErrorMessageService, ContainerStateService],
+    (service: ProjectService, http: Http,  mb: MockBackend,
+    ms: ErrorMessageService,
+      css: ContainerStateService) => {
 
-      projectService = new ProjectService(http);
-      projectService.registerMessageService(messageService);
-      projectService.registerStateService(containerStateService);
-            mockBackend = mb;
+      projectService = new ProjectService(http, ms, css);
+      // projectService.registerMessageService(messageService);
+      // projectService.registerStateService(containerStateService);
+
+      mockBackend = mb;
       mockBackend.connections.subscribe(
         (connection: any) => _lastConnection = connection);
     }));
