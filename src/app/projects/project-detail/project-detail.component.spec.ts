@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { tick, fakeAsync, async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import {
   Http,
@@ -32,22 +32,34 @@ import { ErrorMessageService } from '../../shared/error-message.service';
 import { ContainerStateService } from '../../shared/container-state.service';
 
 class MockActivatedRoute extends ActivatedRoute {
-  public params = Observable.of({id: 123});
+  public params = Observable.of({id: 1});
+  public setParamsNan() { this.params = Observable.of({ })}
+  public setParamsZero() { this.params = Observable.of({ id: 0 })}
 }
 
-describe('ProjectDetailComponent', () => {
+class MockError extends Response implements Error {
+  name: any
+  message: any
+}
+
+fdescribe('ProjectDetailComponent', () => {
+  const mockProject: Project = <Project>{ format: 'PROPERTIES', id: 1, name: 'dotcms', personId: 10, sourceLocale: 'en_EN', type: 'Utf-8' };
+  const defaultProject = <Project>{ format: 'PROPERTIES', id: 0, name: 'Test project',
+            personId: 10, sourceLocale: 'en_EN', type: 'UTF_8'
+            }
   let fixture: ComponentFixture<ProjectDetailComponent>;
   let projectDetailComponent: ProjectDetailComponent;
 
   let _projectService: ProjectService;
   let _appConfig: AppconfigService;
-  let _route: ActivatedRoute;
+  let _route: MockActivatedRoute;
   let _router: Router;
   let _formBuilder: FormBuilder;
   let _dialog: MdDialog;
   let _messageService: ErrorMessageService;
   let _containerStateService: ContainerStateService;
   let _mockBackend: MockBackend;
+  let lastConnection: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -74,7 +86,7 @@ describe('ProjectDetailComponent', () => {
   FormBuilder, MdDialog, ErrorMessageService, ContainerStateService, MockBackend ],
     (
       __projectService: ProjectService, __appConfig: AppconfigService,
-      __route: ActivatedRoute, __router: Router,
+      __route: MockActivatedRoute, __router: Router,
       __formBuilder: FormBuilder, __dialog: MdDialog,
       __messageService: ErrorMessageService,
       __containerStateService: ContainerStateService,
@@ -90,13 +102,66 @@ describe('ProjectDetailComponent', () => {
         _containerStateService = __containerStateService;
         _mockBackend = __mockBackend;
 
+        _mockBackend.connections.subscribe(
+          (connection: any) => lastConnection = connection);
+
         projectDetailComponent = new ProjectDetailComponent(_projectService,
            _appConfig, _route, _router, _formBuilder, _dialog, _messageService, _containerStateService  );
         }
     ));
 
   it('should be created', () => {
-    // expect(component).toBeTruthy();
+    loggingMsg('Starting Project Detail Unit Tests')
     expect(projectDetailComponent).toBeTruthy();
   });
+
+  it('should be get route params (fakeAsync)', fakeAsync(() => {
+    let routeId: number;
+    _route.params.subscribe(params => { routeId = +params['id']; })
+    tick();
+
+    expect(routeId).toBe(1);
+  }));
+
+  fit('getProjectByRouteId should get project by route params (fakeAsync)', fakeAsync(() => {
+
+    _route.setParamsZero();
+    // tick();
+    projectDetailComponent.getProjectByRouteId();
+    /* lastConnection.mockRespond(new Response(new ResponseOptions({
+      body: JSON.stringify(mockProject),
+      status: 200,
+    })));*/
+    // tick();
+
+//    expect(projectDetailComponent.project).toEqual(mockProject);
+        expect(projectDetailComponent.project.name).toBe('Test project');
+
+  }));
+
+  xit('TEST getProjectByRouteId should get project by route params (fakeAsync)', fakeAsync(() => {
+
+    _route.setParamsNan();
+    projectDetailComponent.getProjectByRouteId();
+    lastConnection.mockRespond(new Response(new ResponseOptions({
+      body: JSON.stringify(mockProject),
+      status: 200,
+    })));
+    tick();
+
+    expect(projectDetailComponent.project.name).toBe('Test project');
+  }));
+
+  xit('getProjectByRouteId should get default project if failure (fakeAsync)', fakeAsync(() => {
+
+    projectDetailComponent.getProjectByRouteId();
+    lastConnection.mockError(new MockError(new ResponseOptions('')));
+    tick();
+
+    expect(projectDetailComponent.project.name).toBe('Test project');
+  }));
+
+  const loggingMsg = function (msg: string) {
+    console.log(msg);
+  };
 });

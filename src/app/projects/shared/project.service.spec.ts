@@ -40,7 +40,7 @@ class MockContainerStateService implements StateInterface {
   showDetail() { }
 }
 
-fdescribe('ProjectService', () => {
+xdescribe('ProjectService', () => {
   const mockProjectsArray = PROJECTS;
   const mockProject: Project = <Project>{ format: 'PROPERTIES', id: 1, name: 'dotcms', personId: 10, sourceLocale: 'en_EN', type: 'Utf-8' };
   const messageService = new MockMessageService(); // ErrorMessageService;
@@ -72,11 +72,11 @@ fdescribe('ProjectService', () => {
         (connection: any) => lastConnection = connection);
     }));
 
-  fit('ProjectService should be created ()', () => {
+  it('ProjectService should be created ()', () => {
     expect(projectService).toBeTruthy();
   });
 
-  fit('Message Services should be called ()', () => {
+  it('Message Services should be called ()', () => {
     spyOn(messageService, 'sendTextMessage');
     messageService.sendTextMessage('foo');
     expect(messageService.sendTextMessage).toHaveBeenCalledWith('foo');
@@ -86,7 +86,7 @@ fdescribe('ProjectService', () => {
     expect(messageService.sendErrorMessage).toHaveBeenCalledWith('foo');
   });
 
-  fit('Project CRUD Services should be called (async)', async () => {
+  it('Project CRUD Services should be called (async)', async () => {
     spyOn(projectService, 'getProject').and.callFake(() => Promise.resolve(mockProject));
     projectService.getProject(1).then((project) => {
       expect(projectService.getProject).toHaveBeenCalled();
@@ -124,7 +124,7 @@ fdescribe('ProjectService', () => {
     loggingMsg(JSON.stringify(myError));
   }));
 
-  fit('Project CRUD Services should send Error Message (fakeAsync)', fakeAsync(() => {
+  it('Project CRUD Services should send Error Message (fakeAsync)', fakeAsync(() => {
     spyOn(messageService, 'sendErrorMessage');
     projectService.getProject(1).then(() => { });
     lastConnection.mockError(new MockError(new ResponseOptions('')));
@@ -147,12 +147,12 @@ fdescribe('ProjectService', () => {
     expect(messageService.sendErrorMessage).toHaveBeenCalledTimes(4);
   }));
 
-  fit('should query current service url ()', () => {
+  it('should query current service url ()', () => {
     expect(lastConnection).toBeDefined('no http service connection at all?');
     expect(lastConnection.request.url).toMatch('http://localhost:8080/api/projects/', 'url invalid');
   });
 
-  fit('_getProjects() should subscribe Projects and WorkMap (fakeAsync)', fakeAsync(() => {
+  it('_getProjects() should subscribe Projects and WorkMap (fakeAsync)', fakeAsync(() => {
     let projects: Project[];
     projectService.getProjectsObservable().subscribe((prjs: Project[]) => projects = prjs);
     let workMap: any;
@@ -170,7 +170,7 @@ fdescribe('ProjectService', () => {
     expect(workMap).toEqual({ '8': 0 });
   }));
 
-  fit('getProject() should return project and call clearMessages (fakeAsync)', fakeAsync(() => {
+  it('getProject() should return project and call clearMessages (fakeAsync)', fakeAsync(() => {
     spyOn(messageService, 'clearMessages');
 
     let result: Project;
@@ -185,7 +185,7 @@ fdescribe('ProjectService', () => {
     expect(messageService.clearMessages).toHaveBeenCalled();
   }));
 
-  fit('update() should use PUT method and call clearMessages (fakeAsync)', fakeAsync(() => {
+  it('update() should use PUT method and call clearMessages (fakeAsync)', fakeAsync(() => {
     spyOn(messageService, 'clearMessages');
 
     let project: Project;
@@ -201,7 +201,7 @@ fdescribe('ProjectService', () => {
     expect(lastConnection.request.url).toBe('http://localhost:8080/api/projects/1');
   }));
 
-  fit('create() should use POST method and call clearMessages (fakeAsync)', fakeAsync(() => {
+  it('create() should use POST method and call clearMessages (fakeAsync)', fakeAsync(() => {
     spyOn(messageService, 'clearMessages');
 
     let project: Project;
@@ -217,7 +217,7 @@ fdescribe('ProjectService', () => {
     expect(lastConnection.request.url).toBe('http://localhost:8080/api/projects/');
   }));
 
-  fit('delete() should use DELETE method and call clearMessages (fakeAsync)', fakeAsync(() => {
+  it('delete() should use DELETE method and call clearMessages (fakeAsync)', fakeAsync(() => {
     spyOn(messageService, 'clearMessages');
 
     projectService.delete(1).then(() => { });
@@ -231,7 +231,7 @@ fdescribe('ProjectService', () => {
     expect(lastConnection.request.url).toBe('http://localhost:8080/api/projects/1');
   }));
 
-  xit('getProjects() should return some projects (fakeAsync)', fakeAsync(() => {
+  it('getProjects() should return some projects (fakeAsync)', fakeAsync(() => {
     let result: Project[];
     projectService.getProjects().then((projects: Project[]) => result = projects);
     lastConnection.mockRespond(new Response(new ResponseOptions({
@@ -243,7 +243,7 @@ fdescribe('ProjectService', () => {
     expect(result[0]).toEqual(mockProject, ' should be the first project');
   }));
 
-  xit('should set Projects on Subject', () => {
+  it('should set Projects on Subject', () => {
     let myPrjs: Project[]
     projectService.getProjectsObservable().
       subscribe((prjs: Project[]) => myPrjs = prjs);
