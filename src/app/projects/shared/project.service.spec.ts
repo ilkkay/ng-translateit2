@@ -45,17 +45,14 @@ fdescribe('ProjectService', () => {
   const mockProjectsArray = PROJECTS;
   const mockProject: Project = <Project>{ format: 'PROPERTIES', id: 1, name: 'dotcms', personId: 10, sourceLocale: 'en_EN', type: 'Utf-8' };
 
-  let _messageService: ErrorMessageService;
-  let _containerStateService: ContainerStateService;
-  let _mockBackend: MockBackend;
+  const messageService = new MockMessageService(); // ErrorMessageService;
+  const containerStateService = new MockContainerStateService(); // ContainerStateService;
+  let mockBackend: MockBackend;
   let _lastConnection: any;
-  // let _failedConnection: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ProjectService,
-        { provide: ErrorMessageService, useValue: new MockMessageService() },
-        { provide: ContainerStateService, useValue: new MockContainerStateService() },
+      providers: [
         MockBackend, BaseRequestOptions,
         {
           provide: Http,
@@ -65,36 +62,29 @@ fdescribe('ProjectService', () => {
     });
   });
 
-  beforeEach(inject([Http, ProjectService, ErrorMessageService, ContainerStateService, MockBackend],
-    (http: Http, service: ProjectService, ms: ErrorMessageService,
-      css: ContainerStateService,
-      mb: MockBackend) => {
-
-      _messageService = ms;
-      _containerStateService = css;
-      _mockBackend = mb;
+  beforeEach(inject([Http,  MockBackend],
+    (http: Http,  mb: MockBackend) => {
 
       projectService = new ProjectService(http);
-      projectService.registerMessageService(ms);
-      projectService.registerStateService(css);
-
-      _mockBackend.connections.subscribe(
+      projectService.registerMessageService(messageService);
+      projectService.registerStateService(containerStateService);
+            mockBackend = mb;
+      mockBackend.connections.subscribe(
         (connection: any) => _lastConnection = connection);
-
     }));
 
-  fit('ProjectService should be created', () => {
+  fit('ProjectService should be created ()', () => {
     expect(projectService).toBeTruthy();
   });
 
-  fit('Message Services should be called (function)', async () => {
-    spyOn(_messageService, 'sendTextMessage');
-    _messageService.sendTextMessage('foo');
-    expect(_messageService.sendTextMessage).toHaveBeenCalledWith('foo');
+  fit('Message Services should be called ()', () => {
+    spyOn(messageService, 'sendTextMessage');
+    messageService.sendTextMessage('foo');
+    expect(messageService.sendTextMessage).toHaveBeenCalledWith('foo');
 
-    spyOn(_messageService, 'sendErrorMessage');
-    _messageService.sendErrorMessage('foo');
-    expect(_messageService.sendErrorMessage).toHaveBeenCalledWith('foo');
+    spyOn(messageService, 'sendErrorMessage');
+    messageService.sendErrorMessage('foo');
+    expect(messageService.sendErrorMessage).toHaveBeenCalledWith('foo');
   });
 
   fit('Project CRUD Services should be called (async)', async () => {
@@ -136,30 +126,30 @@ fdescribe('ProjectService', () => {
   }));
 
   fit('Project CRUD Services should send Error Message (fakeAsync)', fakeAsync(() => {
-    spyOn(_messageService, 'sendErrorMessage');
+    spyOn(messageService, 'sendErrorMessage');
     projectService.getProject(1).then(() => { });
     _lastConnection.mockError(new MockError(new ResponseOptions('')));
     tick();
-    expect(_messageService.sendErrorMessage).toHaveBeenCalled();
+    expect(messageService.sendErrorMessage).toHaveBeenCalled();
 
     projectService.create(mockProject).then(() => { });
     _lastConnection.mockError(new MockError(new ResponseOptions('')));
     tick();
-    expect(_messageService.sendErrorMessage).toHaveBeenCalledTimes(2);
+    expect(messageService.sendErrorMessage).toHaveBeenCalledTimes(2);
 
     projectService.update(mockProject).then(() => { });
     _lastConnection.mockError(new MockError(new ResponseOptions('')));
     tick();
-    expect(_messageService.sendErrorMessage).toHaveBeenCalledTimes(3);
+    expect(messageService.sendErrorMessage).toHaveBeenCalledTimes(3);
 
     projectService.delete(1).then(() => { });
     _lastConnection.mockError(new MockError(new ResponseOptions('')));
     tick();
-    expect(_messageService.sendErrorMessage).toHaveBeenCalledTimes(4);
+    expect(messageService.sendErrorMessage).toHaveBeenCalledTimes(4);
   }));
 
-  fit('_getProjects() should query current service url', () => {
-    projectService._getProjects();
+  fit('should query current service url ()', () => {
+    // projectService._getProjects();
     expect(_lastConnection).toBeDefined('no http service connection at all?');
     expect(_lastConnection.request.url).toMatch('http://localhost:8080/api/projects/', 'url invalid');
   });
@@ -187,7 +177,7 @@ fdescribe('ProjectService', () => {
   }));
 
   fit('getProject() should return project and call clearMessages (fakeAsync)', fakeAsync(() => {
-    spyOn(_messageService, 'clearMessages');
+    spyOn(messageService, 'clearMessages');
 
     let result: Project;
     projectService.getProject(1).then((project: Project) => result = project);
@@ -198,57 +188,53 @@ fdescribe('ProjectService', () => {
     tick();
 
     expect(result).toEqual(mockProject, ' should be the first project');
-    expect(_messageService.clearMessages).toHaveBeenCalled();
+    expect(messageService.clearMessages).toHaveBeenCalled();
   }));
 
-  fit('update() should use PUT method and call clearMessages (async)', async(() => {
-    _mockBackend.connections.subscribe(connection => {
-      expect(connection.request.method).toBe(RequestMethod.Put);
-      expect(connection.request.url).toBe('http://localhost:8080/api/projects/1');
-      connection.mockRespond(new Response(new ResponseOptions({
-        body: JSON.stringify(mockProject),
-        status: 200,
-      })));
-    });
+  fit('update() should use PUT method and call clearMessages (fakeAsync)', fakeAsync(() => {
+    spyOn(messageService, 'clearMessages');
 
-    spyOn(_messageService, 'clearMessages');
-    projectService.update(mockProject).then(
-      (prj) => {
-        expect(prj.id).toBe(1);
-        expect(_messageService.clearMessages).toHaveBeenCalled();
-      });
+    let project: Project;
+    projectService.update(mockProject).then((prj: Project) => project = prj);
+    _lastConnection.mockRespond(new Response(new ResponseOptions({
+      body: JSON.stringify(mockProject),
+      status: 200,
+    })));
+    tick();
+
+    expect(project.id).toBe(1);
+    expect(_lastConnection.request.method).toBe(RequestMethod.Put);
+    expect(_lastConnection.request.url).toBe('http://localhost:8080/api/projects/1');
   }));
 
-  fit('create() should use POST method and call clearMessages (async)', async(() => {
-    _mockBackend.connections.subscribe(connection => {
-      expect(connection.request.method).toBe(RequestMethod.Post);
-      connection.mockRespond(new Response(new ResponseOptions({
-        body: JSON.stringify(mockProject),
-        status: 200,
-      })));
-    });
+  fit('create() should use POST method and call clearMessages (fakeAsync)', fakeAsync(() => {
+    spyOn(messageService, 'clearMessages');
 
-    spyOn(_messageService, 'clearMessages');
-    projectService.create(mockProject).then(
-      (prj) => {
-        expect(prj.id).toBe(1);
-        expect(_messageService.clearMessages).toHaveBeenCalled();
-      });
+    let project: Project;
+    projectService.create(mockProject).then((prj: Project) => project = prj);
+    _lastConnection.mockRespond(new Response(new ResponseOptions({
+      body: JSON.stringify(mockProject),
+      status: 200,
+    })));
+    tick();
+
+    expect(project.id).toBe(1);
+    expect(_lastConnection.request.method).toBe(RequestMethod.Post);
+    expect(_lastConnection.request.url).toBe('http://localhost:8080/api/projects/');
   }));
 
-  fit('delete() should use DELETE method and call clearMessages (async)', async(() => {
-    _mockBackend.connections.subscribe(connection => {
-      expect(connection.request.method).toBe(RequestMethod.Delete);
-      expect(connection.request.url).toBe('http://localhost:8080/api/projects/1');
-      connection.mockRespond(new Response(new ResponseOptions({
-        body: JSON.stringify({}),
-        status: 200,
-      })));
-    });
+  fit('delete() should use DELETE method and call clearMessages (fakeAsync)', fakeAsync(() => {
+    spyOn(messageService, 'clearMessages');
 
-    spyOn(_messageService, 'clearMessages');
-    projectService.delete(1).then(
-      (prj) => { expect(_messageService.clearMessages).toHaveBeenCalled(); });
+    projectService.delete(1).then(() => { });
+    _lastConnection.mockRespond(new Response(new ResponseOptions({
+      body: JSON.stringify({ }),
+      status: 200,
+    })));
+    tick();
+
+    expect(_lastConnection.request.method).toBe(RequestMethod.Delete);
+    expect(_lastConnection.request.url).toBe('http://localhost:8080/api/projects/1');
   }));
 
   xit('getProjects() should return some projects (fakeAsync)', fakeAsync(() => {

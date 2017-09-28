@@ -12,6 +12,8 @@ import { Project } from './Project';
 import { MessageInterface } from '../../shared/message-interface'
 import { StateInterface } from '../../shared/state-interface'
 
+import { ErrorMessageService } from '../../shared/error-message.service'
+
 @Injectable()
 export class ProjectService {
 
@@ -35,7 +37,7 @@ export class ProjectService {
   private _messageService: MessageInterface;
   private _uiStateService: StateInterface;
 
-  constructor(private _http: Http, ) { }
+  constructor(private _http: Http) { }
 
   registerMessageService(messageService: MessageInterface) {
     this._messageService = messageService;
