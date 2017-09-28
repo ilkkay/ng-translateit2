@@ -9,7 +9,7 @@ export class ContainerStateService implements StateInterface {
   private _state: BehaviorSubject<string> = new BehaviorSubject<string>('list');
 
   constructor(private _projectService: ProjectService) {
-      _projectService.registerStateService(this);
+      _projectService.registerService(this);
   }
 
   public get state() { return this._state.getValue(); }

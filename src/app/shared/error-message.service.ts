@@ -9,7 +9,7 @@ export class ErrorMessageService implements MessageInterface {
   private subject: Subject<any> = new BehaviorSubject<any>({});
 
   constructor( _projectService: ProjectService ) {
-       _projectService.registerMessageService(this);
+       _projectService.registerService(this);
   }
 
   sendTextMessage(message: string) {

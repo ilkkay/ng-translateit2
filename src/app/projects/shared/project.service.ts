@@ -13,6 +13,7 @@ import { MessageInterface } from '../../shared/message-interface'
 import { StateInterface } from '../../shared/state-interface'
 
 import { ErrorMessageService } from '../../shared/error-message.service'
+import { ContainerStateService } from '../../shared/container-state.service'
 
 @Injectable()
 export class ProjectService {
@@ -39,12 +40,10 @@ export class ProjectService {
 
   constructor(private _http: Http) { }
 
-  registerMessageService(messageService: MessageInterface) {
-    this._messageService = messageService;
-  }
-
-  registerStateService(stateService: StateInterface) {
-    this._uiStateService = stateService;
+  registerService(arg: MessageInterface | StateInterface) {
+    if (this._isErrorMessageService(arg)) { this._messageService = arg;
+    } else if (this._isContainerStateService(arg)) { this._uiStateService = arg;
+    } else { throw new Error('No such service'); }
   }
 
   setProjectsSubject(projects: Project[]) { this._projectData.next(projects); }
@@ -156,5 +155,11 @@ export class ProjectService {
     console.error('An error occurred: ', error.text());
     return Promise.reject(error);
   }
+
+  private _isErrorMessageService(arg: any): arg is ErrorMessageService {
+    return arg.clearMessages !== undefined; }
+
+  private _isContainerStateService(arg: any): arg is ContainerStateService {
+    return arg.showDetail !== undefined; }
 
 }

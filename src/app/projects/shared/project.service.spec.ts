@@ -64,8 +64,8 @@ fdescribe('ProjectService', () => {
 
   beforeEach(inject([Http,  MockBackend], (http: Http,  mb: MockBackend) => {
       projectService = new ProjectService(http);
-      projectService.registerMessageService(messageService);
-      projectService.registerStateService(containerStateService);
+      projectService.registerService(messageService);
+      projectService.registerService(containerStateService);
 
       mockBackend = mb;
       mockBackend.connections.subscribe(
