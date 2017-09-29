@@ -14,6 +14,7 @@ import { ConfirmDeleteComponent } from '../mymaterial.module';
   styleUrls: ['./my-test-dialog.component.css']
 })
 
+// testing: https://plnkr.co/edit/zo3B0p6gJeN0LTuPDPs4?p=preview
 export class MyTestDialogComponent implements OnInit {
 
   dialogsMap = {

@@ -52,7 +52,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loggingMsg('Entering ProjectsComponent.ngOnInit(): ');
+    this.loggingMsg('Entering ProjectDetailComponent.ngOnInit(): ');
 
     this.types = this.appConfig.getTypes();
     this.formats = this.appConfig.getFormats();
@@ -67,7 +67,8 @@ export class ProjectDetailComponent implements OnInit {
       name: ['', Validators.compose([Validators.required,
       Validators.minLength(6), Validators.maxLength(20)])],
       personId: [],
-      sourceLocale: ['', Validators.pattern('[a-z]{2}_[a-zA-Z]{2}')],
+      sourceLocale: ['', Validators.compose([Validators.required,
+      Validators.pattern('[a-z]{2}_[a-zA-Z]{2}')])],
       type: [''],
     });
 
@@ -110,22 +111,27 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   confirmDelete(project: Project): void {
-/*
-    this.dialogRef = this.dialog.open(this.dialogsMap['delete']);
-    this.dialogRef.componentInstance.title = 'Delete project';
-    this.dialogRef.componentInstance.content = 'Please confirm. Deletion cannot be undone.';
-    this.dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.delete(); }
-      this.dialogRef = null;
-    });
-*/
-  this.delete();
+    this.dialogRef = this.dialog.open(ConfirmDeleteComponent);
+
+    if (this.dialogRef !== undefined) {
+      this.dialogRef.componentInstance.title = 'Delete project';
+      this.dialogRef.componentInstance.content = 'Please confirm. Deletion cannot be undone.';
+      this.dialogRef.afterClosed().subscribe(result => {
+        if (result === true) {
+          this.delete(project);
+        } else {
+          console.log('CANCELING delete !!');
+        }
+        this.dialogRef = null;
+      });
+    } else {
+      this.delete(project);
+    }
   }
 
-  private delete(): void {
+  private delete(project: Project): void {
     this.projectService
-      .delete(this.project.id)
+      .delete(project.id)
       .then(() => {
         this.loggingMsg('Deleted project: ' + this.project.name);
         this.setDefaultProject();
@@ -162,11 +168,12 @@ export class ProjectDetailComponent implements OnInit {
       });
   }
 
-  private updateView(hideDetailView: boolean): void {
+  public updateView(hideDetailView: boolean): void {
     this.projectForm.setValue(this.project);
     this.updateBrowserPath(this.project);
 
-    if (hideDetailView) { this.containerStateService.hideDetail();
+    if (hideDetailView) {
+      this.containerStateService.hideDetail();
     } else { this.containerStateService.showDetail(); }
 
     this.projectService.refreshData();
@@ -175,9 +182,9 @@ export class ProjectDetailComponent implements OnInit {
   private updateBrowserPath(project: Project): void {
     let link: any;
     if (project.id !== 0) {
-      link = [this.detailUrl, { state: 'edit', id: project.id} ];
+      link = [this.detailUrl, { state: 'edit', id: project.id }];
     } else {
-      link = [this.detailUrl, { state: 'list' } ];
+      link = [this.detailUrl, { state: 'list' }];
     }
     this.router.navigate(link);
   }

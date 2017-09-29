@@ -40,7 +40,7 @@ class MockContainerStateService implements StateInterface {
   showDetail() { }
 }
 
-xdescribe('ProjectService', () => {
+fdescribe('ProjectService', () => {
   const mockProjectsArray = PROJECTS;
   const mockProject: Project = <Project>{ format: 'PROPERTIES', id: 1, name: 'dotcms', personId: 10, sourceLocale: 'en_EN', type: 'Utf-8' };
   const messageService = new MockMessageService(); // ErrorMessageService;
