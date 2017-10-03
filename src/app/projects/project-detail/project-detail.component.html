@@ -7,13 +7,12 @@
 <button (click)="changeTitle('My new detail title')">Click</button>
 
 <div class="formcontainer">
-  <div class="alert alert-success" role="alert" *ngIf="successMessage">{{successMessage}}</div>
-  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
 
     <form [formGroup]="projectForm"  class="form-horizontal">
     <div class="row">
       <div class="form-group col-md-12">
           <label class="col-md-2 control-lable" for="uname">
+
           <span mdTooltip="Application name has between 6 to 20 characters">
             Application name </span>
           </label>
