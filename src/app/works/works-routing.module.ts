@@ -10,8 +10,8 @@ import { ProjectsComponent } from '../projects/projects.component';
 
 const routes: Routes = [
   { path: 'workscomponent', component: WorksComponent},
-  { path: 'worksdetail', component: WorkListComponent},
-  { path: 'workslist', component: WorkDetailComponent},
+  { path: 'workslist', component: WorkListComponent},
+  { path: 'worksdetail', component: WorkDetailComponent},
   { path: 'works', component: ProjectsComponent}
 ];
 

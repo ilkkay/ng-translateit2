@@ -3,13 +3,17 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs/Rx';
 
 import { MessageInterface } from './message-interface'
 import { ProjectService } from '../projects/shared/project.service'
+import { WorkService } from '../works/shared/work.service'
 
 @Injectable()
 export class ErrorMessageService implements MessageInterface {
   private subject: Subject<any> = new BehaviorSubject<any>({});
 
-  constructor( _projectService: ProjectService ) {
+  constructor(
+    _projectService: ProjectService,
+    _workService: WorkService  ) {
        _projectService.registerService(this);
+       _workService.registerService(this);
   }
 
   sendTextMessage(message: string) {

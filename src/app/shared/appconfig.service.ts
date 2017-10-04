@@ -13,6 +13,10 @@ export class AppconfigService {
     'PROPERTIES', 'XLIFF'
   ];
 
+  private priorities = [
+    'LOW', 'MEDIUM', 'HIGH'
+  ];
+
   private productionState: boolean;
 
   constructor() { }
@@ -28,9 +32,13 @@ export class AppconfigService {
 
   getFormats(): any { return this.formats; }
 
+  getPriorities(): any { return this.priorities; }
+
   getTypes(): any { return this.types; }
 
   setFormats(formats: any[]): void { this.formats = formats; }
+
+  setPriorities(priorities: any[]): void { this.priorities = priorities; }
 
   setTypes(types: any[]): void { this.types = types; }
 
