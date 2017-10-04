@@ -1,3 +1,71 @@
 <p>
   work-detail works!
 </p>
+
+
+<div class="formcontainer">
+
+  <form [formGroup]="workForm" class="form-horizontal">
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-2 control-lable" for="version">Version</label>
+        <div class="col-md-7">
+          <input type="text" formControlName="version" id="version" placeholder="Number e.g. 1.007">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-2 control-lable" for="language">Target language</label>
+        <div class="col-md-7">
+          <input type="text" formControlName="locale" id="locale" placeholder="en_EN, fi_FI etc.">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-2 control-lable" for="deadLine">Deadline</label>
+        <div class="col-md-7">
+          <input type="text" formControlName="deadLine" id="deadLine" placeholder="2017-10-10">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-2 control-lable" for="format">
+								  Priority:
+                  <select class="form-control" id="priority" formControlName="priority">
+                    <option *ngFor="let p of priorities" [ngValue]="p">{{p}}</option>
+                  </select>
+							</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="col-md-2 control-lable" for="originalFile">File to be translated</label>
+        <div class="col-md-7" ng-if="originalFile">
+          {{originalFile}}
+        </div>
+
+      </div>
+    </div>
+    <pre>{{workForm.value | json}}</pre>
+
+    <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".properties">
+
+    <div class="row">
+      <div class="form-actions floatRight">
+        <button class="btn btn-primary btn-sm" [disabled]="!workForm.valid || (work.id === 0)" (click)="uploadSource()">Upload</button>
+        <button class="btn btn-primary btn-sm" [disabled]="(work.projectId === 0)" (click)="newWork()">New</button>
+        <button class="btn btn-primary btn-sm" [disabled]="!workForm.valid || workForm.pristine || (work.projectId === 0)" (click)="save()">Save</button>
+        <button class="btn btn-primary btn-sm" [disabled]="!workForm.valid || (work.id === 0)" (click)="confirmDelete(work); $event.stopPropagation()">Delete</button>
+        <button class="btn btn-primary btn-sm" (click)="goBack()">Back</button>
+      </div>
+    </div>
+
+  </form>
+</div>
