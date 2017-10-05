@@ -25,7 +25,11 @@
       <div *ngSwitchCase="'Work'">
         <app-work-detail></app-work-detail>
       </div>
-
+<!--
+      <div *ngSwitchCase="'Unit'">
+        <app-unit-detail></app-unit-detail>
+      </div>
+-->
     </div>
   </div>
 
@@ -39,9 +43,12 @@
         <div *ngSwitchCase="'Project'">
           <app-project-list></app-project-list>
         </div>
-
         <div *ngSwitchCase="'Work'">
           <app-work-list></app-work-list>
+        </div>
+
+        <div *ngSwitchCase="'Unit'">
+          <app-unit-list></app-unit-list>
         </div>
 
       </div>

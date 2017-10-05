@@ -47,8 +47,8 @@
     <div class="row">
       <div class="form-group col-md-12">
         <label class="col-md-2 control-lable" for="originalFile">File to be translated</label>
-        <div class="col-md-7" ng-if="originalFile">
-          {{originalFile}}
+        <div class="col-md-7" *ngIf="work.originalFile">
+          {{work.originalFile}}
         </div>
 
       </div>
@@ -59,7 +59,8 @@
 
     <div class="row">
       <div class="form-actions floatRight">
-        <button class="btn btn-primary btn-sm" [disabled]="!workForm.valid || (work.id === 0)" (click)="uploadSource()">Upload</button>
+        <button *ngIf="uploadFile"
+                class="btn btn-primary btn-sm" [disabled]="!workForm.valid || (work.id === 0)" (click)="uploadSource()">Upload</button>
         <button class="btn btn-primary btn-sm" [disabled]="(work.projectId === 0)" (click)="newWork()">New</button>
         <button class="btn btn-primary btn-sm" [disabled]="!workForm.valid || workForm.pristine || (work.projectId === 0)" (click)="save()">Save</button>
         <button class="btn btn-primary btn-sm" [disabled]="!workForm.valid || (work.id === 0)" (click)="confirmDelete(work); $event.stopPropagation()">Delete</button>

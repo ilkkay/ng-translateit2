@@ -1,6 +1,6 @@
 import { Work } from './work'
 
-export const mockWork: Work = <Work>{
+export const MOCKWORK: Work = <Work>{
   backupFile: 'test file',
   deadLine: '2017-05-22',
   finished: '',

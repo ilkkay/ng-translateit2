@@ -4,8 +4,6 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 import { Subject, BehaviorSubject, Observable } from 'rxjs/Rx';
 
 import { Work } from '../shared/work'
-import { mockWork } from '../shared/mock-work'
-
 import { MessageInterface } from '../../shared/message-interface'
 import { StateInterface } from '../../shared/state-interface'
 import { ErrorMessageService } from '../../shared/error-message.service'
@@ -15,9 +13,11 @@ import { ContainerStateService } from '../../shared/container-state.service'
 export class WorkService {
 
   private worksUrl = 'http://localhost:8080/api/work/'; // api/projects/';
+  private projectsUrl = 'http://localhost:8080/api/project/'
 
     private _messageService: MessageInterface;
     private _uiStateService: StateInterface;
+  private _workData: Subject<Work[]> = new BehaviorSubject<Work[]>([]);
 
   constructor(
     private _http: Http,
@@ -28,6 +28,9 @@ export class WorkService {
     } else if (this._isContainerStateService(arg)) { this._uiStateService = arg;
     } else { throw new Error('No such service'); }
   }
+
+  setWorksSubject(works: Work[]) { this._workData.next(works); }
+  getWorksObservable() { return this._workData.asObservable(); }
 
   getWork(id: number): Promise<Work> {
     const url = `${this.worksUrl}${id}`;
@@ -117,6 +120,33 @@ export class WorkService {
       .catch(error => {
         this._messageService.sendErrorMessage(error) } /*  */
       );
+  }
+
+refreshData(projectId: number) {
+  this._getWorks(projectId);
+}
+
+  _getWorks(projectId: number): void {
+    console.log('Entering WorksService.getWorks()');
+    const url = `${this.projectsUrl}${projectId}` + '/work/';
+
+    this._http
+      .get(url)
+      .map((res: any) => res.json())
+      .subscribe((viewWorks: any) => {
+        console.log('_getWorks().subscribe(viewWorks)');
+        console.log(JSON.stringify(viewWorks));
+
+        this.setWorksSubject(viewWorks.works);
+
+        /* if ((isNaN((viewProjects.projects as Project[]).length)) ||
+            ((viewProjects.projects as Project[])).length === 0)  {
+          this._uiStateService.showDetail();
+            } */
+      },
+      (err: any) => this._messageService.sendErrorMessage(err),
+      () => console.log('_getWorks(): always')
+      )
   }
 
   private _isErrorMessageService(arg: any): arg is ErrorMessageService {

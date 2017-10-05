@@ -9,7 +9,7 @@ import { WorkService } from '../shared/work.service';
 import { ErrorMessageService } from '../../shared/error-message.service';
 
 import { Work } from '../shared/work'
-import { mockWork } from '../shared/mock-work'
+import { MOCKWORK } from '../shared/mock-work'
 
 
 @Component({
@@ -23,6 +23,8 @@ export class WorkDetailComponent implements OnInit {
 
   work: Work = new Work();
   workForm: FormGroup;
+  fileFormData: FormData = new FormData();
+  uploadFile: any;
 
   constructor(
     private appConfig: AppconfigService,
@@ -38,6 +40,7 @@ export class WorkDetailComponent implements OnInit {
 
   ngOnInit() {
     this.priorities = this.appConfig.getPriorities();
+    this.uploadFile = this.fileFormData.get('file');
 
     this.getWorkByRouteId();
   }
@@ -50,7 +53,7 @@ export class WorkDetailComponent implements OnInit {
       groupId: [],
       id: [],
       locale: ['fr_FR', Validators.compose([Validators.required,
-        Validators.pattern('[a-z]{2}_[a-zA-Z]{2}')])],
+      Validators.pattern('[a-z]{2}_[a-zA-Z]{2}')])],
       originalFile: [''],
       priority: [],
       progress: [],
@@ -71,20 +74,23 @@ export class WorkDetailComponent implements OnInit {
     let currectProjectId: number;
     let currectGroupId: number;
     if (this.work !== undefined) {
-    currectProjectId = this.work.projectId;
-    currectGroupId = this.work.groupId;
+      currectProjectId = this.work.projectId;
+      currectGroupId = this.work.groupId;
     } else {
       currectProjectId = 0;
       currectGroupId = 0;
     }
 
-    this.work = mockWork;
+    // this.work = MOCKWORK;
+    this.work = new Work();
     this.work.id = 0;
-    this.work.version = '';
+    this.work.deadLine = '2017-12-12';
+    this.work.version = '1.00';
     this.work.locale = 'fi_FI';
-    this.work.projectId =  currectProjectId;
-    this.work.groupId =  currectGroupId;
-    this.work.status = 'NEW';
+    this.work.projectId = currectProjectId;
+    this.work.priority = 'MEDIUM';
+    this.work.groupId = currectGroupId;
+    // this.work.status = 'NEW';
 
     this.workForm.reset(this.work);
   }
@@ -111,10 +117,17 @@ export class WorkDetailComponent implements OnInit {
     })
   }
 
+  uploadSource(): void {
+    this.workService.upload(this.fileFormData, this.work.id)
+      .then((work) => {
+        this.fileFormData = new FormData();
+        this.uploadFile = this.fileFormData.get('file');
+        this.work = work;
+        this.updateView(false);
+      });
+  }
 
-  uploadSource(): void {}
-
-   save(): void {
+  save(): void {
     this.work = <Work>this.workForm.value;
     this.loggingMsg('Saving work: ' + JSON.stringify(this.work));
 
@@ -125,8 +138,9 @@ export class WorkDetailComponent implements OnInit {
     }
   }
 
-updateView(hideDetail: boolean) {
-  this.workForm.setValue(this.work);
+  updateView(hideDetail: boolean) {
+    this.workForm.setValue(this.work);
+    this.workService.refreshData(this.work.projectId);
   }
 
   update(): void {
@@ -161,20 +175,16 @@ updateView(hideDetail: boolean) {
       });
   }
 
-fileChange(event): void {
+  fileChange(event): void {
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
-        const file: File = fileList[0];
-        const formData: FormData = new FormData();
-        formData.append('file', file, file.name);
-        formData.append('workId', this.work.id.toString());
-        this.workService.upload(formData, this.work.id)
-        .then( (work) => {
-        this.work = work;
-        this.updateView(false);
-        });
+      const file: File = fileList[0];
+      this.fileFormData.append('file', file, file.name);
+      this.fileFormData.append('workId', this.work.id.toString());
+      this.uploadFile = this.fileFormData.get('file');
+      console.log('Uploading file ' + file.name);
     }
-}
+  }
   goBack(): void {
     this.location.back();
   }

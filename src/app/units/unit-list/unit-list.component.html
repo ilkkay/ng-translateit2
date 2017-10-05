@@ -1,0 +1,60 @@
+<p>
+  unit-list works!
+</p>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+
+      <div>
+        <td><button (click)="getFirstPage()" class="btn btn-primary btn-sm">&lt;&lt;</button></td>
+        <td><button (click)="getPreviousPage()" class="btn btn-primary btn-sm">Previous</button></td>
+        <td><button (click)="getNextPage()" class="btn btn-primary btn-sm">Next</button></td>
+        <td><button (click)="getLastPage()" class="btn btn-primary btn-sm">&gt;&gt;</button></td>
+      </div>
+
+      <th width="600"></th>
+      <th width="600"></th>
+      <th width="300"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let unit of units">
+<!--
+    <tr *ngFor="let unit of observableUnits | async">
+-->
+      <td>{{unit.serialNumber}}:</td>
+      <td>{{unit.source.text}}</td>
+      <td>{{unit.target.text}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><span class="lead">Try It!</span></div>
+  <div class="panel-body">
+    <div class="formcontainer">
+      <table class="table table-hover">
+        <thead>
+          <th width="10"></th>
+          <th width="300"></th>
+          <th width="300"></th>
+        </thead>
+        <tbody>
+          <tr>
+            <td> </td>
+            <td> </td>
+            <td> <input type="file" file-model="ctrl.uploadFile" class="btn btn-success" ng-disabled="myForm.$invalid"> </td>
+          </tr>
+          <tr>
+            <td> </td>
+            <td> <button type="button" ng-click="ctrl.downloadTarget(ctrl.getWorkId())" class="btn btn-success" ng-disabled="myForm.$invalid">Download</button></td>
+            <td> <button type="button" ng-click="ctrl.uploadTarget(ctrl.uploadFile,ctrl.getWorkId())" class="btn btn-success"
+                ng-disabled="myForm.$invalid">Upload</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

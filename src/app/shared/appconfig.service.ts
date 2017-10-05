@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export class AppconfigService {
 
  private detailUrl = '/projects';
+ private workDetailUrl = '/works';
 
  private types = [
     'ISO8859_1', 'UTF_8'
@@ -43,5 +44,7 @@ export class AppconfigService {
   setTypes(types: any[]): void { this.types = types; }
 
   getDetailUrl(): string { return this.detailUrl; }
+
+  getWorkDetailUrl(): string { return this.workDetailUrl; }
 
 }

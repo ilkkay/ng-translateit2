@@ -1,0 +1,40 @@
+<p>
+  unit-detail works!
+</p>
+
+
+<div class="formcontainer">
+  <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+
+    <div class="row">
+      <div class="form-group col-md-12" ng-init="unitHistory = 'Translated by Ilkka'">
+        <div class="col-md-7">
+          {{unitHistory | uppercase}}, 2 days ago
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-12">
+        <div class="col-md-7">
+          {{ctrl.unit.serialNumber}}: {{ctrl.unit.source.text}}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-12">
+        <div class="col-md-7">
+          <textarea ng-model="ctrl.unit.target.text" id="unittarget" class="targettext form-control input-sm">{{ctrl.unit.target.text}}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-actions floatRight">
+        <input type="submit" value="Save" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid || myForm.$pristine">
+        <a ui-sref="works({projectId: ctrl.getProjectId()})" class="btn btn-primary btn-sm">Back to works</a>
+      </div>
+    </div>
+  </form>
+</div>

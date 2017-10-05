@@ -50,6 +50,10 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentView === 'Work') {
       this.containerState.showDetail();
     }
+
+    if (this.currentView === 'Unit') {
+      this.containerState.showDetail();
+    }
   }
 
   ngOnDestroy() {

@@ -1,3 +1,38 @@
 <p>
   work-list works!
 </p>
+
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>VERSION</th>
+      <th>LANGUAGE</th>
+      <th>PRIORITY</th>
+      <th>STATUS</th>
+      <th>PROGRESS</th>
+      <th>DEADLINE</th>
+      <th width="100"></th>
+      <th width="100"></th>
+    </tr>
+  </thead>
+  <tbody>
+
+<!--
+  <tr *ngFor="let wrk of works">
+    -->
+    <tr *ngFor="let wrk of observableWorks | async">
+      <td>{{wrk.version}}</td>
+      <td>{{wrk.locale}}</td>
+      <td>{{wrk.priority}}</td>
+      <td>{{wrk.status}}</td>
+      <td>{{wrk.progress}}</td>
+      <td>{{wrk.deadLine}}</td>
+
+      <div class="form-actions floatRight">
+        <td><button class="btn btn-primary btn-sm" (click) = "goToWorkDetail(wrk.id)">Edit</button></td>
+        <td><button class="btn btn-primary btn-sm" (click) = "goToUnits(wrk.id)" id ="Next">Next</button></td>
+      </div>
+    </tr>
+  </tbody>
+</table>
