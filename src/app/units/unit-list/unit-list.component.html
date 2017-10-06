@@ -20,10 +20,11 @@
   </thead>
 
   <tbody>
+    <!--
     <tr *ngFor="let unit of units">
-<!--
-    <tr *ngFor="let unit of observableUnits | async">
 -->
+
+    <tr *ngFor="let unit of observableUnits | async">
       <td>{{unit.serialNumber}}:</td>
       <td>{{unit.source.text}}</td>
       <td>{{unit.target.text}}</td>
@@ -44,14 +45,21 @@
         <tbody>
           <tr>
             <td> </td>
-            <td> </td>
-            <td> <input type="file" file-model="ctrl.uploadFile" class="btn btn-success" ng-disabled="myForm.$invalid"> </td>
+            <td>
+              <button class="btn btn-primary btn-sm" (click)="downloadTarget()">Download</button>
+            </td>
+            <td>
+              <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".properties">
+            </td>
           </tr>
           <tr>
             <td> </td>
-            <td> <button type="button" ng-click="ctrl.downloadTarget(ctrl.getWorkId())" class="btn btn-success" ng-disabled="myForm.$invalid">Download</button></td>
-            <td> <button type="button" ng-click="ctrl.uploadTarget(ctrl.uploadFile,ctrl.getWorkId())" class="btn btn-success"
-                ng-disabled="myForm.$invalid">Upload</button></td>
+            <td>
+              <button class="btn btn-primary btn-sm" (click)="goBack()">Back</button>
+            </td>
+            <td>
+              <button *ngIf="uploadFile" class="btn btn-primary btn-sm" (click)="uploadTarget()">Upload</button>
+            </td>
           </tr>
         </tbody>
       </table>

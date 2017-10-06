@@ -8,6 +8,7 @@ import { UnitsRoutingModule } from './units-routing.module';
 import { UnitDetailComponent } from './unit-detail/unit-detail.component';
 import { UnitListComponent } from './unit-list/unit-list.component';
 import { UnitsComponent } from './units.component';
+import { UnitService } from './shared/unit.service';
 
 @NgModule({
   imports: [
@@ -16,6 +17,9 @@ import { UnitsComponent } from './units.component';
     BrowserModule,
     ReactiveFormsModule, FormsModule,
     UnitsRoutingModule
+  ],
+  providers: [
+    UnitService,
   ],
   declarations: [UnitDetailComponent, UnitListComponent, UnitsComponent],
   exports: [UnitDetailComponent, UnitListComponent, UnitsComponent]

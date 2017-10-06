@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs/Rx';
 import { MessageInterface } from './message-interface'
 import { ProjectService } from '../projects/shared/project.service'
 import { WorkService } from '../works/shared/work.service'
+import { UnitService } from '../units/shared/unit.service'
 
 @Injectable()
 export class ErrorMessageService implements MessageInterface {
@@ -11,9 +12,11 @@ export class ErrorMessageService implements MessageInterface {
 
   constructor(
     _projectService: ProjectService,
-    _workService: WorkService  ) {
+    _workService: WorkService,
+    _unitService: UnitService  ) {
        _projectService.registerService(this);
        _workService.registerService(this);
+      _unitService.registerService(this);
   }
 
   sendTextMessage(message: string) {

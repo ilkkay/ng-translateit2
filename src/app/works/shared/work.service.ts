@@ -15,17 +15,19 @@ export class WorkService {
   private worksUrl = 'http://localhost:8080/api/work/'; // api/projects/';
   private projectsUrl = 'http://localhost:8080/api/project/'
 
-    private _messageService: MessageInterface;
-    private _uiStateService: StateInterface;
+  private _messageService: MessageInterface;
+  private _uiStateService: StateInterface;
   private _workData: Subject<Work[]> = new BehaviorSubject<Work[]>([]);
 
   constructor(
     private _http: Http,
-    ) { }
+  ) { }
 
   registerService(arg: MessageInterface | StateInterface) {
-    if (this._isErrorMessageService(arg)) { this._messageService = arg;
-    } else if (this._isContainerStateService(arg)) { this._uiStateService = arg;
+    if (this._isErrorMessageService(arg)) {
+    this._messageService = arg;
+    } else if (this._isContainerStateService(arg)) {
+    this._uiStateService = arg;
     } else { throw new Error('No such service'); }
   }
 
@@ -115,16 +117,18 @@ export class WorkService {
     return this._http.delete(url, { headers: headers })
       .toPromise()
       .then(() => {
-        this._messageService.clearMessages() } /*  */
+        this._messageService.clearMessages()
+      } /*  */
       )
       .catch(error => {
-        this._messageService.sendErrorMessage(error) } /*  */
+        this._messageService.sendErrorMessage(error)
+      } /*  */
       );
   }
 
-refreshData(projectId: number) {
-  this._getWorks(projectId);
-}
+  refreshData(projectId: number) {
+    this._getWorks(projectId);
+  }
 
   _getWorks(projectId: number): void {
     console.log('Entering WorksService.getWorks()');
@@ -150,8 +154,10 @@ refreshData(projectId: number) {
   }
 
   private _isErrorMessageService(arg: any): arg is ErrorMessageService {
-    return arg.clearMessages !== undefined; }
+    return arg.clearMessages !== undefined;
+  }
 
   private _isContainerStateService(arg: any): arg is ContainerStateService {
-    return arg.showDetail !== undefined; }
+    return arg.showDetail !== undefined;
+  }
 }

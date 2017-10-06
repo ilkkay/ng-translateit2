@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs/Rx';
 import { StateInterface } from './state-interface'
 import { ProjectService } from '../projects/shared/project.service'
 import { WorkService } from '../works/shared/work.service'
+import { UnitService } from '../units/shared/unit.service'
 
 @Injectable()
 export class ContainerStateService implements StateInterface {
@@ -12,9 +13,11 @@ export class ContainerStateService implements StateInterface {
   constructor(
     private _projectService: ProjectService,
     private _workService: WorkService,
+    private _unitService: UnitService,
     ) {
       _projectService.registerService(this);
       _workService.registerService(this);
+      _unitService.registerService(this);
   }
 
   public get state() { return this._state.getValue(); }
