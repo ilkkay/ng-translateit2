@@ -69,7 +69,10 @@ export class UnitListComponent implements OnInit, OnDestroy {
     subscription = this.unitService.getDownloadPathObservable().subscribe(
       path => {
         console.log('Downloading file: ' + path);
-        if (path.length > 0) {  window.location.href = path; }
+        if (path.length > 0) {
+          window.location.href = path;
+          // this.path = '';
+        }
       });
 
     this.subscriptions.push(subscription);

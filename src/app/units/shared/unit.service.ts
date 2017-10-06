@@ -137,7 +137,6 @@ export class UnitService {
       .subscribe((data: any) => {
         const downloadPath: string = data.scheme + '://' + data.host + ':' + data.port + data.path;
         this.setDownloadPathSubject(downloadPath);
-/*          $window.location.href = path; */
         console.log('Created successfully download path: ' + downloadPath);
         this._messageService.clearMessages();
       });
