@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Unit } from '../shared/unit';
 import { UNITS } from '../shared/mock-units'
+import { UnitService } from '../shared/unit.service';
 
 @Component({
   selector: 'app-unit-detail',
@@ -13,7 +14,9 @@ export class UnitDetailComponent implements OnInit {
   unitHistory = 'Translated by Ilkka';
   unit: Unit;
 
-  constructor() { }
+  constructor(
+    private unitService: UnitService
+  ) { }
 
   ngOnInit() {
     this.unit = UNITS[1];
@@ -23,5 +26,26 @@ export class UnitDetailComponent implements OnInit {
 
     console.log('UnitDetailComponent.ngOnInit()');
   }
+
+  save(): void {
+    if (this.unit.id === 0) {
+      this.loggingMsg('Cannot save empty unit (id is zero)');
+    } else {
+      this.loggingMsg('Saving work: ' + JSON.stringify(this.unit));
+      this.update();
+    }
+  }
+
+  update(): void {
+    this.unitService.update(this.unit)
+      .then(unit => {
+        this.loggingMsg('Updated unit: ' + unit.segmentKey);
+        this.unit = unit;
+        // this.updateView(false);
+      });
+  }
+    private loggingMsg(msg: string): void {
+    console.log(msg);
+  };
 
 }

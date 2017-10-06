@@ -8,6 +8,7 @@ import { MessageInterface } from '../../shared/message-interface'
 import { StateInterface } from '../../shared/state-interface'
 import { ErrorMessageService } from '../../shared/error-message.service'
 import { ContainerStateService } from '../../shared/container-state.service'
+import { AppconfigService } from '../../shared/appconfig.service';
 
 @Injectable()
 export class WorkService {
@@ -21,6 +22,7 @@ export class WorkService {
 
   constructor(
     private _http: Http,
+    private _appConfig: AppconfigService
   ) { }
 
   registerService(arg: MessageInterface | StateInterface) {

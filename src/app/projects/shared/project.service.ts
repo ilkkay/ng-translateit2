@@ -38,7 +38,10 @@ export class ProjectService {
   private _messageService: MessageInterface;
   private _uiStateService: StateInterface;
 
-  constructor(private _http: Http) { }
+  constructor(
+    private _http: Http,
+    private _appConfig: AppconfigService,
+    ) { }
 
   registerService(arg: MessageInterface | StateInterface) {
     if (this._isErrorMessageService(arg)) { this._messageService = arg;

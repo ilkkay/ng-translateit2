@@ -7,6 +7,7 @@ import { MessageInterface } from '../../shared/message-interface'
 import { StateInterface } from '../../shared/state-interface'
 import { ErrorMessageService } from '../../shared/error-message.service'
 import { ContainerStateService } from '../../shared/container-state.service'
+import { AppconfigService } from '../../shared/appconfig.service';
 
 import { Work } from '../../works/shared/work'
 
@@ -17,20 +18,23 @@ export class UnitService {
   //  "/work/{workId}/units", method = RequestMethod.GET)
   private worksUrl = 'http://localhost:8080/api/work/'; // api/projects/';
   private projectsUrl = 'http://localhost:8080/api/project/'
+  private unitsUrl = 'http://localhost:8080/api/work/unit/'
 
   private _pageNum = 1;
   private _pageSize = 4;
   private _pageCount = 0;
 
-
   private _messageService: MessageInterface;
   private _uiStateService: StateInterface;
+
   private _unitData: Subject<Unit[]> = new BehaviorSubject<Unit[]>([]);
   private _downloadPath: Subject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private _http: Http,
+    private _appConfig: AppconfigService
   ) { }
+
   registerService(arg: MessageInterface | StateInterface) {
     if (this._isErrorMessageService(arg)) {
       this._messageService = arg;
@@ -78,6 +82,25 @@ export class UnitService {
 
     console.log('Getting page number ' + this._pageNum);
     this._getUnits(workId);
+  }
+
+  update(unit: Unit): Promise<Unit> {
+    // TODO: => /units/{id} vai /unit
+    // @RequestMapping(value = "/work/unit/{id}", method = RequestMethod.PUT)
+    const url = `${this.unitsUrl}${unit.id}`;
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+
+    return this._http
+      .put(url,
+      unit,
+      { headers: headers })
+      .toPromise()
+      .then(response => {
+        console.log('Response from update: ' + response.text());
+        this._messageService.clearMessages();
+        return response.json() as Unit;
+      })
+      .catch(error => this._messageService.sendErrorMessage(error));
   }
 
   _getUnits(workId: number): void {
