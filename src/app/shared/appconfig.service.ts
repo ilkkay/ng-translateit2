@@ -5,6 +5,7 @@ export class AppconfigService {
 
  private detailUrl = '/projects';
  private workDetailUrl = '/works';
+private unitDetailUrl = '/units';
 
  private types = [
     'ISO8859_1', 'UTF_8'
@@ -47,4 +48,5 @@ export class AppconfigService {
 
   getWorkDetailUrl(): string { return this.workDetailUrl; }
 
+  getUnitDetailUrl(): string { return this.unitDetailUrl; }
 }

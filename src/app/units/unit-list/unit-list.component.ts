@@ -36,29 +36,30 @@ export class UnitListComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
-    private unitService: UnitService) { }
+    private unitService: UnitService) {
+      this.detailUrl = appConfig.getUnitDetailUrl();
+    }
 
   ngOnInit() {
+    console.log('Entering UnitList.ngOnInit()');
 
-    this.getDetailViewByRouteId();
-    this.unitService.refreshData(this.workId);
-
+    this.refreshUnitSubscriptionByRouteId();
     this.observableUnits = this.unitService.getUnitsObservable();
-    this.subscribeDownloadPath();
 
-    console.log('UnitList.ngOnInit()' + JSON.stringify(this.units));
+    this.subscribeDownloadPath();
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  getDetailViewByRouteId(): void {
+  refreshUnitSubscriptionByRouteId(): void {
     this.route.params.subscribe(params => {
       // this.containerStateService.state(params['state']);
       const routeId = +params['id'];
       if (!isNaN(routeId) && (routeId !== 0)) {
         this.workId = routeId;
+        this.unitService.refreshData(this.workId);
       }
     })
   }
@@ -103,8 +104,9 @@ export class UnitListComponent implements OnInit, OnDestroy {
       .then((work) => {
         this.fileFormData = new FormData();
         this.uploadFile = this.fileFormData.get('file');
+        this.workId = work.id;
         this.unitService.refreshData(this.workId);
-        // this.work = work;
+        console.log('Upload target file: ');
         // this.updateView(false);
       });
   }
@@ -118,6 +120,16 @@ export class UnitListComponent implements OnInit, OnDestroy {
       this.uploadFile = this.fileFormData.get('file');
       console.log('Uploading file ' + file.name);
     }
+  }
+
+  goToUnitDetail(unitId: number) {
+    let link: any;
+    if (unitId !== 0) {
+      link = [this.detailUrl, { state: 'edit', id: unitId }];
+    } else {
+      link = [this.detailUrl, { state: 'list' }];
+    }
+    this.router.navigate(link);
   }
 
   goBack(): void {

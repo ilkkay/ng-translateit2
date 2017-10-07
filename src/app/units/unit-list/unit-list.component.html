@@ -28,6 +28,9 @@
       <td>{{unit.serialNumber}}:</td>
       <td>{{unit.source.text}}</td>
       <td>{{unit.target.text}}</td>
+      <div class="form-actions floatRight">
+        <td><button class="btn btn-primary btn-sm" (click) = "goToUnitDetail(unit.id)">Edit</button></td>
+      </div>
     </tr>
   </tbody>
 </table>
