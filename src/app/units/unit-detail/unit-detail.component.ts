@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Unit } from '../shared/unit';
 import { UNITS } from '../shared/mock-units'
@@ -15,16 +16,48 @@ export class UnitDetailComponent implements OnInit {
   unit: Unit;
 
   constructor(
+    private location: Location,
+    private route: ActivatedRoute,
+    private router: Router,
     private unitService: UnitService
   ) { }
 
   ngOnInit() {
+
     this.unit = UNITS[1];
+
+    console.log('UnitDetailComponent.ngOnInit()');
+
+    // this.getUnitByRouteId();
+
     console.log(this.unit);
     console.log(this.unit.source);
     console.log(this.unit.target);
+  }
 
-    console.log('UnitDetailComponent.ngOnInit()');
+  getUnitByRouteId(): any {
+    this.route.params.subscribe(params => {
+      // this.containerStateService.state(params['state']);
+      const routeId = +params['id'];
+      this.loggingMsg('Entering getUnitByRouteId() with: ' + routeId);
+
+      if (!isNaN(routeId) && (routeId !== 0)) {
+        return this.unitService.getUnit(routeId)
+          .then(unit => {
+            this.loggingMsg('and got a unit:' + JSON.stringify(unit));
+            this.unit = unit;
+          })
+          .catch(error => {
+            this.setDefaultUnit();
+          });
+      } else {
+        this.setDefaultUnit();
+      };
+    })
+  }
+
+  setDefaultUnit(): void {
+    this.unit = new Unit();
   }
 
   save(): void {
@@ -41,10 +74,15 @@ export class UnitDetailComponent implements OnInit {
       .then(unit => {
         this.loggingMsg('Updated unit: ' + unit.segmentKey);
         this.unit = unit;
-        // this.updateView(false);
+        this.updateView(false);
       });
   }
-    private loggingMsg(msg: string): void {
+
+  updateView(hideDetail: boolean) {
+    this.unitService.refreshData(this.unit.workId);
+  }
+
+  private loggingMsg(msg: string): void {
     console.log(msg);
   };
 
