@@ -47,13 +47,13 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscribeContainerState()
     this.containerState.hideDetail();
 
-    if (this.currentView === 'Work') {
-      this.containerState.showDetail();
-    }
+    // if (this.currentView === 'Work') {
+    //  this.containerState.showDetail();
+    // }
 
-    if (this.currentView === 'Unit') {
-      this.containerState.showDetail();
-    }
+    // if (this.currentView === 'Unit') {
+    //   this.containerState.showDetail();
+    // }
   }
 
   ngOnDestroy() {

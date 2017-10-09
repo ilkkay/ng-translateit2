@@ -16,7 +16,7 @@ import { UnitService } from './shared/unit.service';
     HttpModule,
     BrowserModule,
     ReactiveFormsModule, FormsModule,
-    UnitsRoutingModule
+    // UnitsRoutingModule
   ],
   providers: [
     UnitService,

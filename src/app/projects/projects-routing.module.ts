@@ -11,6 +11,7 @@ import { ProjectsComponent } from './projects.component';
 // import { MyTestDialogComponent } from '../material/my-test-dialog.component';
 
 const routes: Routes = [
+  /*
   { path: 'projectdetail',   component: ProjectDetailComponent },
   { path: 'projectdetail/:id',   component: ProjectDetailComponent },
   { path: 'projectsearch',   component: ProjectSearchComponent },
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: 'projectsmain',   component: ProjectsmainComponent },
   { path: 'projectsmain/:id', component: ProjectsmainComponent },
   { path: 'projects',   component: ProjectsComponent },
-  { path: 'search', component: ProjectsComponent },
+  { path: 'search', component: ProjectsComponent },*/
 ];
 
 @NgModule({

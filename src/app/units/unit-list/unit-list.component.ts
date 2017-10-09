@@ -7,6 +7,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
 
 import { AppconfigService } from '../../shared/appconfig.service';
 import { ErrorMessageService } from '../../shared/error-message.service';
+import { ContainerStateService } from '../../shared/container-state.service';
 
 import { Unit } from '../shared/unit';
 import { UNITS } from '../shared/mock-units'
@@ -36,27 +37,54 @@ export class UnitListComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
-    private unitService: UnitService) {
+    private unitService: UnitService,
+    private containerStateService: ContainerStateService) {
       this.detailUrl = appConfig.getUnitDetailUrl();
     }
 
   ngOnInit() {
     console.log('Entering UnitList.ngOnInit()');
 
-    this.refreshUnitSubscriptionByRouteId();
+    // this.refreshUnitSubscriptionByRouteId();
+    this.workId = 1;
+    this.unitService.refreshData(this.workId);
     this.observableUnits = this.unitService.getUnitsObservable();
 
     this.subscribeDownloadPath();
+
+    // If this is a direct link to an entity, thew we'll show it
+    this.getDetailViewByRouteId();
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  refreshUnitSubscriptionByRouteId(): void {
+  getDetailViewByRouteId(): void {
     this.route.params.subscribe(params => {
       // this.containerStateService.state(params['state']);
       const routeId = +params['id'];
+      if (!isNaN(routeId) && (routeId !== 0)) {
+        this.goToUnitDetail(routeId);
+      }
+    })
+  }
+
+  goToUnitDetail(unitId: number) {
+    this.containerStateService.showDetail();
+    let link: any;
+    if (unitId !== 0) {
+      link = [this.detailUrl, { state: 'edit', id: unitId }];
+    } else {
+      link = [this.detailUrl, { state: 'list' }];
+    }
+    this.router.navigate(link);
+  }
+
+  refreshUnitSubscriptionByRouteId(): void {
+    this.route.params.subscribe(params => {
+      // this.containerStateService.state(params['state']);
+      const routeId = +params['workId'];
       if (!isNaN(routeId) && (routeId !== 0)) {
         this.workId = routeId;
         this.unitService.refreshData(this.workId);
@@ -120,16 +148,6 @@ export class UnitListComponent implements OnInit, OnDestroy {
       this.uploadFile = this.fileFormData.get('file');
       console.log('Uploading file ' + file.name);
     }
-  }
-
-  goToUnitDetail(unitId: number) {
-    let link: any;
-    if (unitId !== 0) {
-      link = [this.detailUrl, { state: 'edit', id: unitId }];
-    } else {
-      link = [this.detailUrl, { state: 'list' }];
-    }
-    this.router.navigate(link);
   }
 
   goBack(): void {

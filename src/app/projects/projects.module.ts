@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
+import { RouterModule, Routes } from '@angular/router';
 
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectSearchComponent } from './project-search/project-search.component';
@@ -18,9 +19,10 @@ import { ContainerStateService  } from '../shared/container-state.service';
 
 import { MyMaterialModule } from '../material/mymaterial.module';
 
-@NgModule({
-  imports: [
+  @NgModule({
+    imports: [
     CommonModule,
+    // RouterModule,
     BrowserModule,
     ReactiveFormsModule, FormsModule,
     HttpModule,

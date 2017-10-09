@@ -110,10 +110,10 @@ export class UnitService {
       .toPromise()
       .then(response => {
         console.log('Response data: ' + response.text());
-        this._messageService.clearMessages();
+        // this._messageService.clearMessages();
 
         const receivedUnit = response.json() as Unit;
-        this._getUnits(receivedUnit.workId);
+        // this._getUnits(receivedUnit.workId);
         return receivedUnit;
       })
       .catch(error => {

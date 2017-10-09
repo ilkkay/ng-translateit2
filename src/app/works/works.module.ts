@@ -16,7 +16,7 @@ import { WorkService } from './shared/work.service';
     HttpModule,
     BrowserModule,
     ReactiveFormsModule, FormsModule,
-    WorksRoutingModule
+    // WorksRoutingModule
   ],
   providers: [
     WorkService,

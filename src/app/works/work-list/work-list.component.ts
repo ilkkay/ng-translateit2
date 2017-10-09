@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Rx';
 import { AppconfigService } from '../../shared/appconfig.service';
 import { WorkService } from '../shared/work.service';
 import { ErrorMessageService } from '../../shared/error-message.service';
+import { ContainerStateService } from '../../shared/container-state.service';
 
 import { Work } from '../shared/work'
 import { WORKS } from '../shared/mock-works'
@@ -26,7 +27,9 @@ export class WorkListComponent implements OnInit {
     private appConfig: AppconfigService,
     private messageService: ErrorMessageService,
     private router: Router,
+    private route: ActivatedRoute,
     private workService: WorkService,
+    private containerStateService: ContainerStateService
   ) {
     this.detailUrl = appConfig.getWorkDetailUrl();
   }
@@ -36,10 +39,23 @@ export class WorkListComponent implements OnInit {
     this.observableWorks = this.workService.getWorksObservable();
 
     console.log('worksList.ngOnInit()' + JSON.stringify(this.works));
+
+    // If this is a direct link to an entity, thew we'll show it
+    this.getDetailViewByRouteId();
+  }
+
+  getDetailViewByRouteId(): void {
+    this.route.params.subscribe(params => {
+      // this.containerStateService.state(params['state']);
+      const routeId = +params['id'];
+      if (!isNaN(routeId) && (routeId !== 0)) {
+        this.goToWorkDetail(routeId);
+      }
+    })
   }
 
   private goToWorkDetail(workId: number): void {
-    // this.containerStateService.showDetail();
+    this.containerStateService.showDetail();
 
     let link: any;
     if (workId !== 0) {
@@ -50,8 +66,8 @@ export class WorkListComponent implements OnInit {
     this.router.navigate(link);
   }
 
-  goToUnits(workId: number) {
-    const link = ['/units', { state: 'edit', id: workId }];
+  goToUnits(id: number) {
+    const link = ['/units', { state: 'list', workId: id }];
     this.router.navigate(link);
   }
 

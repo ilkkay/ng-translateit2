@@ -14,6 +14,8 @@ export class UnitDetailComponent implements OnInit {
 
   unitHistory = 'Translated by Ilkka';
   unit: Unit = new Unit();
+  // sourceText: string;
+  targetText: string;
 
   constructor(
     private unitService: UnitService,
@@ -37,6 +39,8 @@ export class UnitDetailComponent implements OnInit {
           .then(unit => {
             this.loggingMsg('and got a unit:' + JSON.stringify(unit));
             this.unit = unit;
+            // this.sourceText = unit.source.text;
+            this.targetText = unit.target.text;
           })
           .catch(error => {
             this.setDefaultUnit();
@@ -55,6 +59,7 @@ export class UnitDetailComponent implements OnInit {
     if (this.unit.id === 0) {
       this.loggingMsg('Cannot save empty unit (id is zero)');
     } else {
+      this.unit.target.text = this.targetText;
       this.loggingMsg('Saving work: ' + JSON.stringify(this.unit));
       this.update();
     }
@@ -65,8 +70,12 @@ export class UnitDetailComponent implements OnInit {
       .then(unit => {
         this.loggingMsg('Updated unit: ' + unit.segmentKey);
         this.unit = unit;
-        this.unitService.refreshData(unit.workId);
-      });
+        this.updateView(false);
+    });
+  }
+
+  updateView(hideDetail: boolean) {
+    this.unitService.refreshData(this.unit.workId);
   }
 
   private loggingMsg(msg: string): void {

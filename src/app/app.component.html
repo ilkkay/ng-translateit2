@@ -1,21 +1,26 @@
 <h1>Welcome to app!!</h1>
 <ul>
 <li> <a routerLink="/projectsmain">Project</a>
-<a routerLink="/projectdetail">Detail</a>
-<a routerLink="/projectsearch">Search</a>
-<a routerLink="/projectlist">List</a>
+<a [routerLink]="['/projectdetail', { state: 'edit', id: 1 }]">Detail</a>
+<a [routerLink]="['/projectlist', { state: 'list', userId: 1 }]">List</a>
+<a [routerLink]="['/projects', { state: 'edit', id: 1 }]">Projetcs => Detail</a>
+<a [routerLink]="['/projects', { state: 'list', userId: 1 }]">Projetcs => List</a>
 <a [routerLink]="['/projects', { state: 'edit', id: 1 }]">Bookmark</a>
 <a routerLink="/projects" id="projects" >Container</a>
 
 <li> <a routerLink="/workscomponent">Works</a>
-<a routerLink="/worksdetail">Detail</a>
-<a routerLink="/workslist">List</a>
+<a [routerLink]="['/worksdetail', { state: 'edit', id: 1 }]">Detail</a>
+<a [routerLink]="['/workslist', { state: 'list', projectId: 1 }]">List</a>
+<a [routerLink]="['/works', { state: 'edit', id: 1 }]">Works => Detail</a>
+<a [routerLink]="['/works', { state: 'list', projectId: 1 }]">Works => List</a>
 <a [routerLink]="['/works', { state: 'edit', id: 1 }]">Bookmark</a>
 <a routerLink="/works">Container</a>
 
 <li> <a routerLink="/unitscomponent">Units</a>
-<a routerLink="/unitsdetail">Detail</a>
-<a routerLink="/unitslist">List</a>
+<a [routerLink]="['/unitsdetail', { state: 'edit', id: 1 }]">Detail</a>
+<a [routerLink]="['/unitslist', { state: 'list', workId: 1 }]">List</a>
+<a [routerLink]="['/units', { state: 'edit', id: 1 }]">Units => Detail</a>
+<a [routerLink]="['/units', { state: 'list', workId: 1 }]">Units => List</a>
 <a [routerLink]="['/units', { state: 'edit', id: 1 }]">Bookmark</a>
 <a routerLink="/units">Container</a>
 

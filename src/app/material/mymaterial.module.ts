@@ -44,7 +44,7 @@ export class ConfirmDeleteComponent {
     BrowserAnimationsModule,
     MdDialogModule, MdButtonModule, MdTooltipModule,
     MdMenuModule, MdIconModule, MdCardModule,
-    MyMaterialRoutingModule
+    // MyMaterialRoutingModule
   ],
   exports: [MdDialogModule, MdButtonModule, MdTooltipModule,
     MdMenuModule, MdIconModule, MdCardModule,

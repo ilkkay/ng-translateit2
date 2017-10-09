@@ -83,14 +83,20 @@ export class WorkDetailComponent implements OnInit {
 
     // this.work = MOCKWORK;
     this.work = new Work();
+    this.work.backupFile = '';
+    this.work.originalFile = '';
+    this.work.skeletonFile = '';
+    this.work.finished = '';
     this.work.id = 0;
     this.work.deadLine = '2017-12-12';
+    this.work.started = '2017-12-11';
     this.work.version = '1.00';
     this.work.locale = 'fi_FI';
     this.work.projectId = currectProjectId;
     this.work.priority = 'MEDIUM';
+    this.work.progress = 0;
     this.work.groupId = currectGroupId;
-    // this.work.status = 'NEW';
+    this.work.status = 'NEW'; // ????
 
     this.workForm.reset(this.work);
   }
@@ -140,7 +146,8 @@ export class WorkDetailComponent implements OnInit {
 
   updateView(hideDetail: boolean) {
     this.workForm.setValue(this.work);
-    this.workService.refreshData(this.work.projectId);
+    // this.workService.refreshData(this.work.projectId);
+    this.workService.refreshData(1);
   }
 
   update(): void {
