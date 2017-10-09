@@ -40,7 +40,8 @@ export class UnitListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.getDetailViewByRouteId();
+    // this.getDetailViewByRouteId();
+    this.workId = 1;
     this.unitService.refreshData(this.workId);
 
     this.observableUnits = this.unitService.getUnitsObservable();
@@ -56,9 +57,10 @@ export class UnitListComponent implements OnInit, OnDestroy {
   getDetailViewByRouteId(): void {
     this.route.params.subscribe(params => {
       // this.containerStateService.state(params['state']);
-      const routeId = +params['id'];
+      const routeId = +params['workId'];
       if (!isNaN(routeId) && (routeId !== 0)) {
         this.workId = routeId;
+        this.unitService.refreshData(this.workId);
       }
     })
   }

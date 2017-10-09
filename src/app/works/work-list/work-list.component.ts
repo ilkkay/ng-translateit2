@@ -50,8 +50,8 @@ export class WorkListComponent implements OnInit {
     this.router.navigate(link);
   }
 
-  goToUnits(workId: number) {
-    const link = ['/units', { state: 'edit', id: workId }];
+  goToUnits(id: number) {
+    const link = ['/units', { state: 'list', workId: id }];
     this.router.navigate(link);
   }
 

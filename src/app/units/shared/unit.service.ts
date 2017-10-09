@@ -164,6 +164,25 @@ export class UnitService {
       });
   }
 
+  getUnit(id: number): Promise<Unit> {
+    //  @RequestMapping(value = "/work/unit/{id}", method = RequestMethod.GET)
+    const url = `${this.unitsUrl}${id}`;
+    return this._http.get(url)
+      .toPromise()
+      .then(response => {
+        console.log('Response data: ' + response.text());
+        // this._messageService.clearMessages();
+
+        const receivedUnit = response.json() as Unit;
+        // this._getUnits(receivedUnit.workId);
+        return receivedUnit;
+      })
+      .catch(error => {
+        console.log('Error from getUnit: ');
+        this._messageService.sendErrorMessage(error);
+      });
+  }
+
   private _isErrorMessageService(arg: any): arg is ErrorMessageService {
     return arg.clearMessages !== undefined;
   }
