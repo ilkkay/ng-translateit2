@@ -1,17 +1,10 @@
-export class Unit {
-
-  id: number;
-  segmentKey: string;
-  serialNumber: number;
-  workId: number;
-
-  source: {
+  export class Source {
     plural: string;
     text: string;
     skeletonTag: string
   };
 
-  target: {
+  export class Target {
     equivalent: boolean;
     plural: string;
     text: string;
@@ -22,5 +15,11 @@ export class Unit {
     skeletonTag: string
   };
 
-  // ,"$$hashKey":"object:26"},
+  export class Unit {
+  id: number;
+  segmentKey: string;
+  serialNumber: number;
+  workId: number;
+  source: Source;
+  target: Target;
 }

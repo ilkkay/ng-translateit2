@@ -41,6 +41,7 @@ export class UnitDetailComponent implements OnInit {
             this.unit = unit;
             // this.sourceText = unit.source.text;
             this.targetText = unit.target.text;
+            this.updateView(false);
           })
           .catch(error => {
             this.setDefaultUnit();

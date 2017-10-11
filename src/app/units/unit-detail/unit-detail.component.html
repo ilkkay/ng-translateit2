@@ -2,7 +2,7 @@
   unit-detail works!
 </p>
 
-<div *ngIf ="unit; let unt" class="formcontainer">
+<div *ngIf ="unit.source; let source" class="formcontainer">
 
   <div class="row">
     <div class="form-group col-md-12">
@@ -15,7 +15,7 @@
   <div class="row">
     <div class="form-group col-md-12">
       <div class="col-md-7">
-        {{unt.serialNumber}}: {{unt.sourceText}}
+        {{unit.serialNumber}}: {{source.text}}
       </div>
     </div>
   </div>
