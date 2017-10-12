@@ -17,14 +17,14 @@ import {
 import { ProjectService } from './project.service';
 import { PROJECTS } from './mock-projects';
 import { Project } from './Project';
-import { MessageInterface } from '../../shared/message-interface'
-import { StateInterface } from '../../shared/state-interface'
+import { MessageInterface } from '../../shared/message-interface';
+import { StateInterface } from '../../shared/state-interface';
 import { ErrorMessageService } from '../../shared/error-message.service';
 import { ContainerStateService } from '../../shared/container-state.service';
 
 class MockError extends Response implements Error {
-  name: any
-  message: any
+  name: any;
+  message: any;
 }
 
 class MockMessageService implements MessageInterface {
@@ -244,7 +244,7 @@ fdescribe('ProjectService', () => {
   }));
 
   it('should set Projects on Subject', () => {
-    let myPrjs: Project[]
+    let myPrjs: Project[];
     projectService.getProjectsObservable().
       subscribe((prjs: Project[]) => myPrjs = prjs);
     projectService.setProjectsSubject(mockProjectsArray);

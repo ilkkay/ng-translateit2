@@ -1,4 +1,4 @@
-import { Work } from './work'
+import { Work } from './work';
 
 export const MOCKWORK: Work = <Work>{
   backupFile: 'test file',

@@ -9,11 +9,11 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 import { AppconfigService } from '../../shared/appconfig.service';
 
 import { Project } from './Project';
-import { MessageInterface } from '../../shared/message-interface'
-import { StateInterface } from '../../shared/state-interface'
+import { MessageInterface } from '../../shared/message-interface';
+import { StateInterface } from '../../shared/state-interface';
 
-import { ErrorMessageService } from '../../shared/error-message.service'
-import { ContainerStateService } from '../../shared/container-state.service'
+import { ErrorMessageService } from '../../shared/error-message.service';
+import { ContainerStateService } from '../../shared/container-state.service';
 
 @Injectable()
 export class ProjectService {
@@ -151,7 +151,7 @@ export class ProjectService {
       },
       (err: any) => this._messageService.sendErrorMessage(err),
       () => console.log('_getProjects(): always')
-      )
+      );
   }
 
   private handleError(error: any): Promise<any> {

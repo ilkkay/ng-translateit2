@@ -97,8 +97,8 @@ export class ProjectDetailComponent implements OnInit {
           });
       } else {
         this.setDefaultProject();
-      };
-    })
+      }
+    });
   }
 
   setDefaultProject(): void {
@@ -129,15 +129,6 @@ export class ProjectDetailComponent implements OnInit {
     }
   }
 
-  private delete(project: Project): void {
-    this.projectService
-      .delete(project.id)
-      .then(() => {
-        this.loggingMsg('Deleted project: ' + this.project.name);
-        this.setDefaultProject();
-        this.updateView(true);
-      });
-  }
 
   save(): void {
     this.project = <Project>this.projectForm.value;
@@ -191,11 +182,21 @@ export class ProjectDetailComponent implements OnInit {
 
   private loggingMsg(msg: string): void {
     console.log(msg);
-  };
+  }
 
   // just for testing
   private changeTitle(event: any): void {
     this.messageService.sendTextMessage(event);
+  }
+
+  private delete(project: Project): void {
+    this.projectService
+      .delete(project.id)
+      .then(() => {
+        this.loggingMsg('Deleted project: ' + this.project.name);
+        this.setDefaultProject();
+        this.updateView(true);
+      });
   }
 
 }

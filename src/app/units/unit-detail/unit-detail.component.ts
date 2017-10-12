@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Unit } from '../shared/unit';
-import { UNITS } from '../shared/mock-units'
+import { UNITS } from '../shared/mock-units';
 import { UnitService } from '../shared/unit.service';
 
 @Component({
@@ -48,8 +48,8 @@ export class UnitDetailComponent implements OnInit {
           });
       } else {
         this.setDefaultUnit();
-      };
-    })
+      }
+    });
   }
 
   setDefaultUnit(): void {
@@ -81,6 +81,6 @@ export class UnitDetailComponent implements OnInit {
 
   private loggingMsg(msg: string): void {
     console.log(msg);
-  };
+  }
 
 }

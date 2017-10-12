@@ -12,5 +12,5 @@ export class Work {
   skeletonFile: string;
   started: string;
   status: any;
-  version: string
+  version: string;
 }

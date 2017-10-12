@@ -3,18 +3,18 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions } from '@angular/http';
 import { Subject, BehaviorSubject, Observable } from 'rxjs/Rx';
 
-import { Work } from '../shared/work'
-import { MessageInterface } from '../../shared/message-interface'
-import { StateInterface } from '../../shared/state-interface'
-import { ErrorMessageService } from '../../shared/error-message.service'
-import { ContainerStateService } from '../../shared/container-state.service'
+import { Work } from '../shared/work';
+import { MessageInterface } from '../../shared/message-interface';
+import { StateInterface } from '../../shared/state-interface';
+import { ErrorMessageService } from '../../shared/error-message.service';
+import { ContainerStateService } from '../../shared/container-state.service';
 import { AppconfigService } from '../../shared/appconfig.service';
 
 @Injectable()
 export class WorkService {
 
   private worksUrl = 'http://localhost:8080/api/work/'; // api/projects/';
-  private projectsUrl = 'http://localhost:8080/api/project/'
+  private projectsUrl = 'http://localhost:8080/api/project/';
 
   private _messageService: MessageInterface;
   private _uiStateService: StateInterface;
@@ -119,11 +119,11 @@ export class WorkService {
     return this._http.delete(url, { headers: headers })
       .toPromise()
       .then(() => {
-        this._messageService.clearMessages()
+        this._messageService.clearMessages();
       } /*  */
       )
       .catch(error => {
-        this._messageService.sendErrorMessage(error)
+        this._messageService.sendErrorMessage(error);
       } /*  */
       );
   }
@@ -152,7 +152,7 @@ export class WorkService {
       },
       (err: any) => this._messageService.sendErrorMessage(err),
       () => console.log('_getWorks(): always')
-      )
+      );
   }
 
   private _isErrorMessageService(arg: any): arg is ErrorMessageService {

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { RouterOutletStubComponent, RouterLinkStubDirective } from './testing/router-stubs'
+import { RouterOutletStubComponent, RouterLinkStubDirective } from './testing/router-stubs';
 import { AppComponent } from './app.component';
 
 fdescribe('AppComponent', () => {

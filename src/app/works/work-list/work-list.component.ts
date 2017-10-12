@@ -10,8 +10,8 @@ import { WorkService } from '../shared/work.service';
 import { ErrorMessageService } from '../../shared/error-message.service';
 import { ContainerStateService } from '../../shared/container-state.service';
 
-import { Work } from '../shared/work'
-import { WORKS } from '../shared/mock-works'
+import { Work } from '../shared/work';
+import { WORKS } from '../shared/mock-works';
 
 @Component({
   selector: 'app-work-list',
@@ -40,7 +40,7 @@ export class WorkListComponent implements OnInit {
   ngOnInit() {
     console.log('worksList.ngOnInit()');
 
-    this.refreshWorkSubscriptionByRouteId()
+    this.refreshWorkSubscriptionByRouteId();
     this.observableWorks = this.workService.getWorksObservable();
 
     this.containerStateService.hideDetail();
@@ -55,7 +55,27 @@ export class WorkListComponent implements OnInit {
       if (!isNaN(routeId) && (routeId !== 0)) {
         this.goToWorkDetail(routeId);
       }
-    })
+    });
+  }
+
+  refreshWorkSubscriptionByRouteId(): void {
+    this.route.params.subscribe(params => {
+      // this.containerStateService.state(params['state']);
+      const routeId = +params['projectId'];
+      if (!isNaN(routeId) && (routeId !== 0)) {
+        this.projectId = routeId;
+        this.workService.refreshData(this.projectId);
+      }
+    });
+  }
+
+  goToUnits(id: number) {
+    const link = ['/units', { state: 'list', workId: id }];
+    this.router.navigate(link);
+  }
+
+  private goBack(): void {
+    this.location.back();
   }
 
   private goToWorkDetail(workId: number): void {
@@ -68,26 +88,6 @@ export class WorkListComponent implements OnInit {
       link = [this.detailUrl, { state: 'list' }];
     }
     this.router.navigate(link);
-  }
-
-  refreshWorkSubscriptionByRouteId(): void {
-    this.route.params.subscribe(params => {
-      // this.containerStateService.state(params['state']);
-      const routeId = +params['projectId'];
-      if (!isNaN(routeId) && (routeId !== 0)) {
-        this.projectId = routeId;
-        this.workService.refreshData(this.projectId);
-      }
-    })
-  }
-
-  goToUnits(id: number) {
-    const link = ['/units', { state: 'list', workId: id }];
-    this.router.navigate(link);
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 
 }

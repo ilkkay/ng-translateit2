@@ -55,7 +55,7 @@ export class ProjectListComponent implements OnInit {
       if (!isNaN(routeId) && (routeId !== 0)) {
         this.goToProjectDetail(routeId);
       }
-    })
+    });
   }
 
   private goToProjectDetail(projectId: number): void {

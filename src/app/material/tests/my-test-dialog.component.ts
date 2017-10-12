@@ -19,7 +19,7 @@ export class MyTestDialogComponent implements OnInit {
 
   dialogsMap = {
     'delete': ConfirmDeleteComponent
-  }
+  };
 
   dialogRef: MdDialogRef<any>;
 

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs/Rx';
-import { StateInterface } from './state-interface'
-import { ProjectService } from '../projects/shared/project.service'
-import { WorkService } from '../works/shared/work.service'
-import { UnitService } from '../units/shared/unit.service'
+import { StateInterface } from './state-interface';
+import { ProjectService } from '../projects/shared/project.service';
+import { WorkService } from '../works/shared/work.service';
+import { UnitService } from '../units/shared/unit.service';
 
 @Injectable()
 export class ContainerStateService implements StateInterface {

@@ -9,8 +9,8 @@ import { WorkService } from '../shared/work.service';
 import { ErrorMessageService } from '../../shared/error-message.service';
 import { ContainerStateService } from '../../shared/container-state.service';
 
-import { Work } from '../shared/work'
-import { MOCKWORK } from '../shared/mock-work'
+import { Work } from '../shared/work';
+import { MOCKWORK } from '../shared/mock-work';
 
 
 @Component({
@@ -37,7 +37,7 @@ export class WorkDetailComponent implements OnInit {
     private router: Router,
     private workService: WorkService,
   ) {
-    this.registerFormControls()
+    this.registerFormControls();
   }
 
   ngOnInit() {
@@ -86,8 +86,8 @@ export class WorkDetailComponent implements OnInit {
           });
       } else {
         this.setDefaultWork();
-      };
-    })
+      }
+    });
   }
 
   newWork() {
@@ -179,16 +179,6 @@ export class WorkDetailComponent implements OnInit {
     this.delete(work);
   }
 
-  private delete(work: Work): void {
-    this.workService
-      .delete(work.id)
-      .then(() => {
-        this.loggingMsg('Deleted work: ' + this.work.version);
-        this.setDefaultWork();
-        this.updateView(true);
-      });
-  }
-
   fileChange(event): void {
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
@@ -206,6 +196,15 @@ export class WorkDetailComponent implements OnInit {
 
   private loggingMsg(msg: string): void {
     console.log(msg);
-  };
+  }
 
+  private delete(work: Work): void {
+    this.workService
+      .delete(work.id)
+      .then(() => {
+        this.loggingMsg('Deleted work: ' + this.work.version);
+        this.setDefaultWork();
+        this.updateView(true);
+      });
+  }
 }

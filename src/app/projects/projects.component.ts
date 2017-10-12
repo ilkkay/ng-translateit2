@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, AfterContentInit, ViewChil
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import 'rxjs/add/operator/filter'
+import 'rxjs/add/operator/filter';
 
 import { ErrorMessageComponent } from '../shared/error-message/error-message.component';
 import { ErrorMessageService } from '../shared/error-message.service';
@@ -22,7 +22,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     '/projects': 'Project',
     '/works': 'Work',
     '/units': 'Unit'
-  }
+  };
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -40,7 +40,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private containerState: ContainerStateService,
     private router: Router,
     private route: ActivatedRoute
-    ) { };
+    ) { }
 
   ngOnInit() {
     this.setCurrentView(this.location);
@@ -50,7 +50,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
     this.subscribeMessages();
-    this.subscribeContainerState()
+    this.subscribeContainerState();
     this.containerState.hideDetail();
   }
 
@@ -87,7 +87,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         console.log('ErrorMessageService: ' + JSON.stringify(message.success));
       }
     }
-    )
+    );
 
     this.subscriptions.push(subscription);
   }
@@ -103,7 +103,7 @@ setCurrentView2(): void {
       console.log(currentRoute.snapshot.data);
       const routeName: string = currentRoute.snapshot.data.name;
       this.currentView = this.viewsMap[routeName];
-    })
+    });
 }
 
 

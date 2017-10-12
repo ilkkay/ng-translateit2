@@ -1,8 +1,8 @@
   export class Source {
     plural: string;
     text: string;
-    skeletonTag: string
-  };
+    skeletonTag: string;
+  }
 
   export class Target {
     equivalent: boolean;
@@ -12,8 +12,8 @@
     history: any;
     note: any;
     state: any;
-    skeletonTag: string
-  };
+    skeletonTag: string;
+  }
 
   export class Unit {
   id: number;

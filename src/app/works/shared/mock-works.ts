@@ -1,4 +1,4 @@
-import { Work } from './work'
+import { Work } from './work';
 
 export const WORKS: Work[] = [{
   backupFile: 'test file', deadLine: '2017-05-22', finished: '', groupId: 333, id: 111, locale: 'fi_FI',

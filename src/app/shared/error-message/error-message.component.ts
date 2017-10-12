@@ -41,8 +41,8 @@ export class ErrorMessageComponent implements OnInit {
       msg = 'Error Code:' + errorCode + ' ';
       msg = msg + 'Message: ' + errorMessage[0] + ' ';
       msg = msg + 'Localized Message:' + localizedErrorMessage + ' ';
-    } else { msg = 'Undefined error' }
+    } else { msg = 'Undefined error'; }
 
     return (msg);
-  };
+  }
 }

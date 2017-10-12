@@ -13,7 +13,7 @@ import { ProjectsRoutingModule } from './projects/projects-routing.module';
 import { WorksModule } from './works/works.module';
 import { UnitsModule } from './units/units.module';
 import { MyMaterialModule } from './material/mymaterial.module';
-import { AppRoutingModule} from './app-routing.module'
+import { AppRoutingModule} from './app-routing.module';
 
 @NgModule({
   declarations: [

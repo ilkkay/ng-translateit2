@@ -1,7 +1,7 @@
 import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BrowserModule } from '@angular/platform-browser'
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdDialogModule, MdButtonModule, MdTooltipModule,
     MdMenuModule,

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs/Rx';
 
-import { MessageInterface } from './message-interface'
-import { ProjectService } from '../projects/shared/project.service'
-import { WorkService } from '../works/shared/work.service'
-import { UnitService } from '../units/shared/unit.service'
+import { MessageInterface } from './message-interface';
+import { ProjectService } from '../projects/shared/project.service';
+import { WorkService } from '../works/shared/work.service';
+import { UnitService } from '../units/shared/unit.service';
 
 @Injectable()
 export class ErrorMessageService implements MessageInterface {

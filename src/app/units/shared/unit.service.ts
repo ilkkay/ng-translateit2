@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions } from '@angular/http';
 import { Subject, BehaviorSubject, Observable } from 'rxjs/Rx';
 
-import { Unit } from '../shared/unit'
-import { MessageInterface } from '../../shared/message-interface'
-import { StateInterface } from '../../shared/state-interface'
-import { ErrorMessageService } from '../../shared/error-message.service'
-import { ContainerStateService } from '../../shared/container-state.service'
+import { Unit } from '../shared/unit';
+import { MessageInterface } from '../../shared/message-interface';
+import { StateInterface } from '../../shared/state-interface';
+import { ErrorMessageService } from '../../shared/error-message.service';
+import { ContainerStateService } from '../../shared/container-state.service';
 import { AppconfigService } from '../../shared/appconfig.service';
 
-import { Work } from '../../works/shared/work'
+import { Work } from '../../works/shared/work';
 
 @Injectable()
 export class UnitService {
@@ -17,8 +17,8 @@ export class UnitService {
   //  workUrl = urls.WORK_SERVICE_API + workId + '/units?' + 'pageNum=' + pageNum + '&pageSize=' + pageSize;
   //  "/work/{workId}/units", method = RequestMethod.GET)
   private worksUrl = 'http://localhost:8080/api/work/'; // api/projects/';
-  private projectsUrl = 'http://localhost:8080/api/project/'
-  private unitsUrl = 'http://localhost:8080/api/work/unit/'
+  private projectsUrl = 'http://localhost:8080/api/project/';
+  private unitsUrl = 'http://localhost:8080/api/work/unit/';
 
   private _pageNum = 1;
   private _pageSize = 4;
@@ -144,7 +144,7 @@ export class UnitService {
       },
       (err: any) => this._messageService.sendErrorMessage(err),
       () => console.log('_getWorks(): always')
-      )
+      );
   }
 
   download(workId: number) {

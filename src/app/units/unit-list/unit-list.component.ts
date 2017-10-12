@@ -10,7 +10,7 @@ import { ErrorMessageService } from '../../shared/error-message.service';
 import { ContainerStateService } from '../../shared/container-state.service';
 
 import { Unit } from '../shared/unit';
-import { UNITS } from '../shared/mock-units'
+import { UNITS } from '../shared/mock-units';
 import { UnitService } from '../shared/unit.service';
 
 @Component({
@@ -27,9 +27,9 @@ export class UnitListComponent implements OnInit, OnDestroy {
   fileFormData: FormData = new FormData();
   uploadFile: any;
   observableDownloadPath: Observable<string>;
-  private subscriptions: Subscription[] = [];
-
   workId: number;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private appConfig: AppconfigService,
@@ -67,7 +67,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
       if (!isNaN(routeId) && (routeId !== 0)) {
         this.goToUnitDetail(routeId);
       }
-    })
+    });
   }
 
   goToUnitDetail(unitId: number) {
@@ -89,7 +89,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
         this.workId = routeId;
         this.unitService.refreshData(this.workId);
       }
-    })
+    });
   }
 
   subscribeDownloadPath(): void {

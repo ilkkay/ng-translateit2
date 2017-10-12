@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Unit } from './shared/unit';
-import { UNITS } from './shared/mock-units'
+import { UNITS } from './shared/mock-units';
 
 @Component({
   selector: 'app-units',
