@@ -4,14 +4,15 @@
 </p>
 <ng-content></ng-content>
 <hr>
--->
 
 <app-project-search> </app-project-search>
 <hr>
+-->
 
 <div class="generic-container">
 
   <app-error-message> </app-error-message>
+    <div class ="row">
 
   <div class="panel panel-default" [ngSwitch]="currentView">
     <div class="panel-heading" *ngIf="!isDetailHidden">
@@ -25,7 +26,6 @@
       <div *ngSwitchCase="'Work'">
         <app-work-detail></app-work-detail>
       </div>
-
       <div *ngSwitchCase="'Unit'">
         <app-unit-detail></app-unit-detail>
       </div>
@@ -54,5 +54,5 @@
       </div>
     </div>
   </div>
-
+</div>
 </div>
