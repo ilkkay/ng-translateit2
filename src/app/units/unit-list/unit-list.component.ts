@@ -46,8 +46,8 @@ export class UnitListComponent implements OnInit, OnDestroy {
     console.log('Entering UnitList.ngOnInit()');
 
     this.refreshUnitSubscriptionByRouteId();
-    this.workId = 1;
-    this.unitService.refreshData(this.workId);
+    // this.workId = 1;
+    // this.unitService.refreshData(this.workId);
     this.observableUnits = this.unitService.getUnitsObservable();
 
     this.subscribeDownloadPath();

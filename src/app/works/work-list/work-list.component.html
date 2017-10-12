@@ -1,7 +1,8 @@
+<!--
 <p>
   work-list works!
 </p>
-
+-->
 
 <table class="table table-hover">
   <thead>
@@ -18,7 +19,7 @@
   </thead>
   <tbody>
 
-<!--
+    <!--
   <tr *ngFor="let wrk of works">
     -->
     <tr *ngFor="let wrk of observableWorks | async">
@@ -30,9 +31,22 @@
       <td>{{wrk.deadLine}}</td>
 
       <div class="form-actions floatRight">
-        <td><button class="btn btn-primary btn-sm" (click) = "goToWorkDetail(wrk.id)">Edit</button></td>
-        <td><button class="btn btn-primary btn-sm" (click) = "goToUnits(wrk.id)" id ="Next">Next</button></td>
+        <td><button class="btn btn-primary btn-sm" (click)="goToWorkDetail(wrk.id)">Edit</button></td>
+        <td><button class="btn btn-primary btn-sm" (click)="goToUnits(wrk.id)" id="Next">Next</button></td>
       </div>
+    </tr>
+  </tbody>
+</table>
+
+<table class="table table-hover">
+  <thead>
+    <th width="300"></th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <button class="btn btn-primary btn-sm" (click)="goBack()">Back</button>
+      </td>
     </tr>
   </tbody>
 </table>

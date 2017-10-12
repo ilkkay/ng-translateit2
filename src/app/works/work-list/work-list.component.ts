@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Location } from '@angular/common';
 
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
@@ -22,12 +23,14 @@ export class WorkListComponent implements OnInit {
   observableWorks: Observable<Work[]>;
   works: Work[];
   detailUrl: string;
+  projectId: number;
 
   constructor(
     private appConfig: AppconfigService,
     private messageService: ErrorMessageService,
     private router: Router,
     private route: ActivatedRoute,
+    private location: Location,
     private workService: WorkService,
     private containerStateService: ContainerStateService
   ) {
@@ -35,12 +38,13 @@ export class WorkListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.workService.refreshData(1);
+    console.log('worksList.ngOnInit()');
+
+    this.refreshWorkSubscriptionByRouteId()
     this.observableWorks = this.workService.getWorksObservable();
 
-    console.log('worksList.ngOnInit()' + JSON.stringify(this.works));
-
-    // If this is a direct link to an entity, thew we'll show it
+    this.containerStateService.hideDetail();
+    // Unless this is a direct link to an entity, thew we'll show it
     this.getDetailViewByRouteId();
   }
 
@@ -66,9 +70,24 @@ export class WorkListComponent implements OnInit {
     this.router.navigate(link);
   }
 
+  refreshWorkSubscriptionByRouteId(): void {
+    this.route.params.subscribe(params => {
+      // this.containerStateService.state(params['state']);
+      const routeId = +params['projectId'];
+      if (!isNaN(routeId) && (routeId !== 0)) {
+        this.projectId = routeId;
+        this.workService.refreshData(this.projectId);
+      }
+    })
+  }
+
   goToUnits(id: number) {
     const link = ['/units', { state: 'list', workId: id }];
     this.router.navigate(link);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }

@@ -43,7 +43,8 @@ export class ProjectListComponent implements OnInit {
     this.observableProjects = this.projectService.getProjectsObservable();
     this.observableProjectWorkMap = this.projectService.getProjectWorkMapObservable();
 
-    // If this is a direct link to an entity, thew we'll show it
+    this.containerStateService.hideDetail();
+    // Unless this is a direct link to an entity, thew we'll show it
     this.getDetailViewByRouteId();
   }
 
@@ -69,8 +70,8 @@ export class ProjectListComponent implements OnInit {
     this.router.navigate(link);
   }
 
-  private goToWorks(projectId: number): void {
-    const link = ['/works', { state: 'edit', id: projectId }];
+  private goToWorks(prjId: number): void {
+    const link = ['/works', { state: 'list', projectId: prjId }];
     this.router.navigate(link);
   }
 

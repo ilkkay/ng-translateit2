@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { AppconfigService } from '../../shared/appconfig.service';
 import { WorkService } from '../shared/work.service';
 import { ErrorMessageService } from '../../shared/error-message.service';
+import { ContainerStateService } from '../../shared/container-state.service';
 
 import { Work } from '../shared/work'
 import { MOCKWORK } from '../shared/mock-work'
@@ -29,6 +30,7 @@ export class WorkDetailComponent implements OnInit {
   constructor(
     private appConfig: AppconfigService,
     private messageService: ErrorMessageService,
+    private containerStateService: ContainerStateService,
     private formBuilder: FormBuilder,
     private location: Location,
     private route: ActivatedRoute,
@@ -40,6 +42,7 @@ export class WorkDetailComponent implements OnInit {
 
   ngOnInit() {
     this.priorities = this.appConfig.getPriorities();
+    // FIX this
     this.uploadFile = this.fileFormData.get('file');
 
     this.getWorkByRouteId();
@@ -65,20 +68,42 @@ export class WorkDetailComponent implements OnInit {
     });
   }
 
+  getWorkByRouteId(): any {
+    this.route.params.subscribe(params => {
+      // this.containerStateService.state(params['state']);
+      const routeId = +params['id'];
+      this.loggingMsg('Entering getWorktByRouteId() with: ' + routeId);
+
+      if (!isNaN(routeId) && (routeId !== 0)) {
+        return this.workService.getWork(routeId)
+          .then(work => {
+            this.loggingMsg('and got a work:' + JSON.stringify(work));
+            this.work = work;
+            this.updateView(false);
+          })
+          .catch(error => {
+            this.setDefaultWork();
+          });
+      } else {
+        this.setDefaultWork();
+      };
+    })
+  }
+
   newWork() {
     this.messageService.sendSuccessMessage('Creating a new work');
     this.setDefaultWork();
   }
 
   setDefaultWork(): void {
-    let currectProjectId: number;
-    let currectGroupId: number;
+    let currentProjectId: number;
+    let currentGroupId: number;
     if (this.work !== undefined) {
-      currectProjectId = this.work.projectId;
-      currectGroupId = this.work.groupId;
+      currentProjectId = this.work.projectId;
+      currentGroupId = this.work.groupId;
     } else {
-      currectProjectId = 0;
-      currectGroupId = 0;
+      currentProjectId = 0;
+      currentGroupId = 0;
     }
 
     // this.work = MOCKWORK;
@@ -92,35 +117,13 @@ export class WorkDetailComponent implements OnInit {
     this.work.started = '2017-12-11';
     this.work.version = '1.00';
     this.work.locale = 'fi_FI';
-    this.work.projectId = currectProjectId;
+    this.work.projectId = currentProjectId;
     this.work.priority = 'MEDIUM';
     this.work.progress = 0;
-    this.work.groupId = currectGroupId;
-    this.work.status = 'NEW'; // ????
+    this.work.groupId = currentGroupId;
+    this.work.status = null;
 
     this.workForm.reset(this.work);
-  }
-
-  getWorkByRouteId(): any {
-    this.route.params.subscribe(params => {
-      // this.containerStateService.state(params['state']);
-      const routeId = +params['id'];
-      this.loggingMsg('Entering getWorktByRouteId() with: ' + routeId);
-
-      if (!isNaN(routeId) && (routeId !== 0)) {
-        return this.workService.getWork(routeId)
-          .then(work => {
-            this.loggingMsg('and got a work:' + JSON.stringify(work));
-            this.work = work;
-            this.workForm.setValue(this.work);
-          })
-          .catch(error => {
-            this.setDefaultWork();
-          });
-      } else {
-        this.setDefaultWork();
-      };
-    })
   }
 
   uploadSource(): void {
@@ -144,10 +147,14 @@ export class WorkDetailComponent implements OnInit {
     }
   }
 
-  updateView(hideDetail: boolean) {
+  updateView(hideDetailView: boolean) {
     this.workForm.setValue(this.work);
-    // this.workService.refreshData(this.work.projectId);
-    this.workService.refreshData(1);
+    this.workService.refreshData(this.work.projectId);
+
+    if (hideDetailView) {
+      this.containerStateService.hideDetail();
+    } else { this.containerStateService.showDetail(); }
+
   }
 
   update(): void {
@@ -192,6 +199,7 @@ export class WorkDetailComponent implements OnInit {
       console.log('Uploading file ' + file.name);
     }
   }
+
   goBack(): void {
     this.location.back();
   }

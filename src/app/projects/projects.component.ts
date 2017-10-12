@@ -1,7 +1,9 @@
 import { isUndefined } from 'util';
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, AfterContentInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import 'rxjs/add/operator/filter'
 
 import { ErrorMessageComponent } from '../shared/error-message/error-message.component';
 import { ErrorMessageService } from '../shared/error-message.service';
@@ -14,7 +16,7 @@ import { ContainerStateService  } from '../shared/container-state.service';
   styleUrls: ['./projects.component.css'],
   providers: [],
 })
-export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProjectsComponent implements OnInit, OnDestroy {
 
   viewsMap = {
     '/projects': 'Project',
@@ -36,33 +38,25 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     private location: Location,
     private messageService: ErrorMessageService,
     private containerState: ContainerStateService,
+    private router: Router,
+    private route: ActivatedRoute
     ) { };
 
   ngOnInit() {
     this.setCurrentView(this.location);
+    // this.setCurrentView2();
     this.detailTitle = 'Detail title';
     this.listTitle = 'List title';
+
 
     this.subscribeMessages();
     this.subscribeContainerState()
     this.containerState.hideDetail();
-
-    // if (this.currentView === 'Work') {
-    //  this.containerState.showDetail();
-    // }
-
-    // if (this.currentView === 'Unit') {
-    //   this.containerState.showDetail();
-    // }
   }
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
     this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
-  ngAfterViewInit() {
-    setTimeout(0);
   }
 
   subscribeContainerState(): void {
@@ -97,6 +91,21 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscriptions.push(subscription);
   }
+
+setCurrentView2(): void {
+  this.router.events
+    .filter(event => event instanceof NavigationEnd)
+    .subscribe(event => {
+      let currentRoute = this.route.root;
+      while (currentRoute.children[0] !== undefined) {
+        currentRoute = currentRoute.children[0];
+      }
+      console.log(currentRoute.snapshot.data);
+      const routeName: string = currentRoute.snapshot.data.name;
+      this.currentView = this.viewsMap[routeName];
+    })
+}
+
 
   setCurrentView(location: Location): void {
     let path: any;

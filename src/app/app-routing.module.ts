@@ -25,24 +25,24 @@ const routes: Routes = [
   { path: 'test-tooltip', component: MyTestTooltipComponent},
   { path: 'test-menu', component: MyTestMenuComponent},
 
-  { path: 'projectdetail',   component: ProjectDetailComponent },
-  { path: 'projectdetail/:id',   component: ProjectDetailComponent },
-  { path: 'projectsearch',   component: ProjectSearchComponent },
-  { path: 'projectlist',   component: ProjectListComponent },
-  { path: 'projectsmain',   component: ProjectsmainComponent },
-  { path: 'projectsmain/:id', component: ProjectsmainComponent },
-  { path: 'projects',   component: ProjectsComponent },
-  { path: 'search', component: ProjectsComponent },
+  { path: 'projectdetail',   component: ProjectDetailComponent, data: { name: 'projects'}},
+  { path: 'projectdetail/:id',   component: ProjectDetailComponent, data: { name: 'projects'}},
+  { path: 'projectsearch',   component: ProjectSearchComponent, data: { name: 'projects'}},
+  { path: 'projectlist',   component: ProjectListComponent, data: { name: 'projects'}},
+  { path: 'projectsmain',   component: ProjectsmainComponent, data: { name: 'projects'}},
+  { path: 'projectsmain/:id', component: ProjectsmainComponent, data: { name: 'projects'}},
+  { path: 'projects',   component: ProjectsComponent, data: { name: 'projects'}},
+  { path: 'search', component: ProjectsComponent , data: { name: 'projects'}},
 
-  { path: 'unitscomponent', component: UnitsComponent},
-  { path: 'unitslist', component: UnitListComponent},
-  { path: 'unitsdetail', component: UnitDetailComponent},
-  { path: 'units', component: ProjectsComponent},
+  { path: 'unitscomponent', component: UnitsComponent, data: { name: 'units'}},
+  { path: 'unitslist', component: UnitListComponent, data: { name: 'units'}},
+  { path: 'unitsdetail', component: UnitDetailComponent, data: { name: 'units'}},
+  { path: 'units', component: ProjectsComponent, data: { name: 'units'}},
 
-  { path: 'workscomponent', component: WorksComponent},
-  { path: 'workslist', component: WorkListComponent},
-  { path: 'worksdetail', component: WorkDetailComponent},
-  { path: 'works', component: ProjectsComponent}
+  { path: 'workscomponent', component: WorksComponent, data: { name: 'works'}},
+  { path: 'workslist', component: WorkListComponent, data: { name: 'works'}},
+  { path: 'worksdetail', component: WorkDetailComponent, data: { name: 'works'}},
+  { path: 'works', component: ProjectsComponent, data: { name: 'works'}}
 ];
 
 @NgModule({
