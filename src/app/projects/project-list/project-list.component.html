@@ -31,9 +31,9 @@
       </td>
       <ng-template #emptycell> <td> 0 </td></ng-template>
 
-      <div class="form-actions floatRight">
-        <td><button (click) = "goToProjectDetail(prj.id)">Edit</button></td>
-        <td><button (click) = "goToWorks(prj.id)" id ="Next">Next</button></td>
+      <div class="form-actions">
+        <td><button class="btn btn-primary" (click) = "goToProjectDetail(prj.id)">Edit</button></td>
+        <td><button class="btn btn-success" (click) = "goToWorks(prj.id)" id ="Next">Next</button></td>
       </div>
     </tr>
   </tbody>

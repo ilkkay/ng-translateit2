@@ -57,11 +57,11 @@
     <!--
     <pre>{{workForm.value | json}}</pre>
 -->
-    <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".properties">
+    <input type="file" class="btn btn-primary" (change)="fileChange($event)" placeholder="Upload file" accept=".properties">
 
     <p> </p>
     <div class="row">
-      <div class="form-actions floatRight">
+      <div class="form-actions text-center ">
         <button *ngIf="uploadFile"
                 class="btn btn-primary btn-sm" [disabled]="!workForm.valid || (work.id === 0)" (click)="uploadSource()">Upload</button>
         <button class="btn btn-primary btn-sm" [disabled]="(work.projectId === 0)" (click)="newWork()">New</button>
