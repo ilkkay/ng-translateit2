@@ -4,55 +4,55 @@
 </p>
 <ng-content></ng-content>
 <hr>
--->
 
 <app-project-search> </app-project-search>
 <hr>
+-->
 
 <div class="generic-container">
 
   <app-error-message> </app-error-message>
+  <div class="row">
 
-  <div class="panel panel-default" [ngSwitch]="currentView">
-    <div class="panel-heading" *ngIf="!isDetailHidden">
-      <span class="lead">{{detailTitle}} </span>
-    </div>
-    <div class="panel-body" *ngIf="!isDetailHidden">
-
-      <div *ngSwitchCase="'Project'">
-        <app-project-detail></app-project-detail>
+    <div [className]="my_LeftClass" [ngSwitch]="currentView">
+      <div class="panel-heading">
+        <span class="lead">{{listTitle}} </span>
       </div>
-      <div *ngSwitchCase="'Work'">
-        <app-work-detail></app-work-detail>
+      <div class="panel-body">
+        <div class="table-responsive">
+
+          <div *ngSwitchCase="'Project'">
+            <app-project-list></app-project-list>
+          </div>
+          <div *ngSwitchCase="'Work'">
+            <app-work-list></app-work-list>
+          </div>
+
+          <div *ngSwitchCase="'Unit'">
+            <app-unit-list></app-unit-list>
+          </div>
+
+        </div>
       </div>
+    </div>
 
-      <div *ngSwitchCase="'Unit'">
-        <app-unit-detail></app-unit-detail>
+    <div [className]="my_RightClass" *ngIf="!isDetailHidden" [ngSwitch]="currentView">
+      <div class="panel-heading" *ngIf="!isDetailHidden">
+        <span class="lead">{{detailTitle}} </span>
       </div>
-
-    </div>
-  </div>
-
-  <div class="panel panel-default" [ngSwitch]="currentView">
-    <div class="panel-heading">
-      <span class="lead">{{listTitle}} </span>
-    </div>
-    <div class="panel-body">
-      <div class="table-responsive">
+      <div class="panel-body" *ngIf="!isDetailHidden">
 
         <div *ngSwitchCase="'Project'">
-          <app-project-list></app-project-list>
+          <app-project-detail></app-project-detail>
         </div>
         <div *ngSwitchCase="'Work'">
-          <app-work-list></app-work-list>
+          <app-work-detail></app-work-detail>
         </div>
-
         <div *ngSwitchCase="'Unit'">
-          <app-unit-list></app-unit-list>
+          <app-unit-detail></app-unit-detail>
         </div>
-
       </div>
     </div>
-  </div>
 
+  </div>
 </div>

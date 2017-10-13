@@ -7,7 +7,15 @@ import 'rxjs/add/operator/filter';
 
 import { ErrorMessageComponent } from '../shared/error-message/error-message.component';
 import { ErrorMessageService } from '../shared/error-message.service';
-import { ContainerStateService  } from '../shared/container-state.service';
+import { ContainerStateService } from '../shared/container-state.service';
+
+// https://juristr.com/blog/2016/01/learning-ng2-dynamic-styles/
+
+export class MySize {
+      width: '50%';
+      position: 'relative';
+      float: 'left';
+    }
 
 // https://stackoverflow.com/questions/36527605/how-to-style-child-components-from-parent-components-css-file
 @Component({
@@ -17,6 +25,11 @@ import { ContainerStateService  } from '../shared/container-state.service';
   providers: [],
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
+
+showStyle: true;
+public my_Class = 'col-md-6';
+public my_LeftClass = 'col-md-8'; // tai 12
+public my_RightClass = 'col-md-5'; // 12 - 7
 
   viewsMap = {
     '/projects': 'Project',
@@ -40,7 +53,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private containerState: ContainerStateService,
     private router: Router,
     private route: ActivatedRoute
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.setCurrentView(this.location);
@@ -63,7 +76,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     let subscription: Subscription;
 
     subscription = this.containerState.isDetailHidden.subscribe(
-      isDetailHidden => { this.isDetailHidden = isDetailHidden; } );
+      isDetailHidden => {
+        this.isDetailHidden = isDetailHidden;
+if (this.isDetailHidden) {
+this.my_LeftClass = 'col-md-12';
+} else {
+  this.my_LeftClass = 'col-md-7'; }
+      });
 
     this.subscriptions.push(subscription);
   }
@@ -92,19 +111,19 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(subscription);
   }
 
-setCurrentView2(): void {
-  this.router.events
-    .filter(event => event instanceof NavigationEnd)
-    .subscribe(event => {
-      let currentRoute = this.route.root;
-      while (currentRoute.children[0] !== undefined) {
-        currentRoute = currentRoute.children[0];
-      }
-      console.log(currentRoute.snapshot.data);
-      const routeName: string = currentRoute.snapshot.data.name;
-      this.currentView = this.viewsMap[routeName];
-    });
-}
+  setCurrentView2(): void {
+    this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe(event => {
+        let currentRoute = this.route.root;
+        while (currentRoute.children[0] !== undefined) {
+          currentRoute = currentRoute.children[0];
+        }
+        console.log(currentRoute.snapshot.data);
+        const routeName: string = currentRoute.snapshot.data.name;
+        this.currentView = this.viewsMap[routeName];
+      });
+  }
 
 
   setCurrentView(location: Location): void {
@@ -126,4 +145,32 @@ setCurrentView2(): void {
     // this.listTitle = event;
   }
 
+  halfWidthLeft(): any {
+return MySize;
+/*
+    return {
+      'width': '10%',
+      'position': 'relative',
+      'min-height': '1px',
+      'padding-right': '15px',
+      'padding-left': '15px',
+      'float': 'left'
+    };*/
+  }
+
+  getStyle() {
+    if (this.showStyle) {
+      return 'yellow';
+    } else {
+      return '';
+    }
+  }
+
+    toggle_class() {
+        if (this.my_Class === 'col-md-9') {
+            this.my_Class = 'col-md-12';
+        }else {
+            this.my_Class = 'col-md-9';
+        }
+    }
 }

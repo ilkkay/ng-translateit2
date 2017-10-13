@@ -9,8 +9,8 @@
   <form [formGroup]="workForm" class="form-horizontal">
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="version">Version</label>
-        <div class="col-md-7">
+        <label class="col-md-4 " for="version">Version</label>
+        <div class="col-md-4">
           <input type="text" formControlName="version" id="version" placeholder="Number e.g. 1.007">
         </div>
       </div>
@@ -18,8 +18,8 @@
 
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="language">Target language</label>
-        <div class="col-md-7">
+        <label class="col-md-4" for="language">Language</label>
+        <div class="col-md-4">
           <input type="text" formControlName="locale" id="locale" placeholder="en_EN, fi_FI etc.">
         </div>
       </div>
@@ -27,8 +27,8 @@
 
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="deadLine">Deadline</label>
-        <div class="col-md-7">
+        <label class="col-md-4" for="deadLine">Deadline</label>
+        <div class="col-md-4">
           <input type="text" formControlName="deadLine" id="deadLine" placeholder="2017-10-10">
         </div>
       </div>
@@ -36,19 +36,19 @@
 
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="format">
+        <label class="col-md-4 " for="format">
 								  Priority:
-                  <select class="form-control" id="priority" formControlName="priority">
+							</label>
+                  <select class="form-control"  style="width:auto;" id="priority" formControlName="priority">
                     <option *ngFor="let p of priorities" [ngValue]="p">{{p}}</option>
                   </select>
-							</label>
       </div>
     </div>
 
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="originalFile">File to be translated</label>
-        <div class="col-md-7" *ngIf="work.originalFile">
+        <label class="col-md-4" for="originalFile">File to be translated</label>
+        <div class="col-md-8" *ngIf="work.originalFile">
           {{work.originalFile}}
         </div>
 
@@ -59,6 +59,7 @@
 -->
     <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".properties">
 
+    <p> </p>
     <div class="row">
       <div class="form-actions floatRight">
         <button *ngIf="uploadFile"

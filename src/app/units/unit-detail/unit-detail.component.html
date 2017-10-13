@@ -7,7 +7,7 @@
 
   <div class="row">
     <div class="form-group col-md-12">
-      <div class="col-md-7">
+      <div class="col-md-12">
         {{unitHistory | uppercase}}, 2 days ago
       </div>
     </div>
@@ -15,7 +15,7 @@
 
   <div class="row">
     <div class="form-group col-md-12">
-      <div class="col-md-7">
+      <div class="col-md-12">
         {{unit.serialNumber}}: {{source.text}}
       </div>
     </div>
@@ -23,7 +23,7 @@
 
   <div class="row">
     <div class="form-group col-md-12">
-      <div class="col-md-7">
+      <div class="col-md-12">
         <textarea [(ngModel)]="targetText" id="targettext" class="form-control input-sm">{{targetText}}</textarea>
       </div>
     </div>
@@ -32,6 +32,24 @@
   <div class="row">
     <div class="form-actions floatRight">
         <button class="btn btn-primary btn-sm" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>
+
+<p></p> <p></p> <p></p> <p></p> <p></p> <p></p>
+<div class="panel panel-default">
+  <div class="panel-heading"><span class="lead">Instructions</span></div>
+  <div class="panel-body">
+    <div class="formcontainer">
+    </div>
+  </div>
+</div>
+
+<p></p> <p></p> <p></p> <p></p> <p></p> <p></p>
+<div class="panel panel-default">
+  <div class="panel-heading"><span class="lead">Comments</span></div>
+  <div class="panel-body">
+    <div class="formcontainer">
     </div>
   </div>
 </div>
