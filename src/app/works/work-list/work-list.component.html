@@ -31,14 +31,14 @@
       <td>{{wrk.deadLine}}</td>
 
       <div class="form-actions floatRight">
-        <td><button class="btn btn-primary btn-sm" (click)="goToWorkDetail(wrk.id)">Edit</button></td>
-        <td><button class="btn btn-primary btn-sm" (click)="goToUnits(wrk.id)" id="Next">Next</button></td>
+        <td><button class="btn btn-primary" (click)="goToWorkDetail(wrk.id)">Edit</button></td>
+        <td><button class="btn btn-success" (click)="goToUnits(wrk.id)" id="Next">Next</button></td>
       </div>
     </tr>
   </tbody>
 </table>
 
-<table class="table table-hover">
+<table class="table-condensed table-hover">
   <thead>
     <th width="300"></th>
   </thead>

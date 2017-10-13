@@ -11,12 +11,6 @@ import { ContainerStateService } from '../shared/container-state.service';
 
 // https://juristr.com/blog/2016/01/learning-ng2-dynamic-styles/
 
-export class MySize {
-      width: '50%';
-      position: 'relative';
-      float: 'left';
-    }
-
 // https://stackoverflow.com/questions/36527605/how-to-style-child-components-from-parent-components-css-file
 @Component({
   selector: 'app-projects',
@@ -26,10 +20,8 @@ export class MySize {
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
 
-showStyle: true;
-public my_Class = 'col-md-6';
-public my_LeftClass = 'col-md-8'; // tai 12
-public my_RightClass = 'col-md-5'; // 12 - 7
+  leftColumn = 'col-md-12';
+  rightColumn = 'col-md-5'; // in two column mode left is 7
 
   viewsMap = {
     '/projects': 'Project',
@@ -78,10 +70,11 @@ public my_RightClass = 'col-md-5'; // 12 - 7
     subscription = this.containerState.isDetailHidden.subscribe(
       isDetailHidden => {
         this.isDetailHidden = isDetailHidden;
-if (this.isDetailHidden) {
-this.my_LeftClass = 'col-md-12';
-} else {
-  this.my_LeftClass = 'col-md-7'; }
+        if (this.isDetailHidden) {
+          this.leftColumn = 'col-md-12';
+        } else {
+          this.leftColumn = 'col-md-7';
+        }
       });
 
     this.subscriptions.push(subscription);
@@ -125,7 +118,6 @@ this.my_LeftClass = 'col-md-12';
       });
   }
 
-
   setCurrentView(location: Location): void {
     let path: any;
     const pathParts = this.location.path().split(';');
@@ -145,32 +137,4 @@ this.my_LeftClass = 'col-md-12';
     // this.listTitle = event;
   }
 
-  halfWidthLeft(): any {
-return MySize;
-/*
-    return {
-      'width': '10%',
-      'position': 'relative',
-      'min-height': '1px',
-      'padding-right': '15px',
-      'padding-left': '15px',
-      'float': 'left'
-    };*/
-  }
-
-  getStyle() {
-    if (this.showStyle) {
-      return 'yellow';
-    } else {
-      return '';
-    }
-  }
-
-    toggle_class() {
-        if (this.my_Class === 'col-md-9') {
-            this.my_Class = 'col-md-12';
-        }else {
-            this.my_Class = 'col-md-9';
-        }
-    }
 }
