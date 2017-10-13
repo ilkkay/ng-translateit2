@@ -9,12 +9,12 @@
     <form [formGroup]="projectForm"  class="form-horizontal">
     <div class="row">
       <div class="form-group col-md-12">
-          <label class="col-md-2 control-lable" for="uname">
-
+          <label class="col-md-4" for="uname">
           <span mdTooltip="Application name has between 6 to 20 characters">
-            Application name </span>
+            Name </span>
           </label>
-        <div class="col-md-7">
+
+        <div class="col-md-4">
           <input type="text" formControlName="name"
             id="appname" placeholder="Enter project name">
 <!--
@@ -30,11 +30,11 @@
 
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="sourcelocale">
+        <label class="col-md-4" for="sourcelocale">
           <span mdTooltip="Language has 5 characters like en_EN">
-            Source language</span>
+            Language</span>
         </label>
-        <div class="col-md-7">
+        <div class="col-md-4">
           <input type="text" formControlName="sourceLocale"
               id="sourceLocale" placeholder="en_EN, fi_FI etc.">
 <!--
@@ -49,23 +49,23 @@
 
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="format">
-								  File format: <!-- ({{project.format}}) -->
-                  <select class="form-control" id="format" formControlName="format">
-                    <option *ngFor="let f of formats" [ngValue]="f">{{f}}</option>
-                  </select>
-							</label>
+        <label class="col-md-4 " for="format">
+						Format: <!-- ({{project.format}}) -->
+				</label>
+        <select class="form-control" style="width:auto;" id="format" formControlName="format">
+            <option *ngFor="let f of formats" [ngValue]="f">{{f}}</option>
+        </select>
       </div>
     </div>
 
     <div class="row">
       <div class="form-group col-md-12">
-        <label class="col-md-2 control-lable" for="type">
+        <label class="col-md-4" for="type">
 								  Type: <!-- ({{project.type}}) -->
-                  <select class="form-control" id="type" formControlName="type">
-                    <option *ngFor="let t of types" [ngValue]="t">{{t}}</option>
-                  </select>
-							  </label>
+				</label>
+        <select class="form-control" style="width:auto;" id="type" formControlName="type">
+              <option *ngFor="let t of types" [ngValue]="t">{{t}}</option>
+        </select>
       </div>
     </div>
 <!--

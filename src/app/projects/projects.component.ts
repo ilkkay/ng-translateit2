@@ -26,6 +26,11 @@ export class MySize {
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
 
+showStyle: true;
+public my_Class = 'col-md-6';
+public my_LeftClass = 'col-md-8'; // tai 12
+public my_RightClass = 'col-md-5'; // 12 - 7
+
   viewsMap = {
     '/projects': 'Project',
     '/works': 'Work',
@@ -71,7 +76,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     let subscription: Subscription;
 
     subscription = this.containerState.isDetailHidden.subscribe(
-      isDetailHidden => { this.isDetailHidden = isDetailHidden; });
+      isDetailHidden => {
+        this.isDetailHidden = isDetailHidden;
+if (this.isDetailHidden) {
+this.my_LeftClass = 'col-md-12';
+} else {
+  this.my_LeftClass = 'col-md-7'; }
+      });
 
     this.subscriptions.push(subscription);
   }
@@ -147,5 +158,19 @@ return MySize;
     };*/
   }
 
+  getStyle() {
+    if (this.showStyle) {
+      return 'yellow';
+    } else {
+      return '';
+    }
+  }
 
+    toggle_class() {
+        if (this.my_Class === 'col-md-9') {
+            this.my_Class = 'col-md-12';
+        }else {
+            this.my_Class = 'col-md-9';
+        }
+    }
 }

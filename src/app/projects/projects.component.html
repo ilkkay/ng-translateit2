@@ -14,7 +14,7 @@
   <app-error-message> </app-error-message>
   <div class="row">
 
-    <div [ngClass]="MySize" [ngSwitch]="currentView">
+    <div [className]="my_LeftClass" [ngSwitch]="currentView">
       <div class="panel-heading">
         <span class="lead">{{listTitle}} </span>
       </div>
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div [ngClass]="MySize" *ngIf="!isDetailHidden" [ngSwitch]="currentView">
+    <div [className]="my_RightClass" *ngIf="!isDetailHidden" [ngSwitch]="currentView">
       <div class="panel-heading" *ngIf="!isDetailHidden">
         <span class="lead">{{detailTitle}} </span>
       </div>

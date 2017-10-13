@@ -3,35 +3,27 @@
   unit-list works!
 </p>
 -->
+<div>
+  <td><button (click)="getFirstPage()" class="btn btn-primary btn-sm">&lt;&lt;</button></td>
+  <td><button (click)="getPreviousPage()" class="btn btn-primary btn-sm">Previous</button></td>
+  <td><button (click)="getNextPage()" class="btn btn-primary btn-sm">Next</button></td>
+  <td><button (click)="getLastPage()" class="btn btn-primary btn-sm">&gt;&gt;</button></td>
+</div>
+
 <table class="table table-hover">
   <thead>
     <tr>
-
-      <div>
-        <td><button (click)="getFirstPage()" class="btn btn-primary btn-sm">&lt;&lt;</button></td>
-        <td><button (click)="getPreviousPage()" class="btn btn-primary btn-sm">Previous</button></td>
-        <td><button (click)="getNextPage()" class="btn btn-primary btn-sm">Next</button></td>
-        <td><button (click)="getLastPage()" class="btn btn-primary btn-sm">&gt;&gt;</button></td>
-      </div>
-
+      <th width="10"></th>
       <th width="600"></th>
       <th width="600"></th>
-      <th width="300"></th>
     </tr>
   </thead>
 
   <tbody>
-    <!--
-    <tr *ngFor="let unit of units">
--->
-
-    <tr *ngFor="let unit of observableUnits | async">
+    <tr *ngFor="let unit of observableUnits | async" (click)="goToUnitDetail(unit.id)">
       <td>{{unit.serialNumber}}:</td>
       <td>{{unit.source.text}}</td>
       <td>{{unit.target.text}}</td>
-      <div class="form-actions floatRight">
-        <td><button class="btn btn-primary btn-sm" (click) = "goToUnitDetail(unit.id)">Edit</button></td>
-      </div>
     </tr>
   </tbody>
 </table>
@@ -43,8 +35,9 @@
       <table class="table table-hover">
         <thead>
           <th width="10"></th>
-          <th width="300"></th>
-          <th width="300"></th>
+          <th width="10"></th>
+          <th width="10"></th>
+          <th width="10"></th>
         </thead>
         <tbody>
           <tr>
