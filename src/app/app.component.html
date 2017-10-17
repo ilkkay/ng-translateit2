@@ -27,12 +27,32 @@
 <li> <a routerLink="/test-dialog">Dialog</a>
 <a routerLink="/test-tooltip">Tooltip</a>
 <a routerLink="/test-menu">Menu</a>
-
-
+<!--
+<ul>
+<li> <a [routerLink]="[{ outlets:
+{ list: ['projectlist'] }
+}]"> Projects </a> </li>
+<li> <a [routerLink]="[{ outlets:
+{ list: ['worklist', { state: 'list', projectId: 1 }] }
+}]"> Works </a> </li>
+<li> <a [routerLink]="[{ outlets:
+{ list: ['unitlist', { state: 'list', workId: 1 }] }
+}]"> Units </a> </li>
 </ul>
 
+<ul>
+<li> <a [routerLink]="[{ outlets:
+{ detail: ['myprojectdetail', { state: 'edit', id: 1 }] }
+}]"> Projects </a> </li>
+<li> <a [routerLink]="[{ outlets:
+{ detail: ['myworkdetail', { state: 'edit', id: 1 }] }
+}]"> Works </a> </li>
+<li> <a [routerLink]="[{ outlets:
+{ detail: ['myunitdetail', { state: 'edit', id: 1 }] }
+}]"> Units </a> </li>
+</ul>
+-->
 <router-outlet> </router-outlet>
-
 
 <!--The content below is only a placeholder and can be replaced.-->
 <ul>

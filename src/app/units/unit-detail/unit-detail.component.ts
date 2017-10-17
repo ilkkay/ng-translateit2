@@ -13,9 +13,9 @@ import { UnitService } from '../shared/unit.service';
 export class UnitDetailComponent implements OnInit {
 
   unitHistory = 'Translated by Ilkka';
-  unit: Unit = new Unit();
+  unit: Unit; // = new Unit();
   // sourceText: string;
-  targetText: string;
+  // targetText: string;
 
   constructor(
     private unitService: UnitService,
@@ -40,7 +40,7 @@ export class UnitDetailComponent implements OnInit {
             this.loggingMsg('and got a unit:' + JSON.stringify(unit));
             this.unit = unit;
             // this.sourceText = unit.source.text;
-            this.targetText = unit.target.text;
+            // this.targetText = unit.target.text;
             this.updateView(false);
           })
           .catch(error => {
@@ -60,7 +60,7 @@ export class UnitDetailComponent implements OnInit {
     if (this.unit.id === 0) {
       this.loggingMsg('Cannot save empty unit (id is zero)');
     } else {
-      this.unit.target.text = this.targetText;
+      // this.unit.target.text = this.targetText;
       this.loggingMsg('Saving work: ' + JSON.stringify(this.unit));
       this.update();
     }

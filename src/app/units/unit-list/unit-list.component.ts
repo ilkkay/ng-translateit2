@@ -74,7 +74,8 @@ export class UnitListComponent implements OnInit, OnDestroy {
     this.containerStateService.showDetail();
     let link: any;
     if (unitId !== 0) {
-      link = [this.detailUrl, { state: 'edit', id: unitId }];
+      // link = [this.detailUrl, { state: 'edit', id: unitId }];
+      link = ['/projects', { outlets: { 'detail': ['myunitdetail', { state: 'edit', id: unitId }] } }];
     } else {
       link = [this.detailUrl, { state: 'list' }];
     }

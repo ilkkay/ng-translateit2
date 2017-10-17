@@ -43,7 +43,7 @@ export class WorkDetailComponent implements OnInit {
   ngOnInit() {
     this.priorities = this.appConfig.getPriorities();
     // FIX this
-    this.uploadFile = this.fileFormData.get('file');
+    this.uploadFile = null; // this.fileFormData.get('file');
 
     this.getWorkByRouteId();
   }

@@ -74,6 +74,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           this.leftColumn = 'col-md-12';
         } else {
           this.leftColumn = 'col-md-7';
+          this.rightColumn = 'col-md-5';
         }
       });
 

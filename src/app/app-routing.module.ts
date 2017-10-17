@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: 'projectlist',   component: ProjectListComponent, data: { name: 'projects'}},
   { path: 'projectsmain',   component: ProjectsmainComponent, data: { name: 'projects'}},
   { path: 'projectsmain/:id', component: ProjectsmainComponent, data: { name: 'projects'}},
-  { path: 'projects',   component: ProjectsComponent, data: { name: 'projects'}},
+  // { path: 'projects',   component: ProjectsComponent, data: { name: 'projects'}},
   { path: 'search', component: ProjectsComponent , data: { name: 'projects'}},
 
   { path: 'unitscomponent', component: UnitsComponent, data: { name: 'units'}},
@@ -42,11 +42,29 @@ const routes: Routes = [
   { path: 'workscomponent', component: WorksComponent, data: { name: 'works'}},
   { path: 'workslist', component: WorkListComponent, data: { name: 'works'}},
   { path: 'worksdetail', component: WorkDetailComponent, data: { name: 'works'}},
-  { path: 'works', component: ProjectsComponent, data: { name: 'works'}}
+  { path: 'works', component: ProjectsComponent, data: { name: 'works'}},
+
+{ path: 'projects', redirectTo: '/projects/(list:projectlist)', pathMatch: 'full' },
+{ path: 'myprojectdetail',   component: ProjectDetailComponent, outlet: 'detail'},
+
+{
+	  path: 'projects',
+      component: ProjectsComponent,
+      children: [
+  { path: 'projectlist', component: ProjectListComponent, outlet: 'list'},
+  { path: 'worklist', component: WorkListComponent, outlet: 'list'},
+  { path: 'unitlist', component: UnitListComponent, outlet: 'list'},
+
+  { path: 'myprojectdetail',   component: ProjectDetailComponent, outlet: 'detail'},
+  { path: 'myworkdetail', component: WorkDetailComponent, outlet: 'detail'},
+  { path: 'myunitdetail', component: UnitDetailComponent, outlet: 'detail'},
+      ]
+},
+
 ];
 
 @NgModule({
-  imports: [ CommonModule,  RouterModule.forRoot(routes) ],
+  imports: [ CommonModule,  RouterModule.forRoot(routes,  { enableTracing: true }) ],
   exports: [ RouterModule ]
 })
 

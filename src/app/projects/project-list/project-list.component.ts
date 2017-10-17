@@ -20,7 +20,7 @@ import { ContainerStateService } from '../../shared/container-state.service';
 })
 export class ProjectListComponent implements OnInit {
 
-//  @Output() onTitleChange = new EventEmitter<string>();
+  //  @Output() onTitleChange = new EventEmitter<string>();
 
   observableProjects: Observable<Project[]>;
   observableProjectWorkMap: Observable<any>;
@@ -63,7 +63,8 @@ export class ProjectListComponent implements OnInit {
 
     let link: any;
     if (projectId !== 0) {
-      link = [this.detailUrl, { state: 'edit', id: projectId }];
+      // link = [this.detailUrl, { state: 'edit', id: projectId }];
+      link = ['/projects', { outlets: { 'detail': ['myprojectdetail', { state: 'edit', id: projectId }] } }];
     } else {
       link = [this.detailUrl, { state: 'list' }];
     }
@@ -71,7 +72,9 @@ export class ProjectListComponent implements OnInit {
   }
 
   private goToWorks(prjId: number): void {
-    const link = ['/works', { state: 'list', projectId: prjId }];
+    // const link = ['/works', { state: 'list', projectId: prjId }];
+    const link = ['/projects', { outlets: { 'list': ['worklist', { state: 'list', projectId: prjId }] } }];
+
     this.router.navigate(link);
   }
 

@@ -70,7 +70,9 @@ export class WorkListComponent implements OnInit {
   }
 
   goToUnits(id: number) {
-    const link = ['/units', { state: 'list', workId: id }];
+    // const link = ['/units', { state: 'list', workId: id }];
+    const link = ['/projects', { outlets: { 'list': ['unitlist', { state: 'list', workId: id }] } }];
+
     this.router.navigate(link);
   }
 
@@ -83,7 +85,8 @@ export class WorkListComponent implements OnInit {
 
     let link: any;
     if (workId !== 0) {
-      link = [this.detailUrl, { state: 'edit', id: workId }];
+      // link = [this.detailUrl, { state: 'edit', id: workId }];
+      link = ['/projects', { outlets: { 'detail': ['myworkdetail', { state: 'edit', id: workId }] } }];
     } else {
       link = [this.detailUrl, { state: 'list' }];
     }

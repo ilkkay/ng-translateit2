@@ -1,13 +1,43 @@
+<!--
+<ul>
+<li> <a [routerLink]="[{ outlets:
+{ list: ['projectlist'] }
+}]"> Projects </a> </li>
+<li> <a [routerLink]="[{ outlets:
+{ list: ['worklist', { state: 'list', projectId: 1 }] }
+}]"> Works </a> </li>
+<li> <a [routerLink]="[{ outlets:
+{ list: ['unitlist', { state: 'list', workId: 1 }] }
+}]"> Units </a> </li>
+</ul>
+
+<ul>
+<li> <a [routerLink]="[{ outlets:
+{ detail: ['myprojectdetail', { state: 'edit', id: 1 }] }
+}]"> Projects </a> </li>
+<li> <a [routerLink]="[{ outlets:
+{ detail: ['myworkdetail', { state: 'edit', id: 1 }] }
+}]"> Works </a> </li>
+<li> <a [routerLink]="[{ outlets:
+{ detail: ['myunitdetail', { state: 'edit', id: 1 }] }
+}]"> Units </a> </li>
+</ul>
+-->
 <div class="generic-container">
   <app-error-message> </app-error-message>
 
   <div class="row">
-    <div [className]="leftColumn" [ngSwitch]="currentView">
+<!--
+    <div [ngClass]="leftColumn" [ngSwitch]="currentView">
+-->
+    <div [ngClass]="leftColumn">
       <div class="panel-heading">
         <span class="lead">{{listTitle}} </span>
       </div>
       <div class="panel-body">
         <div class="table-responsive">
+          <router-outlet name="list"></router-outlet>
+<!--
           <div *ngSwitchCase="'Project'">
             <app-project-list></app-project-list>
           </div>
@@ -17,15 +47,22 @@
           <div *ngSwitchCase="'Unit'">
             <app-unit-list></app-unit-list>
           </div>
+-->
         </div>
       </div>
     </div>
+<!--
+    <div [ngClass]="rightColumn" *ngIf="!isDetailHidden" [ngSwitch]="currentView">
+-->
+    <div [ngClass]="rightColumn" *ngIf="!isDetailHidden">
 
-    <div [className]="rightColumn" *ngIf="!isDetailHidden" [ngSwitch]="currentView">
       <div class="panel-heading">
         <span class="lead">{{detailTitle}} </span>
       </div>
       <div class="panel-body">
+        <router-outlet name="detail"></router-outlet>
+      </div>
+      <!--
         <div *ngSwitchCase="'Project'">
           <app-project-detail></app-project-detail>
         </div>
@@ -35,8 +72,7 @@
         <div *ngSwitchCase="'Unit'">
           <app-unit-detail></app-unit-detail>
         </div>
-      </div>
+-->
     </div>
   </div>
-
 </div>
